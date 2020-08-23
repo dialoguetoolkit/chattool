@@ -15,6 +15,7 @@ Welcome to chattool's documentation!
    programming
    datacollected
    tipstricks
+   tutorials
 
 
 
