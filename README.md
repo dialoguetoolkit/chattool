@@ -9,7 +9,7 @@ Some of the new features are:
 - **WYSIWYG** The chattool includes a "What You See Is What You Get, ie. character by character interface which is useful for programming incremental interventions
 
 
-#Documentation
+# Documentation
 
 The programming documentation is at:   https://dialoguetoolkit.github.io/docs/
 
