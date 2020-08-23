@@ -71,17 +71,17 @@ The latest version of the toolkit is available as a <a href = "https://github.co
 
 To run it:
 
-- on windows:
-  - download it
-  - unzip it
-  - run **runme.bat"**
+- On windows:
+  1. Download the zip file of the most recent release
+  2. Unzip it
+  3. Run **runme.bat"**
   
-- on mac / linux
-  - download it
-  - unzip it
-  - double-click on "chattool.jar"
-  - If double-clicking doesn't work use a terminal window to type **java -jar "chattool.jar"**
-  - If that doesn't work, you need to install java and then try the preceding steps again!
+- On mac / linux
+  1. Download the zip file of the most recent release
+  2. Unzip it
+  3. Double-click on "chattool.jar"
+  4. If double-clicking doesn't work, use a terminal window to type **java -jar "chattool.jar"**
+  5. If the terminal window doesn't work, you need to install java and then try steps 3 or 4 again!
 
  
 # Documentation
