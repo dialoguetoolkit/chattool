@@ -99,6 +99,11 @@ The documentation for programming the chattool is at  <a href = "https://dialogu
 
 The source code of the project is hosted at  <a href = "https://github.com/dialoguetoolkit/chattool">https://github.com/dialoguetoolkit/chattool</a>. 
 
+# Contact
+
+If you have any questions, requests, or would like to contribute - please email g.j.mills@rug.nl
+
+
 # Publications
 
 <p>Mills, G. J. and Healey, P. G. T. (submitted) <a href = "http://homepages.inf.ed.ac.uk/gmills/MillsHealey2013Submission.pdf"><B>A dialogue experimentation toolkit.</B></A>
