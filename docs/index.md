@@ -11,6 +11,18 @@ The toolkit provides an extensive API for scripting these manipulations, as well
 
 # Features
 
+## New version (August 2020)
+
+Some of the new features are:
+
+- **Telegram** The chattool interfaces with the Telegram messenger service (https://telegram.org/). Participants can now use the Telegram messenger app on their mobile phone to connect to the chattool.
+- **Remote admin** The experimenter can supervise experiments remotely from their mobile phone
+- **Scripting interventions** It is now possible to specify experiments which transform participants' turns, without the experimenter having to program in java
+- **WYSIWYG Interface** The chattool includes a new interface character-by-character interface (What You See is What You Get) which is suitable for investigating incremental language processes
+- **Linguistic communities** Participants can be dynamically (re)assigned to different groups, allowing the investigation of community topologies on linguistic conventions
+- **Simultaneous interactions** The chat-tool can be used to conduct experiments with hundreds of groups participating simultaneously
+
+
 ## Recorded data
 
 The chattool automatically records all keypresses, words and turns, notifications (including typing notifications and read receipts), number of edits, typing speed, typing overlap.
