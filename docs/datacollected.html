@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data collected by the chattool &mdash; chattool 5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tips &amp; tricks" href="tipstricks.html" />
+    <link rel="prev" title="Programming the chattool" href="programming.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> chattool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Downloading and installing the toolkit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="programming.html">Programming the chattool</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data collected by the chattool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-collected-by-the-turn-by-turn-interface">Data collected by the turn-by-turn interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#keypress-data">Keypress data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#turn-formulation-window-data">Turn-formulation window data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conversation-history-window">Conversation history window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#status-messages">Status messages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-collected-by-the-wysiwyg-interface">Data collected by the WYSIWYG Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-experiment-folder">The experiment folder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clientinterfaceevents-txt">clientinterfaceevents.txt:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clientinterfaceevents-txt-header-txt">clientinterfaceevents.txt_HEADER.txt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#clientinterfaceeventsserialized-obj">clientinterfaceeventsserialized.obj</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging">debugging*</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#messages-obj">messages.obj</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#textentrykeypresses-txt">textentrykeypresses.txt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#turnsattribvals-txt">turnsattribvals.txt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tipstricks.html">Tips &amp; tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">chattool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data collected by the chattool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/datacollected.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="data-collected-by-the-chattool">
+<h1>Data collected by the chattool<a class="headerlink" href="#data-collected-by-the-chattool" title="Permalink to this headline">¶</a></h1>
+<p>All data collected by the chattool is stored in a subfolder of /data/saved experimental data.</p>
+<p>The folder name is has a prefix that increments for each new experiment. The second part of the folder name is the name of the ConversationController object.</p>
+<p>All `` .obj`` files contain serialized java objects. They can be deserialized
+All <code class="docutils literal notranslate"><span class="pre">.txt</span></code> and <code class="docutils literal notranslate"><span class="pre">.csv</span></code> files are coded in UTF8, use “¦” as a separator, and do not use a special string delimiter.</p>
+<div class="section" id="data-collected-by-the-turn-by-turn-interface">
+<h2>Data collected by the turn-by-turn interface<a class="headerlink" href="#data-collected-by-the-turn-by-turn-interface" title="Permalink to this headline">¶</a></h2>
+<p>The chat interface consists of three main components. The top part shows a conversation history window. The lower half contains a turn-formulation window. In between the two is a status bar that can display status messages, typically “Participant X is typing”.</p>
+<p>The chat-tool detects records any changes of these three componenents, and sends a record of them to the server. Crucially, some of these changes of these three components are due to the individual participant using the client, whereas others</p>
+<p>In order to capture all important data about what participants are doing (and what information they are presented with) while interacting with each other, each chat client captures three types of data.</p>
+<div class="section" id="keypress-data">
+<h3>Keypress data<a class="headerlink" href="#keypress-data" title="Permalink to this headline">¶</a></h3>
+<p>The moment a physical key is pressed. This includes “special” keys, e.g. “delete”, “shift”, etc. When a physical key is pressed (even before it is released), the client sends a <code class="docutils literal notranslate"><span class="pre">diet.Message.MessageKeypressed</span></code> message to the server, where it is routed to <code class="docutils literal notranslate"><span class="pre">`diet.server.ConversationController.DefaultConversatioController.processKeyPressed(...)`</span></code>. Ordinarily <code class="docutils literal notranslate"><span class="pre">`processKeypressed()`</span></code> then informs the other participants that the participant who pressed a key “is typing”.  This information is saved in a dedicated column in <code class="docutils literal notranslate"><span class="pre">turns.txt</span></code> and also in <code class="docutils literal notranslate"><span class="pre">turnattribvals.txt</span></code> (See below). Any keypress that is detected while the main JFrame chatwindow is in focus will be sent to the server.</p>
+</div>
+<div class="section" id="turn-formulation-window-data">
+<h3>Turn-formulation window data<a class="headerlink" href="#turn-formulation-window-data" title="Permalink to this headline">¶</a></h3>
+<p>At a slightly higher level of abstraction than keypresses, the chattool records any editing in the turn-formulation window, while the participant is typing a turn. The chattool records for each edit, the position of the string where the editing was done, whether it was an insert/replace/delete, and where relevant what the new character inserted was. This information is sent to the server in a <code class="docutils literal notranslate"><span class="pre">diet.Message.MessageWYSIWYGDocumentSyncFromClientInsert</span></code> message, and is then routed to the <code class="docutils literal notranslate"><span class="pre">diet.server.ConversationController.DefaultConversationController.processWYSIWYGTextInserted(..)</span></code> method. This information is typically identical to the information from keypresses (See above). However, in some cases, e.g. when a participant deletes text by selecting, say 20 characters and pressing delete - this will be recorded as a single keypress delete, but as 20 turn-formulation window deletes. N.B. To prevent participants from deleting text by selecting it, this can be disabled by invoking <code class="docutils literal notranslate"><span class="pre">diet.server.changeClientInterface_DisbleDeletes(</span> <span class="pre">..)</span></code> in your conversationcontroller object when a participant logs in.</p>
+<p>Also, the turn-formulation window records window-specific events - e.g. when text-entry is disabled/enabled. This functionality is useful, e.g. to prevent the user from typing while attending to a stimulus.  See, e.g. <code class="docutils literal notranslate"><span class="pre">Conversation.changeClientInterface_disableTextEntry(..)</span></code></p>
+<p>This information is saved to <code class="docutils literal notranslate"><span class="pre">clientinterfacevents.txt</span></code> in the experiment directory (See section below)</p>
+</div>
+<div class="section" id="conversation-history-window">
+<h3>Conversation history window<a class="headerlink" href="#conversation-history-window" title="Permalink to this headline">¶</a></h3>
+<p>The top part of the chat window displays the conversation history. In normal operation, the client appends turns to this chat window. Turns can be of three types:</p>
+<ul class="simple">
+<li><p>When the client receives <em>a turn</em> that was produced by another participant, it sends a <code class="docutils literal notranslate"><span class="pre">`diet.Message.MessageClientInterfaceEvent`</span></code> to the server containing the text and timestamp when the turn was displayed.</p></li>
+<li><p>When the client receives <em>text that was produced by the server</em>, e.g. game instructions, in the conversation history window. When this happens, the client sends a <code class="docutils literal notranslate"><span class="pre">`diet.Message.MessageClientInterfaceEvent`</span></code> to the server containing the text and timestamp when the turn was displayed.</p></li>
+<li><p>When the participant has typed a turn privately in the turn formulation window and presses ENTER to send it to the other participants, the text in the turnformulation window is cleared, and the turn is appended to the conversation history.</p></li>
+</ul>
+<p>In much the same way that it is possible to disable/enable textentry, the script can be programmed to remotely enable/disable the conversationhistory window. This is useful if you don’t want participants to pay attention to their immediately preceding conversation. See the method <code class="docutils literal notranslate"><span class="pre">diet.server.changeClientInterface_enableConversationHistory()</span></code></p>
+<p>Everything that is displayed in the conversation history window is saved to <code class="docutils literal notranslate"><span class="pre">clientinterfacevents.txt</span></code> in the experiment directory (See section below). it is also saved to “turns.txt” and “turnsattribvals” in the column <strong>TextAsformulatedTIMING</strong>.</p>
+</div>
+<div class="section" id="status-messages">
+<h3>Status messages<a class="headerlink" href="#status-messages" title="Permalink to this headline">¶</a></h3>
+<p>There is a status bar that separates the turn formulation window and the conversation history window. This status can display a single line of text. Typically the message that is displayed is a typing status message, e.g. “Participant X is typing”. These status messages are saved to <cite>clientinterfacevents.txt`</cite> in the experiment directory (See section below). it is also saved to “turns.txt” and “turnsattribvals” in the column <strong>TextAsformulatedTIMING</strong>.</p>
+</div>
+</div>
+<div class="section" id="data-collected-by-the-wysiwyg-interface">
+<h2>Data collected by the WYSIWYG Interface<a class="headerlink" href="#data-collected-by-the-wysiwyg-interface" title="Permalink to this headline">¶</a></h2>
+<p>See the usermanual for a detailed description of the data collected by the WYSIWYG Interface</p>
+</div>
+<div class="section" id="the-experiment-folder">
+<h2>The experiment folder<a class="headerlink" href="#the-experiment-folder" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clientinterfaceevents-txt">
+<h3>clientinterfaceevents.txt:<a class="headerlink" href="#clientinterfaceevents-txt" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>This is a UTF8 CSV file with “¦” as separator. The headers of this datafile are stored in a separate file <code class="docutils literal notranslate"><span class="pre">clientinterfaceevents.txt_HEADER.txt</span></code>. This contains a list of clientinterfaceevents received from all clients. Not all of the columns are relevant for all intervention types. Currently, they are:</p>
+<blockquote>
+<div><p><strong>SenderID</strong>  The Participant ID of the sender using the client.</p>
+<p><strong>username</strong>  The username of the participant using the client.</p>
+<p><strong>eventtype</strong> A short string describing the event type.  See <code class="docutils literal notranslate"><span class="pre">diet.client.ClientInterfaceEvents.ClientInterfaceEventTracker</span></code> for a list of events that are recorded. For example</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>tefi  = Text Entry Field Insert String</p></li>
+<li><p>tefr  = Text Entry Field Remove String</p></li>
+<li><p>chwappbyo = Chat window appended by other participant</p></li>
+<li><p>changestatuslabel = status label changed (e.g. “Participant X is typing”)</p></li>
+<li><ul>
+<li><p>other types of event.</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p><strong>debugcounter</strong> A parameter/counter that was useful for debugging. It counts the number of events received.</p>
+<p><strong>offset</strong> This measure is only relevant for turn formulation. It records the position in the string where any edit was made.</p>
+<p><strong>text</strong> This measure is only relevant for turn formulation. It records the new character(s) added to the turn being formulated.</p>
+<p><strong>*finalstring</strong> This measure is only relevant for turn formulation. It shows what the contents are of the turnformulation window after the edit.</p>
+<p><strong>length</strong> This measure is only relevant for turn formulation. When a participant deletes a substring of their turn, it records the length of that substring.</p>
+<p><strong>serverid</strong>  When the server sends an instruction to the clients to display something on the interface (e.g. “is typing” / “is not typing” or a participant’s turn), it assigns a unique ID to each message that is sent to the client. Currently this is an integer that is incremented with each message. <strong>it</strong> is suffixed if it is an “is typing” message. <strong>nt</strong> is suffixed if it is an instruction to stop showing the “is typing” message. So, for example:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>4it  = 4th message from server, instructing client to display “Participant X is typing”</p></li>
+<li><p>5it  = 5th message from server, instructing client to display “Participant X is not typing”</p></li>
+<li><p>6   =  6th message from server instructing client to display text in the conversation history window (either a turn from another client or an instruction from the server)</p></li>
+</ul>
+</div></blockquote>
+<p><strong>windownumber</strong> The Turn By Turn interface has a variant which gives each participant multiple windows. These windows can be used variously to display separate conversation history windows for each conversational partner (in multiparty interaction) or to display dynamically the contents of other participants turn-formulation windows. See, e.g. the <code class="docutils literal notranslate"><span class="pre">diet.server.ConversationController</span></code> template  <code class="docutils literal notranslate"><span class="pre">Dyadic_SingleOrSplitScreenInterface</span></code> which can be started from the main GUI.</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="clientinterfaceevents-txt-header-txt">
+<h3>clientinterfaceevents.txt_HEADER.txt<a class="headerlink" href="#clientinterfaceevents-txt-header-txt" title="Permalink to this headline">¶</a></h3>
+<p>This contains the headers for <code class="docutils literal notranslate"><span class="pre">clientinterfaceevents.txt</span></code> (see above).
+It might seem strange separating the headers like this! The reason for this departure from convention is to make it possible to have an openended set of columns that can be determined at run-time.</p>
+</div>
+<div class="section" id="clientinterfaceeventsserialized-obj">
+<h3>clientinterfaceeventsserialized.obj<a class="headerlink" href="#clientinterfaceeventsserialized-obj" title="Permalink to this headline">¶</a></h3>
+<p>This contains a list of all the MessageClientInterfaceEvent``` objects that were received from the clients. The messages are serialized using javas serialization operations.</p>
+<p>N.B. It is highly advisable to make sure that for each experiment you run, you save a version of the jar file with the experiment data. The reason is that when deserializing objects from this file, it is essential that the class definitions in the file are absolutely identical to the class definitions of the code doing the deserialization.</p>
+</div>
+<div class="section" id="debugging">
+<h3>debugging*<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>There are a few files with “debugging” or “debug” in the filename. You can ignore them. They contain text that can be useful for debugging how messages pass through the chattool.</p>
+</div>
+<div class="section" id="messages-obj">
+<h3>messages.obj<a class="headerlink" href="#messages-obj" title="Permalink to this headline">¶</a></h3>
+<p>This contains all messages that were sent and received by the server. This file contains all communication from- and to- the clients.</p>
+<p>N.B. It is highly advisable to make sure that for each experiment you run, you save a version of the jar file with the experiment data. The reason is that when deserializing objects from this file, it is essential that the class definitions in the file are absolutely identical to the class definitions of the code doing the deserialization.</p>
+</div>
+<div class="section" id="textentrykeypresses-txt">
+<h3>textentrykeypresses.txt<a class="headerlink" href="#textentrykeypresses-txt" title="Permalink to this headline">¶</a></h3>
+<p>This contains a list of all the keypresses by the clients as they formulate their turns.. Note that these are not necessarily the same as the clientinterfaceevents.</p>
+<p>For example, if a participant types an uppercase character by pressing and holding SHIFT before typing the character, this is two keypresses, but only one edit of the turnformulation window. The columns from right to left are:</p>
+<ul class="simple">
+<li><p>The name of ConversationController object</p></li>
+<li><p>The name of the subdialogue (see <code class="docutils literal notranslate"><span class="pre">diet.server.ParticipantPartnering.Subdialogue</span></code>)</p></li>
+<li><p>The Participant ID</p></li>
+<li><p>The Username of the participant</p></li>
+<li><p>The keycode of the keypress (see java documentation - this is a unique integer)</p></li>
+<li><p>The time when the message was sent by the client</p></li>
+<li><p>The time when the message was received by the server</p></li>
+<li><p>The contents of the text entry window <em>before</em> the keypress</p></li>
+</ul>
+</div>
+<div class="section" id="turnsattribvals-txt">
+<h3>turnsattribvals.txt<a class="headerlink" href="#turnsattribvals-txt" title="Permalink to this headline">¶</a></h3>
+<p>This contains the same information as turns.txt. (The only difference between turns.txt and turnsattribvals is that the code for saving <code class="docutils literal notranslate"><span class="pre">turnsattribvals</span></code> has an intermediate step that involves representing the information as attribute-value pairs. In a future update these will be saved in a JSON file)</p>
+<p>Important: The “turn headers” (i.e. the names of each column) are stored in a separate file called “turnsasattribvals.txt_HEADER.txt”.</p>
+<p>The columns are</p>
+<ul>
+<li><p><strong>ExperimentID</strong> An identifier of the type of experiment (This is automatically generated by the ConversationController object)</p></li>
+<li><p><strong>ServerTimestampOfSavingToFile</strong> This is the timestamp, recorded on the server, when the row of data was saved to the CSV file</p></li>
+<li><p><strong>SubdialogueID</strong> This identifies the “subdialogue” in the interaction. This is only relevant for experiments which involve multiparty interactions where multiple groups speak with each other simultaneously. Each group is assigned a separate subdialogueID.</p></li>
+<li><p><strong>Turntype</strong> This identifies what kind of data is stored in that particular role in the CSV file. Turns produced by participants are saved as “NormalTurn”. There are other types of data, e.g. “servermessage” - which are messages that were sent to the clients from the server.</p></li>
+<li><p><strong>SenderID</strong> This is the Participant ID of the Participant who sent the message.</p></li>
+<li><p><strong>SenderUsername</strong> This is the username of the Participant.</p></li>
+<li><p><strong>ApparentSender</strong> This is who the participant appears to be to the recipient of the message. This is only relevant for turns that are spoofed. For example, if Participant C receives a message that was created by Participant A, but appears to be sent from Participant B. (This shows who the recipient thinks sent the message)</p></li>
+<li><p><strong>Text</strong> This is the text that was sent.</p></li>
+<li><p><strong>Recipient(s)</strong> The participant(s) that received the message.</p></li>
+<li><p><strong>NoOfDocumentDeletes</strong> This is the number of characters that were deleted in the text formulation window. Usually this is the same as NoOfKeypressDeletes (below) - but some people select a large chunk of text and delete or replace it with other text - this captures these deletions.</p></li>
+<li><p><strong>NoOfKeypressDeletes</strong> This is the number of times the participant pressed the physical Delete key on the keyboard while formulating the turn.</p></li>
+<li><p><strong>ClientTimestampONSET</strong> This is the time (in msecs) of the first keypress, recorded on each client.</p></li>
+<li><p><strong>ClientTimestampENTER</strong> This is the time (in msecs), also recorded on the client, when the participant pressed ENTER and sent the message.</p></li>
+<li><p><strong>ServerTimestampOfReceiptAndOrSending</strong> This is the time (in msecs), recorded on the server, when the message from the client was received on the server.</p></li>
+<li><div class="line-block">
+<div class="line"><strong>TextAsformulatedTIMING</strong> This shows, character by character, how a turn was produced.  In order to display this information a simple notation is used that is both human-readable and can also be easily parsed by a computer script. Each keypress is prefixed with superscript representing the time that has elapsed since the previous keypress. Backspace keyspresses are represented with a left-pointing arrow. It also records whether the participant produced their message while the other was typing or not. This notation is explained below:</div>
+<div class="line"><br /></div>
+<div class="line">Suppose a participant types and sends “Hello” , this could yield:</div>
+<div class="line"><br /></div>
+<div class="line">H ¹¹²e  ⁸⁹l ¹⁸²l ³⁴⁸o  ⁶⁸²¹ENTER</div>
+<div class="line"><br /></div>
+<div class="line">This shows that “e” was typed 112 ms after the “H”. the first “l”was typed 89ms after the “e”. The second “l” was typed 182ms after the first “l”, the “o” was typed 348 msec after the “l”. Finally, it shows that the turn was sent (i.e. Enter was pressed) 6821 msecs after the “o” was typed.</div>
+<div class="line"><br /></div>
+<div class="line">Each backspace is recorded as a left-pointing arrow “←”. Suppose a participant types “dig” and then presses backspace twice, and then edits the turn to “dog”. This could yield:</div>
+<div class="line"><br /></div>
+<div class="line">⁰d ¹¹⁰o ¹⁸⁹g ¹⁸²←  ³⁴⁸←  ¹⁴⁸i ²⁸⁹g</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">The format also records the “is typing” notifications that are displayed on the participant’s screen. This makes it possible to determine whether participants start/continue/stop typing when they see their partner start/stop typing. Suppose Participant A is in the middle of typing the turn “this shape is red”. Halfway through, while typing “shape” , Participant B starts typing, which displays an “Participant B is typing” notification in Participant A’s status bar. This could yield:</div>
+<div class="line"><br /></div>
+<div class="line">⁰T ¹¹⁰h ²⁸⁹i ¹⁸²s   ³²    ³⁴⁸s  ⁸⁰h ¹¹⁰a ¹⁰⊆ ²⁸⁹p ¹⁸²e   ⁵⁸⁰⁰  ⊇ ⁶⁰⁰i  ⁵⁰⁰s  ⁴⁹⁰  ³⁰⁰r ²⁸⁹e ¹⁰⁰d  ³⁰⁰ENTER</div>
+<div class="line"><br /></div>
+<div class="line">The start of an “is typing” notification is represented with “⊆” and the end of the “is typing” notification is represented with “⊇”. Notice also, that from this representation you can see that the participant received the “is typing” notification just before typing “p”. You can also see that after finishing typing “shape”, Participant A paused. 5.8 seconds later, Participant A received a notification that Participant B had stopped typing. Then 600 msecs later, Participant A resumed, typing “i”</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">This format also records the moment when turns appear in the conversation history window. Because text-chat is asynchronous, this means that at any point, while a participant is formulating a turn, it can happen that the other person sends a turn. This is recorded by the chat-tool. Suppose Participant A is typing  “The yellow circle”, but half-way through typing “yellow”, Participant B sends their turn “now?”. This could yield:</div>
+<div class="line"><br /></div>
+<div class="line">⁰T ¹¹⁰h ²⁸⁹e  ¹⁸²   ³⁴⁸y  ⁸⁰⁰e ¹¹⁰l    ³⁰⁷【Participant1: now?】²⁸⁹l ¹⁸²o ⁵⁸w  ⁶⁰⁰  ⁵⁰⁰c  ⁴⁹⁰i  ³⁰⁰r ²⁸⁹c ¹⁰⁰l  ³⁰⁰e</div>
+<div class="line"><br /></div>
+<div class="line">This shows that 307 milliseconds after the participant typing the turn typed the second “l” of “yellow”, the participant received the turn “now?” from Participant1.</div>
+</div>
+</li>
+<li><p><strong>TextAsFormulatedLOGSPACE</strong> This prettifies the output of TextAsFormulatedTIMING. It removes the superscript numerals and replaces them with spaces (calculated logarithmically)- e.g. a gap of 100ms is one space. A gap of 1second is two spaces, a gap of 10 seconds is three spaces, a gap of 100 seconds is four spaces, etc.</p></li>
+<li><p><strong>istypingtimeout</strong> The parameter that determines how long the “is typing” indicator when a participant presses a key.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tipstricks.html" class="btn btn-neutral float-right" title="Tips &amp; tricks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="programming.html" class="btn btn-neutral float-left" title="Programming the chattool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, GJMILLS
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

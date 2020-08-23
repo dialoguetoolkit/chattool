@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Programming the chattool &mdash; chattool 5 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Data collected by the chattool" href="datacollected.html" />
+    <link rel="prev" title="Downloading and installing the toolkit" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> chattool
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Downloading and installing the toolkit</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Programming the chattool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-when-programming-the-chattool">Workflow when programming the chattool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-login-process-of-how-participants-connect-to-the-server">The login process of how participants connect to the server:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-change-the-properties-of-chat-interfaces">How to change the properties of chat interfaces</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datacollected.html">Data collected by the chattool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tipstricks.html">Tips &amp; tricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">chattool</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Programming the chattool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/programming.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="programming-the-chattool">
+<h1>Programming the chattool<a class="headerlink" href="#programming-the-chattool" title="Permalink to this headline">¶</a></h1>
+<p>The chat tool is designed so that all information from the chat clients passes through a <code class="docutils literal notranslate"><span class="pre">diet.server.ConversationController</span></code> object.  The <code class="docutils literal notranslate"><span class="pre">ConversationController</span></code> sits in the middle between all the participants.</p>
+<p>All turns, keypresses, GUI events, keyboard events and task-information (e.g. game states in a joint referential task) are sent to the ConversationController object.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">ConversationController</span></code> object receives a turn  from one of the clients, it automatically relays the turn to the other participants in the conversation.</p>
+<p>It also automatically takes care of saving the data (i.e. all keypresses), and ensures, e.g. that the participants receive “is typing” notifications.</p>
+<p>Think of the ConversationController object as a switchboard operator that controls the wiring of the switchboard. The sockets of the switchboard (for patching incoming and outgoing connections) are located in the <code class="docutils literal notranslate"><span class="pre">diet.server.Conversation.java</span></code> object.</p>
+<p>In 99% of experimental designs, you should only have to modify code in your custom subclass of <code class="docutils literal notranslate"><span class="pre">`diet.server.ConversationController`</span></code> which controls the interaction by calling code in <code class="docutils literal notranslate"><span class="pre">`diet.server.Conversation`</span></code></p>
+<div class="section" id="workflow-when-programming-the-chattool">
+<h2>Workflow when programming the chattool<a class="headerlink" href="#workflow-when-programming-the-chattool" title="Permalink to this headline">¶</a></h2>
+<p>The standard approach to creating a new experiment is to:</p>
+<ol class="arabic simple">
+<li><p>Create a subclass of <code class="docutils literal notranslate"><span class="pre">diet.server.ConversationController.DefaultConversationController</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">MynewConversationController</span></code></p></li>
+<li><p>Make sure that MyNewConversationController.showCCOnGUI() returns true. (this will display your ConversationController class in the main GUI of the chattool.</p></li>
+<li><p>Check that it runs by (select “Run” in netbeans) and then, in the launcher window of the chattool, select “MyNewConversationController” and press “Demo on local machine: Auto login”. This should start everything, including the clients.</p></li>
+<li><p>Customize the ConversationController object, e.g.</p>
+<ul class="simple">
+<li><p>modify <code class="docutils literal notranslate"><span class="pre">processChatText(...)</span></code> This method specifies what happens when a participant sends a message and it is received by the server. The default behaviour is to simply relay the message to all other participants. This method can be modified to, e.g. selectively block (shadowban) messages, or to transform messages (e.g. replace or add text), or to send entirely artificial turns. There is a large set of methods in <code class="docutils literal notranslate"><span class="pre">diet.server.Conversation&quot;</span> <span class="pre">for</span> <span class="pre">doing</span> <span class="pre">this,</span> <span class="pre">such</span> <span class="pre">as</span> <span class="pre">``diet.server.Conversation.sendArtificialTurn(...)``</span></code></p></li>
+<li><p>modify <code class="docutils literal notranslate"><span class="pre">`participantJoinedConversation(...)`</span></code> to specify what happens when a participant logs in (e.g. you could make it so that the servers sends some instructions to the participant, using e.g.  <code class="docutils literal notranslate"><span class="pre">`diet.server.Conversation.sendInstructionToParticipant(...)`</span></code></p></li>
+</ul>
+</li>
+<li><p>Test the setup locally (run as demo)</p></li>
+<li><p>Once the setup works properly, pilot the experiment on separate computers.</p></li>
+</ol>
+</div>
+<div class="section" id="the-login-process-of-how-participants-connect-to-the-server">
+<h2>The login process of how participants connect to the server:<a class="headerlink" href="#the-login-process-of-how-participants-connect-to-the-server" title="Permalink to this headline">¶</a></h2>
+<p>When a ConversationController object has been started and is waiting for a connection from a client,</p>
+<p>When a client connects to the server,</p>
+<ol class="arabic">
+<li><p>The server requests the participant ID from the participant.</p></li>
+<li><p>This participantID is routed to <code class="docutils literal notranslate"><span class="pre">requestParticipantJoinedConversation(String</span> <span class="pre">id)</span></code> in the ConversationController object. If the ID is ok, the method returns “true”. The default behaviour of the chattool is to accept all IDs - but you can put a whitelist of participant IDs here. You also might want to block participants logging in once the group size reaches a maximum.</p></li>
+<li><p>If the participantID is deemed OK, the server requests the participant username from the client.</p></li>
+<li><p>The client displays a “Please enter your username” .</p></li>
+<li><p>When the server receives the username from the client, it creates a new <code class="docutils literal notranslate"><span class="pre">diet.server.Participant</span></code> object for that Participant. This <code class="docutils literal notranslate"><span class="pre">Participant</span></code> object is then passed to the ConversationController in the <code class="docutils literal notranslate"><span class="pre">participantJoinedConversation(Participant</span> <span class="pre">p)</span></code> method.</p></li>
+<li><p>The default behaviour of <code class="docutils literal notranslate"><span class="pre">participantJoinedConversation(Participant</span> <span class="pre">p)</span></code> is to assign participants to groups of size 2. (You can change this value in <code class="docutils literal notranslate"><span class="pre">Configuration.defaultGroupSize</span></code>) and to ensure that participants who are assigned to the same group see each other’s typing notifications. (N.B These two functionalities have to be kept separate to allow “spoof” messages and “spoof” typing notifications). You can see the code that does this in the superclass <code class="docutils literal notranslate"><span class="pre">DefaultConversationController.</span> <span class="pre">participantJoinedConversation(Participant</span> <span class="pre">p)</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">participantJoinedConversationButNotAssignedToGroup</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">participantJoinedConversationButNotAssignedToGroup</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">==</span> <span class="n">Configuration</span><span class="o">.</span><span class="n">defaultGroupSize</span><span class="p">){</span>
+       <span class="n">pp</span><span class="o">.</span><span class="n">createNewSubdialogue</span><span class="p">(</span><span class="n">participantJoinedConversationButNotAssignedToGroup</span><span class="p">);</span>             <span class="n">itnt</span><span class="o">.</span><span class="n">addGroupWhoAreMutuallyInformedOfTyping</span><span class="p">(</span><span class="n">participantJoinedConversationButNotAssignedToGroup</span><span class="p">);</span>
+       <span class="n">participantJoinedConversationButNotAssignedToGroup</span><span class="o">.</span><span class="n">removeAllElements</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p>If you want to send a custom message to the participant when they login, you can edit your ConversationController’s <code class="docutils literal notranslate"><span class="pre">participantJoinedConversation()</span></code> method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">public</span> <span class="n">synchronized</span> <span class="n">void</span> <span class="n">participantJoinedConversation</span><span class="p">(</span><span class="n">final</span> <span class="n">Participant</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">super</span><span class="o">.</span><span class="n">participantJoinedConversation</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>  <span class="o">//</span><span class="n">Keep</span> <span class="n">this</span> <span class="ow">in</span> <span class="n">your</span> <span class="n">code</span> <span class="o">-</span> <span class="n">to</span> <span class="n">assign</span> <span class="n">participants</span> <span class="n">to</span> <span class="n">groups</span> <span class="ow">and</span> <span class="n">ensure</span> <span class="n">they</span> <span class="n">see</span> <span class="n">each</span> <span class="n">other</span><span class="s1">&#39;s typing notification.</span>
+
+            <span class="n">cC</span><span class="o">.</span><span class="n">sendInstructionToParticipant</span><span class="p">(</span> <span class="n">p</span><span class="p">,</span> <span class="s2">&quot;Hello and welcome to the experiment!&quot;</span><span class="p">)</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="how-to-change-the-properties-of-chat-interfaces">
+<h2>How to change the properties of chat interfaces<a class="headerlink" href="#how-to-change-the-properties-of-chat-interfaces" title="Permalink to this headline">¶</a></h2>
+<p>There are two ways of customizing the client interfaces:</p>
+<p>The easiest way is to customize  <code class="docutils literal notranslate"><span class="pre">DefaultConversationController.participantJoinedConversation(...)</span></code> method so that whenever a participant logs in, the server immediately sends instructions to the client. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">This</span> <span class="ow">is</span> <span class="n">code</span>
+<span class="n">so</span> <span class="ow">is</span> <span class="n">this</span> <span class="n">code</span>
+</pre></div>
+</div>
+<p>You can edit diet.server.Configuration and then recompile the code.</p>
+<ol class="arabic simple" start="2">
+<li><p>You can edit the <code class="docutils literal notranslate"><span class="pre">DefaultConversationController.participantJoinedConversation(...)</span></code> method so that whenever a participant logs in, the server immediately sends instructions to the client. There is a whole set of</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="datacollected.html" class="btn btn-neutral float-right" title="Data collected by the chattool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral float-left" title="Downloading and installing the toolkit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, GJMILLS
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
