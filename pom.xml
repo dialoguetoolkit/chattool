@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>lx</groupId>
+    <artifactId>chattoolTG</artifactId>
+    <version>5.0</version>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots</artifactId>
+            <version>4.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework </groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.2.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
+        </dependency>
+        <dependency>
+           <groupId>org.apache.poi</groupId>
+           <artifactId>poi-ooxml</artifactId>
+           <version>3.17</version>
+         </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+       <build>
+        <plugins>
+            <plugin>
+    <artifactId>maven-source-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>source-jar</id>
+            <goals>
+                <goal>jar</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                <finalName>chattoolTG-SOURCES</finalName>
+                <attach>false</attach>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+            
+            
+            
+            
+        <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+            <execution>
+                <phase>install</phase>
+                <goals>
+                    <goal>copy-dependencies</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+    <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.0</version>
+        <configuration>
+            <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                    <classpathPrefix>lib/</classpathPrefix>
+                    <mainClass>diet.server.experimentmanager.EMStarter</mainClass>
+                </manifest>
+            </archive>
+        </configuration>
+    </plugin>
+       <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>3.1.1</version>
+
+            <configuration>
+                <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+                <archive>
+                  <manifest>
+                     <mainClass>diet.server.experimentmanager.EMStarter</mainClass>
+                  </manifest>
+                </archive>
+            </configuration>
+
+            <executions>
+                <execution>
+                    <id>make-assembly</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+
+        </plugin>
+    </plugins>
+    <resources>
+        <resource>
+            <directory>experimentresources/mazegame</directory>
+            <includes>
+              <include>**/*.*</include>
+              <include>**/*.*</include>
+           </includes>
+        </resource>
+        <resource>
+            <targetPath>facetask/lists</targetPath>
+            <directory>experimentresources/facetask/lists</directory>
+            <includes>
+              <include>**/*.*</include>
+              <include>**/*.*</include>
+           </includes>
+        </resource>
+        <resource>
+            <targetPath>facetask/stimuli</targetPath>
+            <directory>experimentresources/facetask/stimuli</directory>
+            <includes>
+              <include>**/*.*</include>
+              <include>**/*.*</include>
+           </includes>
+        </resource>
+        <resource>
+            <targetPath>tangramtask</targetPath>
+            <directory>experimentresources/tangramtask</directory>
+            <includes>
+              <include>**/*.*</include>
+              <include>**/*.*</include>
+           </includes>
+        </resource>
+        
+    </resources>
+    
+    </build>    
+</project>

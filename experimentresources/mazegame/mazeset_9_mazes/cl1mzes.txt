@@ -1,0 +1,240 @@
+MAZE No: 0
+[ -3 0 ]Link North Link South 
+[ -3 -1 ]Link North is a gate. Link East Link South 
+[ -3 -2 ]Link South is a gate. Link West 
+[ -4 -2 ]Link East Link South Link West 
+[ -4 -1 ]Link North 
+[ -2 -1 ]Link North Link South Link West 
+[ -2 -2 ]Link East Link South 
+[ -1 -2 ]Link North Link East Link South Link West 
+[ -1 -1 ]Link North Link South is a gate. 
+[ -1 -3 ]Link South 
+[ -1 0 ]SWITCH Link North is a gate. 
+[ 0 -2 ]Link East Link West 
+[ 1 -2 ]Link North Link South Link West 
+[ 1 -1 ]Link North Link South Link West 
+[ 0 -1 ]Link East Link South 
+[ 0 0 ]BEGIN Link North Link South 
+[ -5 -2 ]Link North Link East Link South 
+[ -2 0 ]Link North 
+[ -5 -1 ]Link North Link South 
+[ -5 0 ]FINISH Link North Link South 
+[ -5 1 ]SWITCH Link North 
+[ 1 0 ]Link North 
+[ 1 -3 ]Link North Link South 
+[ -3 1 ]Link North 
+[ -5 -3 ]SWITCH Link North Link South 
+[ -5 -4 ]Link South 
+[ 0 1 ]Link North 
+[ 1 -4 ]SWITCH Link North Link South 
+[ 1 -5 ]Link South 
+MAZE No: 1
+[ -1 -2 ]Link North 
+[ -1 -3 ]Link North Link East Link South 
+[ 0 -3 ]Link South Link West 
+[ 0 -2 ]SWITCH Link North Link South 
+[ -1 -4 ]Link South Link West 
+[ -2 -4 ]Link East Link West 
+[ 0 -1 ]Link North Link South is a gate. 
+[ 0 0 ]BEGIN Link North is a gate. Link West 
+[ -1 0 ]Link East Link South 
+[ -1 1 ]Link North 
+[ -3 -4 ]Link East Link South Link West 
+[ -3 -3 ]SWITCH Link North 
+[ -4 -4 ]Link East Link South Link West 
+[ -4 -3 ]Link North Link West 
+[ -5 -3 ]Link East Link South 
+[ -5 -2 ]Link North 
+[ -5 -4 ]Link North is a gate. Link East Link West 
+[ -5 -5 ]FINISH Link South is a gate. 
+[ -6 -4 ]Link East 
+MAZE No: 2
+[ 1 -3 ]Link East Link West 
+[ 2 -3 ]Link North Link East Link South is a gate. Link West 
+[ 2 -2 ]Link North is a gate. Link East Link South Link West 
+[ 2 -1 ]Link North Link East Link West 
+[ 3 -2 ]Link West 
+[ 3 -3 ]Link North Link East Link West 
+[ 3 -4 ]Link East Link South 
+[ 1 -1 ]Link East Link South Link West 
+[ 1 0 ]Link North Link East Link West 
+[ 2 0 ]Link East is a gate. Link West 
+[ 2 -4 ]Link North Link South 
+[ 2 -5 ]FINISH Link East Link South Link West 
+[ 3 -5 ]Link North Link East Link West 
+[ 3 -6 ]Link East Link South Link West 
+[ 4 -4 ]Link West 
+[ 0 -3 ]Link East 
+[ 2 -6 ]Link East Link West 
+[ 1 -6 ]SWITCH Link East Link West is a gate. 
+[ 3 -1 ]Link East Link West 
+[ 4 -1 ]Link West 
+[ 4 -3 ]Link West 
+[ 1 -2 ]Link East Link West 
+[ 0 -2 ]SWITCH Link East Link West 
+[ 0 0 ]BEGIN Link East 
+[ 0 -6 ]Link East is a gate. Link West 
+[ -1 -6 ]Link East 
+[ -1 -2 ]Link East Link West 
+[ 1 -5 ]Link East Link West 
+[ 0 -1 ]Link East 
+[ 0 -5 ]Link East Link West 
+[ -1 -5 ]Link East 
+[ 4 -5 ]Link West 
+[ 3 0 ]Link West is a gate. 
+[ 4 -6 ]Link West 
+[ -2 -2 ]Link East 
+MAZE No: 3
+[ -3 0 ]Link North Link South 
+[ -3 -1 ]Link North Link East Link South 
+[ -2 -1 ]Link North Link East Link West 
+[ -1 -1 ]Link East is a gate. Link West 
+[ 0 -1 ]Link East Link West is a gate. 
+[ 1 -1 ]Link North is a gate. Link East Link South Link West 
+[ 2 -1 ]Link West 
+[ -3 1 ]Link North Link South 
+[ 1 -2 ]Link South is a gate. 
+[ 1 0 ]Link North Link South Link West 
+[ 0 0 ]BEGIN Link East Link West 
+[ -1 0 ]Link East Link South 
+[ -1 1 ]Link North Link South 
+[ -1 2 ]Link North 
+[ -3 2 ]Link North Link West 
+[ -4 2 ]Link East Link South 
+[ -2 -2 ]Link North Link South 
+[ -2 -3 ]Link South 
+[ -3 -2 ]Link North Link South 
+[ -3 -3 ]FINISH Link South 
+[ 1 1 ]Link North 
+[ -4 3 ]SWITCH Link North 
+MAZE No: 4
+[ 3 -1 ]Link South Link West is a gate. 
+[ 2 -1 ]SWITCH Link East is a gate. Link West 
+[ 3 0 ]Link North Link South Link West 
+[ 2 0 ]Link East Link South Link West 
+[ 1 0 ]Link East Link West is a gate. 
+[ 3 1 ]Link North 
+[ 0 0 ]BEGIN Link North Link East is a gate. Link South Link West 
+[ -1 0 ]Link East Link South Link West 
+[ -2 0 ]Link North Link East 
+[ -2 -1 ]Link North Link East Link South 
+[ -1 -1 ]Link West 
+[ 1 -1 ]Link North Link East 
+[ 1 -2 ]Link East Link South 
+[ 2 -2 ]FINISH Link West 
+[ 0 1 ]Link North Link East 
+[ 1 1 ]Link South Link West 
+[ 0 -1 ]Link North Link South 
+[ 0 -2 ]Link South 
+[ 2 1 ]Link North Link South 
+[ 2 2 ]Link North Link East 
+[ 3 2 ]SWITCH Link West 
+[ -2 -2 ]Link East Link South Link West 
+[ -1 -2 ]Link West 
+[ -1 1 ]Link North Link South 
+[ -1 2 ]SWITCH Link North Link East is a gate. 
+[ 0 2 ]Link West is a gate. 
+[ 1 2 ]Link North 
+[ -3 -2 ]Link North Link East 
+[ -3 -3 ]Link North Link South 
+[ -3 -4 ]Link South 
+MAZE No: 5
+[ -1 0 ]Link East Link South Link West 
+[ -1 1 ]Link North Link South Link West 
+[ -1 2 ]Link North Link East Link South is a gate. 
+[ -1 3 ]Link North is a gate. Link East Link South Link West 
+[ 0 3 ]Link East Link South Link West 
+[ 0 4 ]Link North Link East 
+[ -2 1 ]Link East Link South 
+[ -2 2 ]SWITCH Link North 
+[ 0 2 ]Link North Link East Link West 
+[ 0 1 ]Link South 
+[ 1 3 ]Link West 
+[ 1 2 ]Link North Link East Link West 
+[ 2 2 ]Link North Link West 
+[ 2 1 ]Link North Link South 
+[ -1 4 ]Link North Link South is a gate. Link West 
+[ 1 4 ]Link East is a gate. Link West 
+[ 2 4 ]FINISH Link East Link West is a gate. 
+[ 3 4 ]Link East Link West 
+[ 2 0 ]Link North Link East Link South 
+[ 1 1 ]Link North Link South 
+[ 1 0 ]Link South 
+[ 2 -1 ]SWITCH Link South 
+[ -1 5 ]Link North is a gate. Link East 
+[ 0 5 ]Link East Link West 
+[ 1 5 ]Link West 
+[ 0 0 ]BEGIN Link West 
+[ -2 4 ]Link East 
+[ 3 0 ]Link West 
+[ -2 3 ]Link East 
+[ -2 0 ]Link East 
+[ 4 4 ]Link West 
+MAZE No: 6
+[ 3 -1 ]Link East Link West 
+[ 4 -1 ]Link North Link East Link West 
+[ 5 -1 ]Link East Link South Link West 
+[ 6 -1 ]Link West 
+[ 5 0 ]Link North Link East Link South Link West 
+[ 5 1 ]Link North 
+[ 2 -1 ]Link East Link South Link West is a gate. 
+[ 2 0 ]Link North 
+[ 6 0 ]Link South is a gate. Link West 
+[ 6 1 ]FINISH Link North is a gate. 
+[ 4 0 ]Link East 
+[ 1 -1 ]Link East is a gate. Link West 
+[ 0 -1 ]Link North Link East Link South 
+[ 0 -2 ]Link North Link South 
+[ 0 -3 ]SWITCH Link North Link South 
+[ 4 -2 ]Link South 
+[ 0 0 ]BEGIN Link North Link South 
+[ 0 1 ]Link North 
+[ 0 -4 ]Link North Link South 
+[ 0 -5 ]Link South 
+MAZE No: 7
+[ -1 2 ]Link North Link East Link South is a gate. 
+[ -1 3 ]Link North is a gate. Link East Link West 
+[ -2 3 ]Link East Link South Link West 
+[ -2 4 ]FINISH Link North Link West 
+[ -3 4 ]Link East Link South 
+[ -3 5 ]Link North Link East Link West 
+[ -2 5 ]SWITCH Link West 
+[ -1 1 ]Link East Link South 
+[ 0 1 ]Link North Link East Link West 
+[ 0 0 ]BEGIN Link North Link South 
+[ 0 -1 ]Link South Link West 
+[ 0 3 ]Link East Link West 
+[ 1 3 ]Link East Link West 
+[ 2 3 ]Link West 
+[ -3 3 ]Link East 
+[ 0 2 ]Link East Link West 
+[ 1 2 ]SWITCH Link West 
+[ 1 1 ]Link West 
+[ -1 -1 ]Link East 
+[ -4 5 ]Link East 
+MAZE No: 8
+[ -1 2 ]Link North Link East Link South 
+[ -1 3 ]Link North Link South is a gate. Link West 
+[ 0 2 ]Link North Link East Link West 
+[ -1 4 ]Link North is a gate. Link East Link South Link West 
+[ 0 4 ]Link North Link South Link West 
+[ 0 3 ]Link South 
+[ 1 2 ]Link North Link South Link West 
+[ 1 3 ]SWITCH Link North Link East 
+[ 2 3 ]Link East Link West 
+[ 3 3 ]Link South Link West 
+[ 3 4 ]Link North 
+[ -2 4 ]Link East Link West 
+[ -2 3 ]Link East 
+[ 0 5 ]SWITCH Link North Link South 
+[ -1 5 ]Link North Link West 
+[ -2 5 ]FINISH Link East 
+[ 0 1 ]Link North Link South 
+[ 0 0 ]BEGIN Link South 
+[ -3 4 ]Link North Link East 
+[ -3 3 ]Link North Link South 
+[ -3 2 ]Link South 
+[ 1 1 ]Link North Link South 
+[ -1 1 ]Link South 
+[ 1 0 ]Link South 
+[ 0 6 ]Link North 

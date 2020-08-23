@@ -1,0 +1,2 @@
+Images are from www.whichfaceisreal.com
+Which Face is Real has been developed by Jevin West and Carl Bergstrom at the University of Washington as part of the Calling Bullshit project. All images are either computer-generated from thispersondoesnotexist.com using the StyleGAN software, or real photographs from the FFHQ dataset of Creative Commons and public domain images. License rights notwithstanding, we will gladly respect any requests to remove specific images; please send the URL of the results pages showing the image in question. 

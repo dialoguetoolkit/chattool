@@ -1,0 +1,7 @@
+P1 IMAGE            ¦P2 IMAGE             ¦MATCHER, 1=P1, 2=P2, B=BOTH ¦BUTTONS DISPLAYED ¦CORRECT ANSWER
+rsb01resized.jpg    ¦rsb04resized.jpg     ¦B                           ¦S,D               ¦D
+rsb02resized.jpg    ¦rsb03resized.jpg     ¦B                           ¦S,D               ¦D
+rsb06resized.jpg    ¦rsb06resized.jpg     ¦B                           ¦S,D               ¦S
+rsb07resized.jpg    ¦rsb07resized.jpg     ¦B                           ¦S,D               ¦S
+rsb08resized.jpg    ¦rsb08resized.jpg     ¦B                           ¦S,D               ¦S
+rsb09resized.jpg    ¦rsb10resized.jpg     ¦B                           ¦S,D               ¦D

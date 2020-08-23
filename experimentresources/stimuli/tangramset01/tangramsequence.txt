@@ -1,0 +1,9 @@
+P1 IMAGE   ¦P2 IMAGE         ¦MATCHER, 1=P1, 2=P2, B=BOTH ¦OPTIONS           ¦CORRECT ANSWER   ¦  P1TEXT                                              ¦ P2TEXT  
+set0.png   ¦D4_E_2.png       ¦1                           ¦1,2,3,4,5,6,7,8   ¦5                ¦ Identify which shape your partner is describing      ¦ Describe the highlighted figure to your partner  
+D6_F_4.png ¦set4.png         ¦2                           ¦1,2,3,4,5,6,7,8   ¦4                ¦ Describe the highlighted figure to your partner      ¦ Identify which shape your partner is describing
+D0_A_0.png ¦set0.png         ¦2                           ¦1,2,3,4,5,6,7,8   ¦1                ¦ Describe the highlighted figure to your partner      ¦ Identify which shape your partner is describing
+set1.png   ¦D0_B_1.png       ¦1                           ¦1,2,3,4,5,6,7,8   ¦5                ¦ Identify which shape your partner is describing      ¦ Describe the highlighted figure to your partner  
+D0_C_2.png ¦set2.png         ¦2                           ¦1,2,3,4,5,6,7,8   ¦1                ¦ Describe the highlighted figure to your partner      ¦ Identify which shape your partner is describing
+D0_A_0.png ¦set0.png         ¦2                           ¦1,2,3,4,5,6,7,8   ¦1                ¦ Describe the highlighted figure to your partner      ¦ Identify which shape your partner is describing
+set1.png   ¦D0_B_1.png       ¦1                           ¦1,2,3,4,5,6,7,8   ¦5                ¦ Identify which shape your partner is describing      ¦ Describe the highlighted figure to your partner  
+D0_C_2.png ¦set2.png         ¦2                           ¦1,2,3,4,5,6,7,8   ¦1                ¦ Describe the highlighted figure to your partner      ¦ Identify which shape your partner is describing
