@@ -1,3 +1,11 @@
+
+#About
+
+[a relative link](./docs/contents.html)
+
+
+
+
 # About
 
 The toolkit is an instant-messaging platform for conducting research on dialogue. The software consists of a chat server and chat clients, written in Java.
