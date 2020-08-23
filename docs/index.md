@@ -9,7 +9,7 @@ All participants' turns are routed via the server which can be scripted to detec
 
 The toolkit provides an extensive API for scripting these manipulations, as well as a constantly expanding library of experimental setups that can be reconfigured.
 
-# Features.
+# Features
 
 ## Recorded data
 
