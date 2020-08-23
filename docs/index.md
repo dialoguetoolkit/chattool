@@ -74,9 +74,9 @@ The latest version of the toolkit is available as a <a href = "https://github.co
 
 There are two sets of documentation:
 
-The  <a href = "/docs/usermanual/usermanual.pdf">user manual</A> explains how to use the software
+The [usermanual]({{ site.url }}/docs/usermanual/usermanual.pdf) explains how to use the software.
 
-If you want to program, the documentation is at <a href = "https://dialoguetoolkit.github.io/docs/">https://dialoguetoolkit.github.io/docs</a>
+The documentation for programming the chattool is at  <a href = "https://dialoguetoolkit.github.io/docs/">https://dialoguetoolkit.github.io/docs</a>
 
 
 
