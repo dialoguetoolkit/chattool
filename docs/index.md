@@ -69,7 +69,7 @@ The real strength of this toolkit is in manipulating the interaction. Since all 
 
 The latest version of the toolkit is available as a <a href = "https://github.com/dialoguetoolkit/chattool/archive/v5.0.zip"> <b>zip file </b> </a>
 
-To run it:
+To run the software:
 
 - On windows:
   1. Download the zip file of the most recent release
