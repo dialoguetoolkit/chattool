@@ -13,7 +13,7 @@ Some of the new features are:
 
 The programming documentation is at:   https://dialoguetoolkit.github.io/docs/
 
-The usermanual (non-programming) is at: [Contribution guidelines for this project](docs/docs/usermanual/usermanual.pdf)
+The usermanual (non-programming) is at: [Contribution guidelines for this project](docs/usermanual/usermanual.pdf)
 
 
 # Getting started
