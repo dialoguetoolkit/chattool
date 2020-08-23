@@ -2,5 +2,5 @@ theme: jekyll-theme-minimal
 title: Dialogue Experimental Toolkit (DiET)
 description: A toolkit for carrying out experiments on mediated interaction
 
-logo: tng.png
+logo: /tng.png
 show_downloads: true
