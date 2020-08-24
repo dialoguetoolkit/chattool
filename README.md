@@ -30,6 +30,8 @@ The server will listen for incoming connections on port 20000
 
 To change this, use ```java -jar "chattool.jar SERVER  %PORTNUMBER%```  where %PORTNUMBER% is the portnumber
 
+it is advisable to read through the "quick start" sections in the user manual before programming the chattool!
+
 
 ## Starting the client
 
