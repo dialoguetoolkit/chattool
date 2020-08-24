@@ -22,7 +22,7 @@ The project should run "out of the box" in netbeans.
 
 The project contains a pom.xml file that contains all the dependencies
 
-# Starting the server
+## Starting the server
 
 To start the server, use ```java -jar "chattool.jar SERVER``` 
 
