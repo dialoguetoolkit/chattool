@@ -9,7 +9,20 @@ All participants' turns are routed via the server which can be scripted to detec
 
 The toolkit provides an extensive API for scripting these manipulations, as well as a constantly expanding library of experimental setups that can be reconfigured.
 
-# Features.
+# Features
+
+## New version (August 2020)
+
+Some of the new features are:
+
+- **Telegram** The chattool interfaces with the Telegram messenger service (https://telegram.org/). Participants can now use the Telegram messenger app on their mobile phone to connect to the chattool.
+- **Remote admin** The experimenter can supervise experiments remotely from their mobile phone
+- **Customizable referential tasks** It is now possible to build new referential tasks, without having to program any code
+- **Scripting interventions** It is now possible to specify experiments which transform participants' turns, without the experimenter having to program any code
+- **WYSIWYG Interface** The chattool includes a new interface character-by-character interface (What You See is What You Get) which is suitable for investigating incremental language processes
+- **Linguistic communities** Participants can be dynamically (re)assigned to different groups, allowing the investigation of community topologies on linguistic conventions
+- **Simultaneous interactions** The chat-tool can be used to conduct experiments with hundreds of groups participating simultaneously
+
 
 ## Recorded data
 
@@ -67,17 +80,42 @@ The real strength of this toolkit is in manipulating the interaction. Since all 
 
 # Download and run the toolkit
 
-The latest version of the toolkit is available as a <a href = "https://github.com/dialoguetoolkit/chattool/releases/download/4.6.2/chattool_runme.zip"> <b>zip file </b> </a>
+The latest version of the toolkit is available as a <a href = "https://github.com/dialoguetoolkit/chattool/archive/v5.0.zip"> <b>zip file </b> </a>
+
+To run the software:
+
+- On windows:
+  1. Download the zip file of the most recent release
+  2. Unzip it
+  3. Run **runme.bat"**
+  
+- On mac / linux
+  1. Download the zip file of the most recent release
+  2. Unzip it
+  3. Double-click on "chattool.jar"
+  4. If double-clicking doesn't work, use a terminal window to type **java -jar "chattool.jar"**
+  5. If the terminal window doesn't work, you need to install java and then try steps 3 or 4 again!
 
  
 # Documentation
 
-<a href = "./docs/gettingstarted">Getting started</A>
+There are two sets of documentation:
+
+The <a href = "https://github.com/dialoguetoolkit/chattool/blob/master/docs/usermanual/usermanual.pdf">user manual</a> explains how to use the software.
+
+
+The documentation for programming the chattool is at  <a href = "https://dialoguetoolkit.github.io/docs/">https://dialoguetoolkit.github.io/docs</a>
+
 
 
 # Development 
 
 The source code of the project is hosted at  <a href = "https://github.com/dialoguetoolkit/chattool">https://github.com/dialoguetoolkit/chattool</a>. 
+
+# Contact
+
+If you have any questions, requests, or would like to contribute - please email g.j.mills@rug.nl
+
 
 # Publications
 
