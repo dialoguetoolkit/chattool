@@ -20,7 +20,6 @@ There is also a [usermanual](docs/usermanual/usermanual.pdf) on how to use the s
 
 The project should run "out of the box" in netbeans.
 
-The project contains a pom.xml file that links to all the required libraries.
-
+The project contains a pom.xml file that contains all the dependencies
 
 
