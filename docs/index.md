@@ -68,7 +68,7 @@ The real strength of this toolkit is in manipulating the interaction. Since all 
 * **Procedural coordination**
   * Manipulation of the timing and sequencing of turns.
     <p>
- * Introducing artificial hesitations//disfluencies (e.g. "umm", "uhh")
+  * Introducing artificial hesitations//disfluencies (e.g. "umm", "uhh")
  
 * **Group-membership and identity:**
   * Manipulation of participatory status (e.g overhearer vs. bystander).
