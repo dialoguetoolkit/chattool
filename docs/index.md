@@ -87,7 +87,7 @@ To run the software:
 - On windows:
   1. Download the zip file of the most recent release
   2. Unzip it
-  3. Run **runme.bat"**
+  3. Run **runme.bat**
   
 - On mac / linux
   1. Download the zip file of the most recent release
