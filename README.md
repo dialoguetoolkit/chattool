@@ -1,6 +1,6 @@
 # About
 
-This is the new (August 2020) version of the chattool.
+This is the new (September 2020) version of the chattool.
 
 Some of the new features are:
 
