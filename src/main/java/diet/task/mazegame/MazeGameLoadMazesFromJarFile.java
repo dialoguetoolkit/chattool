@@ -72,7 +72,10 @@ public class MazeGameLoadMazesFromJarFile {
     }
     
     public String  getMazesFromJarASTEXT(String name){
-        InputStream inp = this.getClass().getResourceAsStream(name);    
+        
+        //Because the files are saved in a "mazegame" folder (see pom.xml)
+        InputStream inp = this.getClass().getResourceAsStream("/mazegame"+ name);    
+        
         
        try {  
          
