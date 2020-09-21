@@ -1,6 +1,6 @@
 # About
 
-This is the new (August 2020) version of the chattool.
+This is the new (September 2020) version of the chattool.
 
 Some of the new features are:
 
@@ -15,12 +15,32 @@ The programming documentation is at:   https://dialoguetoolkit.github.io/docs/
 
 There is also a [usermanual](docs/usermanual/usermanual.pdf) on how to use the software (non-progrmamming)
 
+If you have any questions, please email g.j.mills@rug.nl
 
 # Getting started
 
 The project should run "out of the box" in netbeans.
 
-The project contains a pom.xml file that links to all the required libraries.
+The project contains a pom.xml file that contains all the dependencies
+
+## Starting the server
+
+To start the server, use ```java -jar "chattool.jar SERVER``` 
+
+The server will listen for incoming connections on port 20000
+
+To change this, use ```java -jar "chattool.jar SERVER  %PORTNUMBER%```  where %PORTNUMBER% is the portnumber
+
+it is advisable to read through the "quick start" sections in the user manual before programming the chattool!
+
+
+## Starting the client
+
+To start a client from the commandline you need to specify the IP address and port number to connect to
+
+```java -jar "chattool.jar" CLIENT localhost 20000```
+
+It is also possible to start clients (locally) from the GUI by selecting the button "Additional Client" 
 
 
 
