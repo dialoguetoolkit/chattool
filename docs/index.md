@@ -121,7 +121,9 @@ If you have any questions, requests, or would like to contribute - please email 
 
 <p>Mills, G. J. and Healey, P. G. T. (submitted) <a href = "http://homepages.inf.ed.ac.uk/gmills/MillsHealey2013Submission.pdf"><B>A dialogue experimentation toolkit.</B></A>
  
-<p>Nölle, J., Fusaroli, R., Mills, G., & Tylén, K. (2019). Language as shaped by the environment: linguistic construal in a collaborative spatial task.</p>
+ <p> Maraev, V., Mazzocconi, C., Mills, G. Howes, G. (2020)  <a href = "https://biecoll.ub.uni-bielefeld.de/index.php/lw2020/article/view/928">“LOL what?”: Empirical study of laughter in chat based dialogues</a>. Laughter and Other Non-Verbal Vocalisations Workshop 2020, Bielefeld.
+ 
+<p>Nölle, J., Fusaroli, R., Mills, G., & Tylén, K. (2020). Language as shaped by the environment: linguistic construal in a collaborative spatial task.</p>
  
 <p>Castillo, L., Smith, K., & Branigan, H. P. (2019). Interaction Promotes the Adaptation of Referential Conventions to the Communicative Context. Cognitive science, 43(8), e12780. </p>
  
