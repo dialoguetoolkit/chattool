@@ -23,7 +23,7 @@ If you have any questions, please email g.j.mills@rug.nl
 
 The project should run "out of the box" in netbeans.
 
-The project contains a pom.xml file that contains all the dependencies
+The project contains a pom.xml file that contains a list of all the dependencies
 
 ## Starting the server
 
