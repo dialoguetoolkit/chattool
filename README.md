@@ -21,7 +21,7 @@ If you have any questions, please email g.j.mills@rug.nl
 
 # Getting started
 
-The project should run "out of the box" in netbeans.
+The project should run "out of the box" in netbeans (as a Maven project).
 
 The project contains a pom.xml file that contains a list of all the dependencies
 
