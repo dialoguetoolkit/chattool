@@ -37,7 +37,7 @@ The chat tool includes a set of dialogue tasks, including:
 
 * The <a href =    "https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/toward-a-mechanistic-psychology-of-dialogue/83442BA495E0D5F81BDB615E4109DBD2" >maze game </A>
 * The <a href = "https://pdfs.semanticscholar.org/dd2b/dd2c4df589cc3be1f4bfab6c42d8a9dc6609.pdf">tangram task </A> (which can be adapted to most other joint reference tasks)
-* The <a href = "https://scholar.google.nl/citations?user=eIghKWMAAAAJ&hl=en&oi=sra"> confidence task </A>
+* The <a href = "http://pure.au.dk/portal/files/47690659/psychological_science_2012_fusaroli_0956797612436816.pdf"> confidence task </A>
 <p></p> 
 
 Other tasks can easily be programmed in java
