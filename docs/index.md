@@ -192,7 +192,7 @@ If you have any questions, requests, or would like to contribute - please email 
 <P>Mills, G. J. (2007) <B>Semantic co-ordination in dialogue: the role of direct interaction.</B>  PhD Thesis. </P>
 
 
-<p>Mills, G.J. and Healey, P. G. T. (2006) <A HREF = "./publications/MillsHealey_2006_Clarification.pdf"><B>Clarifying Spatial Descriptions: Local and Global Effects on Semantic Co-ordination</B></A> , In Proceedings of the 10th Workshop on the Semantics and Pragmatics of Dialogue. Potsdam. Germany.</P>
+<p>Mills, G.J. and Healey, P. G. T. (2006) <A HREF = "https://publishup.uni-potsdam.de/opus4-ubp/frontdoor/deliver/index/docId/923/file/mills_haley.pdf"><B>Clarifying Spatial Descriptions: Local and Global Effects on Semantic Co-ordination</B></A> , In Proceedings of the 10th Workshop on the Semantics and Pragmatics of Dialogue. Potsdam. Germany.</P>
 
 <p>Healey, P.G.T. and Mills, G.J. (2006) <B><A HREF = "http://csjarchive.cogsci.rpi.edu/Proceedings/2006/docs/p1470.pdf">Participation, Precedence and Co-ordination in Dialogue.</A></B> In Proceedings of the 28th Annual Conference of the  Science Society. Vancouver. Canada.</p>
 
