@@ -147,7 +147,7 @@ If you have any questions, requests, or would like to contribute - please email 
 
 <p>Concannon, S. (2017). <b>Taking a stance: experimenting with deliberation in dialogue </b>  PhD Thesis, Queen Mary, University of London. </p>
 
-<p>Concannon, S., Healey, P. G., & Purver, M. (2015). <a href = "./publications/concannon-et-al15semdialexp.pdf"><b>Shifting Opinions: An Experiment on Agreement and Disagreement in Dialogue</b></a> SEMDIAL 2015 goDIAL, 15.</p>
+<p>Concannon, S., Healey, P. G., & Purver, M. (2015). <a href = "http://www.eecs.qmul.ac.uk/~mpurver/papers/concannon-et-al15semdialexp.pdf"><b>Shifting Opinions: An Experiment on Agreement and Disagreement in Dialogue</b></a> SEMDIAL 2015 goDIAL, 15.</p>
          
 <p>Nolle, Jonas, Kristian Tylen, and Gregory Mills. (2015) "Environmental affordances shape linguistic coordination in the maze game." </p>
          
@@ -157,13 +157,13 @@ If you have any questions, requests, or would like to contribute - please email 
           
 <p>Mills, G. J. (2014) <a href = "http://dx.doi.org/10.1016/j.newideapsych.2013.03.006"><B>Dialogue in joint activity: complementarity, convergence, conventionalization</B></A> New Ideas in Psychology.</p>
 
-<P>Mills,  G. J.  (2012)<B> Clarifying reference and plans in dialogue</B> . Fifth International Conference of the German Cognitive Linguistics Association. University of Freiburg 10-12 October. <A HREF = "./publications/Mills2013Intentions.pdf"><b>Poster</b></A></P>
+<P>Mills,  G. J.  (2012)<B> Clarifying reference and plans in dialogue</B> . Fifth International Conference of the German Cognitive Linguistics Association. University of Freiburg 10-12 October. </P>
 
 <P>Christine Howes. (2012) <B><A HREF = "https://qmro.qmul.ac.uk/jspui/handle/123456789/2486"> Coordination in dialogue: Using compound contributions to join a party</A></B>. PhD thesis, Queen Mary University of London, 2012. </P> 
          
 <P> Mills, G.J.  (2012) <B> Making and breaking procedural conventions in dialogue</B> . Poster presented at Annual meeting of the cognitive science society (CogSci), Kyoto</P>
 
-<P> Davidenko, N. and Mills G. J.  (2012)<B> <A HREF ="./publications/davidenkoMills2012-Facecomms.pdf"> Describing faces: Conventionalizing ontologies through dialogic interaction</A></B> . Poster presented at Annual meeting of the cognitive science society (CogSci), Kyoto</P>
+<P> Davidenko, N. and Mills G. J.  (2012)<B> Describing faces: Conventionalizing ontologies through dialogic interaction</A></B> . Poster presented at Annual meeting of the cognitive science society (CogSci), Kyoto</P>
 
 <P>Christine Howes, Patrick G. T. Healey, Matthew Purver, and Arash Eshghi. (2012) <B><A HREF= "http://www.eecs.qmul.ac.uk/~mpurver/papers/howes-et-al12amlap.pdf"> Finishing each other's. . . responding to incomplete contributions in dialogue</A></B>. In Architectures and Mechanisms for Language Processing, Riva del Garda, 2012. </P>
 
@@ -171,15 +171,15 @@ If you have any questions, requests, or would like to contribute - please email 
 
 <P>Christine Howes, Patrick G. T. Healey, Matthew Purver, and Arash Eshghi. (2012)<B><A HREF = "http://mindmodeling.org/cogsci2012/papers/0094/paper0094.pdf"> Finishing each other's. . . responding to incomplete contributions in dialogue</A>.</B> In Proceedings of the 32nd Annual Conference of the Cognitive Science Society, Sapporo, 2012. </P>
 
-<p>Mills, G. J. (2011) <a href = "./publications/Mills_2011_Procedural.pdf"><B>The emergence of procedural conventions in dialogue</B></A> In Proceedings of the 33rd Annual Conference of the Cognitive Science Society. Boston. USA</P>
+<p>Mills, G. J. (2011) <a href = "https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.208.5281&rep=rep1&type=pdf"><B>The emergence of procedural conventions in dialogue</B></A> In Proceedings of the 33rd Annual Conference of the Cognitive Science Society. Boston. USA</P>
 
-<p>Howes, C. Purver, M., Healey, P. G.T., Mills, G. (2011)<A HREF = "./publications/d&d2011a.pdf"><B> On Incrementality in Dialogue: Evidence from Compound Contributions</B></A> Dialogue and Discourse. Vol 2, No 1. Special Issue on Incremental Processing in Dialogue.</P>
+<p>Howes, C. Purver, M., Healey, P. G.T., Mills, G. (2011)<B> <A HREF="http://cogsci.eecs.qmul.ac.uk/diet/publications/d&d2011a.pdf">   On Incrementality in Dialogue: Evidence from Compound Contributions</A></B> Dialogue and Discourse. Vol 2, No 1. Special Issue on Incremental Processing in Dialogue.</P>
 
-<p>Gregoromichelaki, E., Kempson, R., Purver, M., Mills, G., Cann, R. (2011)<A HREF = "./publications/d&d2011b.pdf"> <B>Incrementality and intention-recognition in utterance processing </B></A>Vol 2, No 1. Special Issue on Incremental Processing in Dialogue.</p>
+<p>Gregoromichelaki, E., Kempson, R., Purver, M., Mills, G., Cann, R. (2011)<A HREF = "https://journals.linguisticsociety.org/elanguage/dad/article/view/363.html"> <B>Incrementality and intention-recognition in utterance processing </B></A>Vol 2, No 1. Special Issue on Incremental Processing in Dialogue.</p>
 
 <p>Patrick G. T. Healey, Arash Eshghi, Christine Howes, and Matthew Purver.(2011) <B><A HREF ="http://www.eecs.qmul.ac.uk/~mpurver/papers/healey-et-al11std.pdf">Making a contribution: Processing clarification requests in dialogue</A></B>. In Proceedings of the 21st Annual Meeting of the Society for Text and Discourse, Poitiers, July 2011. </P>
 
-<p>Mills, G. J. and Gregoromichelaki, E. (2010) <B> <A HREF = "semdial2010.pdf">Establishing coherence in dialogue: sequentiality, intentions and negotiation.</A></B> In Proceedings of SemDial (PozDial). Adam Mickiewicz University, Poznan, Poland 16-18th June. </p>
+<p>Mills, G. J. and Gregoromichelaki, E. (2010) <B> <A HREF = "https://elenigregor.github.io/files/MillsGregorFromProceed.pdf">Establishing coherence in dialogue: sequentiality, intentions and negotiation.</A></B> In Proceedings of SemDial (PozDial). Adam Mickiewicz University, Poznan, Poland 16-18th June. </p>
 
 <p>Kempson, R., Gregoromichelaki E., Mills, G. Purver, M., Howes, C., Healey, P. (2010) <B>On Dialogue Modelling, Language Processing Dynamics, and Linguistic Knowledge</B> Linguistic Evidence 2010, Tübingen, Feb 2010. </P>
 
@@ -187,14 +187,14 @@ If you have any questions, requests, or would like to contribute - please email 
 
 <p>Kempson R, Gregoromichelaki E, Purver M, Mills G, Gargett A, Howes C (2009) <B> How mechanistic can accounts of interaction be? </B> In: Proceedings of Diaholmia, the 13th workshop on the semantics and pragmatics of dialogue</p>
 
-<p>Mills, G. J. and Healey, P.G.T. (2008) <B><A HREF = "./publications/MillsHealey2008_Alignment.pdf">Semantic negotiation in dialogue: mechanisms of alignment.</A></B> in Proceedings of the 8th SIGdial workshop on Discourse and Dialogue, Columbus, OH, US; June 2008.</P>
+<p>Mills, G. J. and Healey, P.G.T. (2008) <B><A HREF = "https://www.aclweb.org/anthology/W08-0106.pdf">Semantic negotiation in dialogue: mechanisms of alignment.</A></B> in Proceedings of the 8th SIGdial workshop on Discourse and Dialogue, Columbus, OH, US; June 2008.</P>
 
 <P>Mills, G. J. (2007) <B>Semantic co-ordination in dialogue: the role of direct interaction.</B>  PhD Thesis. </P>
 
 
 <p>Mills, G.J. and Healey, P. G. T. (2006) <A HREF = "./publications/MillsHealey_2006_Clarification.pdf"><B>Clarifying Spatial Descriptions: Local and Global Effects on Semantic Co-ordination</B></A> , In Proceedings of the 10th Workshop on the Semantics and Pragmatics of Dialogue. Potsdam. Germany.</P>
 
-<p>Healey, P.G.T. and Mills, G.J. (2006) <B><A HREF = "./publications/HealeyMills_2006_ParticipationPrecedence.pdf">Participation, Precedence and Co-ordination in Dialogue.</A></B> In Proceedings of the 28th Annual Conference of the  Science Society. Vancouver. Canada.</p>
+<p>Healey, P.G.T. and Mills, G.J. (2006) <B><A HREF = "http://csjarchive.cogsci.rpi.edu/Proceedings/2006/docs/p1470.pdf">Participation, Precedence and Co-ordination in Dialogue.</A></B> In Proceedings of the 28th Annual Conference of the  Science Society. Vancouver. Canada.</p>
 
 <P>Matthew Purver. The Theory and Use of Clarification Requests in Dialogue. PhD Thesis, University of London, 2004. </P>
 
