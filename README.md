@@ -11,7 +11,7 @@ Some of the new features are:
 
 # Documentation
 
-There is a [usermanual](docs/usermanual/usermanual.pdf) on how to use the software (non-progrmamming)
+There is a [usermanual](docs/usermanual/usermanual.pdf) on how to use the software (non-programming)
 
 The webpage of the chattool is at: https://dialoguetoolkit.github.io/chattool/
 
