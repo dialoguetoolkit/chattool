@@ -78,19 +78,21 @@ The real strength of this toolkit is in manipulating the interaction. Since all 
 
 
 
-# Download and run the toolkit
+# Running the toolkit
 
-The latest version of the toolkit is available as a <a href = "https://github.com/dialoguetoolkit/chattool/archive/v5.0.zip"> <b>zip file </b> </a>
+## Downloading
 
-To run the software:
+The latest version of the toolkit is available to download <a href = "https://github.com/dialoguetoolkit/chattool/archive/v5.0.zip"> <b>here</b> </a> 
+
+## To run the software:
 
 - On windows:
-  1. Download the zip file of the most recent release
+  1. Download the <a href = "https://github.com/dialoguetoolkit/chattool/archive/v5.0.zip"> <b>latest version</b></a>  of the chattool 
   2. Unzip it
   3. Run **runme.bat**
   
 - On mac / linux
-  1. Download the zip file of the most recent release
+  1. Download the <a href = "https://github.com/dialoguetoolkit/chattool/archive/v5.0.zip"> <b>latest version</b></a>  of the chattool
   2. Unzip it
   3. Double-click on "chattool.jar"
   4. If double-clicking doesn't work, use a terminal window to type **java -jar "chattool.jar"**
