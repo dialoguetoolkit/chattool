@@ -127,7 +127,14 @@ If you have any questions, requests, or would like to contribute - please email 
  
 <p>Nölle, J., Fusaroli, R., Mills, G., & Tylén, K. (2020). Language as shaped by the environment: linguistic construal in a collaborative spatial task.</p>
  
+ 
+<p>Lelonkiewicz, J. and Gambi, C. 2020. Making oneself predictable in linguistic interactions. Acta Psychologica 209, article number: 103125. (10.1016/j.actpsy.2020.103125)</p
+ 
+ 
 <p>Castillo, L., Smith, K., & Branigan, H. P. (2019). Interaction Promotes the Adaptation of Referential Conventions to the Communicative Context. Cognitive science, 43(8), e12780. </p>
+ 
+ 
+ 
  
  <p>Castillo, L., Branigan, H., & Smith, K. (2015). Context influence vs efficiency in establishing conventions: Communities do it better. SEMDIAL 2015 goDIAL, 162. </p>
 
