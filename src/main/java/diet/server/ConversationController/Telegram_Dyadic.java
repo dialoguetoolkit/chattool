@@ -9,10 +9,9 @@ import diet.message.MessageChatTextFromClient;
 import diet.server.Conversation;
 import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.Participant;
-import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
-import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -87,8 +86,16 @@ public class Telegram_Dyadic extends TelegramController{
         
       // c.telegram_sendPoll(p, "This is a questionnaire","What is it?", new String[]{"option1", "option2", "option3", "option4"});
         
-       // c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is a question",  new String[]{"option1", "option2", "option3", "option4", "option5", "option6", "option7"},3);
+      // c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is a question",  new String[]{"a", "b", "c", "d", "e", "f", "g"},3);
         
+      Message m = c.telegram_sendInstructionToParticipant(p, "this is the initial message from the serverA");
+      
+      c.telegram_sendPinChatMessageToParticipant(p, m);
+      
+      c.telegram_sendEditMessageToParticipant(p, m, "This is the replacement textB");
+      
+      //c.deprecated_telegram_sendEditMessage(p, sm, "this is edited");
+      
        if(c.getParticipants().getAllParticipants().size()==2) {
             
              pp.createNewSubdialogue(c.getParticipants().getAllParticipants());

@@ -20,6 +20,7 @@ import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
+import org.telegram.telegrambots.meta.api.methods.pinnedmessages.PinChatMessage;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendChatAction;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -28,6 +29,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -498,7 +500,14 @@ public void onUpdateReceived(Update update) {
       //return null;
    }
   
-    
+    private synchronized void sendAdminMessage(long telegramID, String text){
+       SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                .setChatId(telegramID)
+                .setText(text);
+            sendMessage(message);
+            
+            this.tbl.saveTo(message.toString());
+   } 
 
     
    public synchronized void sendMessage(long telegramID, String text){
@@ -509,21 +518,51 @@ public void onUpdateReceived(Update update) {
             this.tbl.saveTo(message.toString());
    } 
    
-   private synchronized void sendAdminMessage(long telegramID, String text){
-       SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(telegramID)
-                .setText(text);
-            sendMessage(message);
-            
-            this.tbl.saveTo(message.toString());
-   } 
    
-    
+   public void sendEditMessage(Message mOriginalMessage, EditMessageText emt){
+       try{
+            
+            /*Integer messageID = mOriginalMessage.getMessageId() ;
+            Long messagechatid = mOriginalMessage.getChatId();
+            EditMessageText emt = new EditMessageText();
+            
+           
+            emt.enableHtml(true);
+            emt.setText("<code>"+replacementText+"</code>");
+            emt.setChatId(messagechatid);
+            emt.setMessageId(messageID); 
+
+           */
+
+            this.tbl.saveTo(emt.toString());
+            this.execute(emt);
+       }
+       catch(Exception e){
+           e.printStackTrace();
+       }
+           
+   }
+   
+   
+   public void sendPinChatMessage(PinChatMessage pcm){
+       try{
+                 
+                  
+                  this.execute(pcm);      
+                  this.tbl.saveTo(pcm.toString());
+                  System.err.println("Trying to pin the message");
+               //this.sendChatAction(sca);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+   }
+  
     
   public synchronized Message sendMessage(SendMessage message){
       try {
-            this.tbl.saveTo(message.toString());
-            return execute(message); // Call method to send the message
+            this.tbl.saveTo(message.toString());           
+            Message m = execute(message); 
+            return m; // Call method to send the message
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
@@ -594,6 +633,11 @@ public void onUpdateReceived(Update update) {
             }
             this.tbl.saveTo(sca.toString());
     }
+      
+      
+      
+     
+      
   
       
      private void startAdminNotificationsLoop(){

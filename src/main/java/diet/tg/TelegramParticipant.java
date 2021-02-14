@@ -9,6 +9,7 @@ import diet.message.Message;
 import diet.server.Conversation;
 import diet.server.Participant;
 import diet.server.ParticipantConnection;
+import org.telegram.telegrambots.meta.api.methods.pinnedmessages.PinChatMessage;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -41,12 +42,7 @@ public class TelegramParticipant extends Participant{
             
             
     
-     public void sendEditMessage(EditMessageText sem){
-        TelegramParticipantConnection tpc = (TelegramParticipantConnection)this.getConnection();
-        System.err.println("HEREINCOMING103");
-        tpc.sendEditMessage(sem);
-        
-    }
+    
     
     
     
@@ -66,6 +62,24 @@ public class TelegramParticipant extends Participant{
         
     }
     
+     
+      public void sendEditMessage(org.telegram.telegrambots.meta.api.objects.Message mOriginalMessage, EditMessageText emt){
+        TelegramParticipantConnection tpc = (TelegramParticipantConnection)this.getConnection();
+        
+        System.err.println("HEREINCOMING103");
+        tpc.sendEditMessage(mOriginalMessage, emt);
+        
+    }
+     
+     
+     public void sendPinChatMessage(PinChatMessage messageToBePinned){
+        TelegramParticipantConnection tpc = (TelegramParticipantConnection)this.getConnection();
+        
+        System.err.println("HEREINCOMING103");
+        tpc.sendPinChatMessage(messageToBePinned);
+        
+    }
+     
     
     public org.telegram.telegrambots.meta.api.objects.Message sendPhoto(SendPhoto sp){
         TelegramParticipantConnection tpc = (TelegramParticipantConnection)this.getConnection();

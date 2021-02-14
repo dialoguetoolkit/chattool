@@ -128,6 +128,7 @@ public class JClassBrowser extends javax.swing.JPanel  {
          for (BeanDefinition bean: classes) {
               try{
                Class<?> clazz = Class.forName(bean.getBeanClassName());
+               
                 Method[] ms = clazz.getMethods();
                 for(int j=0;j<ms.length;j++){
                      if(ms[j].getName().equalsIgnoreCase("showcCONGUI")){
