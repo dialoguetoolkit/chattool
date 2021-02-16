@@ -3,7 +3,7 @@
 The toolkit is an instant-messaging platform for conducting research on dialogue. The software consists of a chat server and chat clients, written in Java.
 
 The chat-tool makes data-collection and preparation much easier and quicker. Configuration of the server and clients allows experimental designs that are much more standardized and reproducible.
-The toolkit can be used "off-the-shelf" to collect data fro instant-messaging conversations. It is also a powerful, programmable toolkit for conducting experiments on live interaction.
+The toolkit can be used "off-the-shelf" to collect data from instant-messaging conversations. It is also a powerful, programmable toolkit for conducting experiments on live interaction.
 
 All participants' turns are routed via the server which can be scripted to detect, for example target words, phrases or syntactic constructions. This information can then be used, in real-time to trigger experimental interventions that are sensitive to the interactional context.
 
