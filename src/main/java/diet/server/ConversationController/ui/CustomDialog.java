@@ -5,6 +5,7 @@ package diet.server.ConversationController.ui;
 
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.*;
@@ -308,6 +309,44 @@ public class CustomDialog {
     public static File loadFile(String directory){
       return loadFile(directory,"",null);
     }
+    
+    
+    
+    public static Vector loadTextFileWithExtensionToVector(String directory, String titleText, String extension, String extensionexplanation){
+         File f = loadFileWithExtension(directory, titleText, extension, extensionexplanation);
+         
+         Vector v = new Vector();
+         
+         try{
+             String textFile = "";
+             
+              BufferedReader br = new BufferedReader(new FileReader(f));
+              String line = br.readLine();
+              
+              while (line != null) {
+                  v.addElement(line);    
+                  line = br.readLine();
+                   
+              }
+              
+              br.close();
+              System.err.println("LOADED: "+ textFile);
+              
+              for(int i=0;i<v.size();i++){
+                    System.err.println("LOADEDFROMFILE: "+v.elementAt(i));
+              }
+              
+              return v;
+             
+             
+         }
+         catch(Exception e){
+             e.printStackTrace();
+         }
+         return new Vector();
+    }
+    
+    
     
     public static String loadTextFileWithExtension(String directory, String titleText, String extension, String extensionexplanation){
          File f = loadFileWithExtension(directory, titleText, extension, extensionexplanation);
