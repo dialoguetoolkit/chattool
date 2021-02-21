@@ -100,7 +100,7 @@ public class JParticipantsTableModel extends AbstractTableModel {
             Conversation.saveErr(e);
         }
         
-        System.err.println("UI: THE SIZE OF PARTICIPANT IS: "+c.getParticipants().getAllParticipants().size());
+        //System.err.println("UI: THE SIZE OF PARTICIPANT IS: "+c.getParticipants().getAllParticipants().size());
         
         if(y==0){
             return p.getParticipantID();
@@ -200,7 +200,7 @@ public class JParticipantsTableModel extends AbstractTableModel {
         Participant p = (Participant)c.getParticipants().getAllParticipants().elementAt(x);
         ParticipantConnection pc = p.getConnection();
         
-        System.err.println("UI: THE SIZE OF PARTICIPANT IS: "+c.getParticipants().getAllParticipants().size());
+        //System.err.println("UI: THE SIZE OF PARTICIPANT IS: "+c.getParticipants().getAllParticipants().size());
         
         if(y==0){
             return p.getParticipantID();

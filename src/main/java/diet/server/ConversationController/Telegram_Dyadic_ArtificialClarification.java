@@ -136,17 +136,20 @@ public class Telegram_Dyadic_ArtificialClarification extends TelegramController{
     
     
     
-    int turnsElapsedBeforeClarification = 5;
-    long durationToWaitAfterTargetBeforeIntervention = 20000;
-    long durationToWaitAfterIntervention = 10000;
-    long durationBetweenMessagesWhenEmptyingQueueMin = 3000;
+    int turnsElapsedBeforeClarification = CustomDialog.getInteger("How many turns need to elapse between interventions? (per participant)", 5);
+    long durationToWaitAfterTargetBeforeIntervention = CustomDialog.getLong("Duration to wait after target detected, before sending clarification?", 6000);
+    long durationToWaitAfterIntervention =  CustomDialog.getLong("Duration to wait after sending intervention before resuming and sending messages from the queue?", 10000);
+    long durationBetweenMessagesWhenEmptyingQueueMin = CustomDialog.getLong("When emptying the queue, what is the gap between messages?", 3000);
     
             
     
     //String[] possibleTargets = new String[]{"Bob", "Riviera"};
     Vector possibleTargets = CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "Target strings", "txt", "");
     
-    String[] whyvariants = new String[]{"why?", "sorry why?", "umm why?"};
+    //String[] whyvariants = new String[]{"why?", "sorry why?", "umm why?"};
+    
+    
+    String[] whyvariants = (String[])CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "Target strings", "txt", "").toArray();
     CyclicRandomTextGenerator crt = new CyclicRandomTextGenerator( new Vector<String>(Arrays.asList(whyvariants)));
     
 
