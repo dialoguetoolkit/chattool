@@ -144,12 +144,12 @@ public class Telegram_Dyadic_ArtificialClarification extends TelegramController{
             
     
     //String[] possibleTargets = new String[]{"Bob", "Riviera"};
-    Vector possibleTargets = CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "Target strings", "txt", "");
+    Vector possibleTargets = CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "What is the text file containing the target strings", "txt", "");
     
     //String[] whyvariants = new String[]{"why?", "sorry why?", "umm why?"};
     
     
-    String[] whyvariants = (String[])CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "Target strings", "txt", "").toArray();
+    String[] whyvariants = (String[])CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "What is the text file containing all the WHY? variants", "txt", "").toArray();
     CyclicRandomTextGenerator crt = new CyclicRandomTextGenerator( new Vector<String>(Arrays.asList(whyvariants)));
     
 
