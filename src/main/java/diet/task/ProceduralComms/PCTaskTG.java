@@ -315,7 +315,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
 
       
-      int level =40;
+      int level =0;
       int[][] levelsettings = new int[][]  { 
           //size ...number of 
           {1,1},
