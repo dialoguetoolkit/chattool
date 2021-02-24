@@ -222,7 +222,7 @@ public class autointervention {
                  String response = ib.getResponse();
                  if(!response.equalsIgnoreCase("")){
                       if(c.isInTelegramMode()){
-                           c.telegram_sendInstructionToParticipant((TelegramParticipant)p, response);
+                           c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)p, response);
                       }
                       else{
                           c.sendInstructionToParticipant(p, textOfTurn);

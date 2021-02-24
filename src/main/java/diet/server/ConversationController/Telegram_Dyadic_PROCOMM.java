@@ -112,7 +112,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
              
         }          
         else{    
-             c.telegram_sendInstructionToParticipant(sender, "Please only send text");
+             c.telegram_sendInstructionToParticipant_MonospaceFont(sender, "Please only send text");
         }
     
     }
@@ -126,7 +126,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
     public void generatePinnedMessage(TelegramParticipant p){ 
-        Message m = c.telegram_sendInstructionToParticipant(p, "Please do not close this message. You will need it in the task");
+        Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Please do not close this message. You will need it in the task");
         c.telegram_sendPinChatMessageToParticipant(p, m);
         htPinnedMessages.put(p, m);      
     }

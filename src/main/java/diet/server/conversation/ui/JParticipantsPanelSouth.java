@@ -356,7 +356,7 @@ public class JParticipantsPanelSouth extends javax.swing.JPanel {
             
             if(telegram){
                 TelegramParticipant tpc = (TelegramParticipant)p;
-                c.telegram_sendInstructionToParticipant(tpc, this.jTextField4.getText());
+                c.telegram_sendInstructionToParticipant_MonospaceFont(tpc, this.jTextField4.getText());
             }
             else{
                 c.sendInstructionToParticipant(p, this.jTextField4.getText());    
@@ -460,7 +460,7 @@ public class JParticipantsPanelSouth extends javax.swing.JPanel {
           
              if(telegram){
                 TelegramParticipant tpc = (TelegramParticipant)p;
-                c.telegram_sendInstructionToParticipant(tpc, this.jTextField4.getText());
+                c.telegram_sendInstructionToParticipant_MonospaceFont(tpc, this.jTextField4.getText());
                 c.telegram_sendURL(tpc, jTextField3.getText());
             }
             else{

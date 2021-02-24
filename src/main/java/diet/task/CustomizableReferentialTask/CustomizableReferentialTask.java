@@ -458,8 +458,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                      //this.jjp.addTextln("TIMEOUT");
                      
                      if(telegram){
-                        cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "You ran out of time!");
-                        cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "You ran out of time!");
+                        cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "You ran out of time!");
+                        cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "You ran out of time!");
                      }
                      else{
                          cC.c.sendInstructionToParticipant(pA, "You ran out of time!" );
@@ -820,16 +820,16 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                                
                             }
                             else{
-                                cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "Your score is: "+ outputPA );
-                                cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "Your score is: "+ outputPB );
+                                cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "Your score is: "+ outputPA );
+                                cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Your score is: "+ outputPB );
                                 
                                 if(this.currentTrial.length>6){
                                    String msgToP1 = currentTrial[5];
                                    msgToP1 = msgToP1.trim();
                                    String msgToP2 = currentTrial[6];
                                    msgToP2 = msgToP2.trim();
-                                   cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, msgToP1 );
-                                   cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, msgToP2 );
+                                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, msgToP1 );
+                                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, msgToP2 );
                                    System.err.println("CRTTELEGRAM MSGTOP1B: "+msgToP1);
                                    System.err.println("CRTTELEGRAM MSGTOP2B: "+msgToP2);
                                }
@@ -891,7 +891,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
            int gameNumberOfButtonPress = Integer.parseInt(leftIDGameNumber);
            
            if(gameNumberOfButtonPress!=this.gamenumber){
-                 cC.c.telegram_sendInstructionToParticipant(p, "You selected an old option. Please select an option from the most recent image!");
+                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "You selected an old option. Please select an option from the most recent image!");
                  cC.c.telegram_sendEditMessageReplyMarkup(p, updateWithCallback, null,null);
                  return;
            }
@@ -900,7 +900,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  String rightID = callbackData.substring( 5);
                  System.err.println("RIGHTID:"+rightID+" "+rightID);
                  this.processChatText(p, "/"  + rightID);
-                 cC.c.telegram_sendInstructionToParticipant(p, "You selected "+rightID);
+                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "You selected "+rightID);
                  
                  cC.c.saveAdditionalRowOfDataToSpreadsheetOfTurns("buttonpress", p, rightID);
            }
@@ -949,7 +949,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 cC.c.sendInstructionToParticipant(sender,"The other participant needs to make the selection!");
             }
             else{
-                cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)sender, "The other participant needs to make the selection!");
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "The other participant needs to make the selection!");
             }
             return;
         }
@@ -958,7 +958,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 cC.c.sendInstructionToParticipant(sender,"The other participant needs to make the selection!");
             }
             else{
-                 cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)sender, "The other participant needs to make the selection!");
+                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "The other participant needs to make the selection!");
             }
             
             return;
@@ -1000,8 +1000,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                   String scoreB = " Score: "+(Double)this.htPOINTS.getObject(pB);
                  
                       if(telegram){
-                         cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "CORRECT! " + scoreA);
-                         cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "CORRECT! " + scoreB);
+                         cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "CORRECT! " + scoreA);
+                         cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "CORRECT! " + scoreB);
                       }
                       else{
                          cC.c.sendInstructionToParticipant(pA, "CORRECT! " + scoreA);
@@ -1021,8 +1021,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  String scoreA = " Score: "+(Double)this.htPOINTS.getObject(pA);
                  String scoreB = " Score: "+(Double)this.htPOINTS.getObject(pB);
                  if(telegram){
-                     cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "INCORRECT! " + scoreA);
-                     cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "INCORRECT! " + scoreB);
+                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "INCORRECT! " + scoreA);
+                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "INCORRECT! " + scoreB);
                  }
                  else{
                      cC.c.sendInstructionToParticipant(pA, "INCORRECT! " + scoreA);
@@ -1039,8 +1039,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         }
         else{
             if(telegram){
-                  cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)sender, "Invalid command.");
-                  cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "Please reread the experiment istructions");
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "Invalid command.");
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Please reread the experiment istructions");
             }
             else{
                 cC.c.sendInstructionToParticipant(sender,"Invalid command.");

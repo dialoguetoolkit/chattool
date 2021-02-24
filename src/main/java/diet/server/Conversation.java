@@ -2698,7 +2698,116 @@ public class Conversation extends Thread{
      }
      
      
-     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant(TelegramParticipant recipient, String text){
+     
+      public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_(TelegramParticipant recipient, String markdown){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+             try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText(markdown);
+                 message = message.disableNotification();
+                 message.enableMarkdown(true);
+                 
+                 message.setText(markdown);  
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipant");
+             additionalValues.add(av1);
+             AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+             additionalValues.add(av2);     
+              AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+                   additionalValues.add(av3);
+             
+              cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",markdown, recipientsNames, additionalValues, false);
+               
+               
+               
+               
+                 System.err.println("HEREINCOMING102");
+                 retMessage=m;
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+             if(retMessage!=null) return retMessage;
+             return null;
+        //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
+     }
+     
+     
+      
+     
+     
+     
+     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_HTML(TelegramParticipant recipient, String html){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+             try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText(html);
+                 message = message.disableNotification();
+                 message.enableHtml(true);
+                 
+                 message.setText(html);  
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipant");
+             additionalValues.add(av1);
+             AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+             additionalValues.add(av2);     
+              AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+                   additionalValues.add(av3);
+             
+              cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",html, recipientsNames, additionalValues, false);
+               
+               
+               
+               
+                 System.err.println("HEREINCOMING102");
+                 retMessage=m;
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+             if(retMessage!=null) return retMessage;
+             return null;
+        //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
+     }
+     
+     
+     
+     
+     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_MonospaceFont(TelegramParticipant recipient, String text){
          
          org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
          
@@ -2712,6 +2821,7 @@ public class Conversation extends Thread{
                        .setText(text);
                  message = message.disableNotification();
                  message.enableHtml(true);
+                 
                  message.setText("<code>"+text+"</code>");  
                  org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
                 
@@ -2731,6 +2841,59 @@ public class Conversation extends Thread{
                    additionalValues.add(av3);
              
               cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",text, recipientsNames, additionalValues, false);
+               
+               
+               
+               
+                 System.err.println("HEREINCOMING102");
+                 retMessage=m;
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+             if(retMessage!=null) return retMessage;
+             return null;
+        //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
+     }
+     
+     
+     
+     
+     
+     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_Markdownv2(TelegramParticipant recipient, String markdownv2){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+             try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText(markdownv2);
+                 message = message.disableNotification();
+                 message.enableMarkdownV2(conversationIsActive);
+                 message.setText("<code>"+markdownv2+"</code>");  
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipant");
+             additionalValues.add(av1);
+             AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+             additionalValues.add(av2);     
+              AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+                   additionalValues.add(av3);
+             
+              cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",markdownv2, recipientsNames, additionalValues, false);
                
                
                

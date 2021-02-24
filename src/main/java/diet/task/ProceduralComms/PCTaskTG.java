@@ -136,8 +136,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                     //cC.changePinnedMessage(pB,"CORRECT! Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB) );
                     
                                        
-                    cC.c.telegram_sendInstructionToParticipant(pA,"CORRECT!");
-                    cC.c.telegram_sendInstructionToParticipant(pB,"CORRECT!" );
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA,"CORRECT!");
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB,"CORRECT!" );
        
                     
                     
@@ -258,10 +258,10 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             // cC.changePinnedMessage(pA,"Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA) );
             // cC.changePinnedMessage(pB,"Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB) );
             
-            cC.c.telegram_sendInstructionToParticipant(pA, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA));
-            cC.c.telegram_sendInstructionToParticipant(pB, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB));
-            cC.c.telegram_sendInstructionToParticipant(pA, "Next sequence");
-            cC.c.telegram_sendInstructionToParticipant(pB, "Next sequence");
+            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA));
+            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB));
+            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next sequence");
+            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next sequence");
                 
                 
              
@@ -891,8 +891,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             //cC.c.changeClientInterface_clearMainWindows(pA);
             //cC.c.changeClientInterface_clearMainWindows(pB);
             
-             cC.c.telegram_sendInstructionToParticipant(pA,"TIMEOUT! NEXT SET." );
-             cC.c.telegram_sendInstructionToParticipant(pB,"TIMEOUT! NEXT SET" );
+             cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA,"TIMEOUT! NEXT SET." );
+             cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB,"TIMEOUT! NEXT SET" );
             
             
             this.decreaseScoresTimeout(pA,pB,this.pcset.moves.size());

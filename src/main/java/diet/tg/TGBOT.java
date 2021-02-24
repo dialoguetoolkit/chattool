@@ -373,7 +373,7 @@ public void onUpdateReceived(Update update) {
                          
                      }
                      else{
-                         c.telegram_sendInstructionToParticipant(tp, text);
+                         c.telegram_sendInstructionToParticipant_MonospaceFont(tp, text);
                      }
                  }catch(Exception e){
                      e.printStackTrace();

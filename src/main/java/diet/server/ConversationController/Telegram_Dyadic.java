@@ -88,7 +88,7 @@ public class Telegram_Dyadic extends TelegramController{
         
       // c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is a question",  new String[]{"a", "b", "c", "d", "e", "f", "g"},3);
         
-      Message m = c.telegram_sendInstructionToParticipant(p, "this is the initial message from the serverA");
+      Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "this is the initial message from the serverA");
       
       c.telegram_sendPinChatMessageToParticipant(p, m);
       
