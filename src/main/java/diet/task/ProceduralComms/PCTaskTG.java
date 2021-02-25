@@ -277,7 +277,19 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             PCTaskTG.htwnumberOfSets.putObject(pA, pANumberOfTrials);
             PCTaskTG.htwnumberOfSets.putObject(pB, pBNumberOfTrials);
              
-            this.createRandom_MoveSequence();
+            
+            //Decide if create new sequence using the values entered on the GUI or using LEVEL
+            //The values can only be nonzero if they are set by the GUI (JPCTask)          
+            if(numberONLYOtherBothShared !=0 | numberONLYOtherNotShared!=0 |   numberONLYSelf!=0  |   numberANDSame!=0 |  numberANDDifferent!=0){
+                this.createRandom_MoveSequenceFromGUI();
+            }
+            else{
+                this.createRandom_MoveSequence();
+            }
+                    
+            
+            
+            
             
             if(this.mostRecentDirector==pA){
                    displayMovesOnServer(pA, pB);     
@@ -1057,6 +1069,100 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             this.mostRecentDirector=director;
        }
         */
+      
+      
+      
+      public int numberONLYOtherBothShared =0;
+      public int numberONLYOtherNotShared=0;
+      public int numberONLYSelf=0;
+      public int numberANDSame=0;
+      public int numberANDDifferent=0;
+      
+      
+       public void createRandom_MoveSequenceFromGUI(){
+            Participant director;
+            Participant matcher;
+            String directorWhitelist;
+            String matcherWhitelist;
+            if(mostRecentDirector==pB || mostRecentDirector==null){
+                director=pA; matcher=pB;
+                directorWhitelist = this.pAWhitelist;
+                matcherWhitelist = this.pBWhitelist;
+            }
+            else{
+                director=pB; matcher=pA;
+                directorWhitelist = this.pBWhitelist;
+                matcherWhitelist = this.pAWhitelist;
+            }
+            Vector<MoveONLY> numberONLYOtherBothSharedV = new Vector();
+            Vector<MoveONLY> numberONLYOtherNotSharedV = new Vector();
+            Vector<MoveONLY> numberONLYSelfV = new Vector();
+            Vector<MoveANDSAME> numberANDSameV = new Vector();
+            Vector numberANDDifferentV = new Vector(); 
+            
+            while(numberONLYOtherBothSharedV.size()<numberONLYOtherBothShared){
+                
+                 int index = r.nextInt(this.sharedWhitelist.length());
+                 String s = ""+sharedWhitelist.charAt(index);
+                 MoveONLY mo = new MoveONLY(this.pcset,matcher,s);
+                 numberONLYOtherBothSharedV.add(mo);
+            }
+            while(numberONLYOtherNotSharedV.size()<numberONLYOtherNotShared){
+                 int index = r.nextInt(matcherWhitelist.length());
+                 String s = ""+matcherWhitelist.charAt(index);
+                 MoveONLY mo = new MoveONLY(this.pcset,matcher,s);
+                 numberONLYOtherNotSharedV.add(mo);
+            }
+            while(numberONLYSelfV.size()<numberONLYSelf){
+                 int index = r.nextInt(directorWhitelist.length());
+                 String s = ""+directorWhitelist.charAt(index);
+                 MoveONLY mo = new MoveONLY(this.pcset,director,s);
+                 numberONLYSelfV.add(mo);
+            }
+            while(numberANDSameV.size()<numberANDSame){
+                 int index = r.nextInt(sharedWhitelist.length());
+                 String s = ""+sharedWhitelist.charAt(index);
+                 MoveANDSAME mas = new MoveANDSAME(this.pcset,director,matcher,s);
+                 numberANDSameV.add(mas);
+            }
+            while(numberANDDifferentV.size()<numberANDDifferent){
+                 int indexD = r.nextInt(directorWhitelist.length());
+                 String sD = ""+directorWhitelist.charAt(indexD);
+                 
+                 String matcherWhitelistFiltered = (matcherWhitelist+"").replace(sD, "");
+                 int indexM = r.nextInt(matcherWhitelistFiltered.length());
+                 String sM = ""+matcherWhitelistFiltered.charAt(indexM);
+                 
+                 MoveANDDIFFERENT mad = new MoveANDDIFFERENT(this.pcset,director, sD, matcher,sM);
+                 numberANDDifferentV.add(mad);
+            }
+            
+            Vector finalMoveSet = new Vector();
+            for(int i=0;i< numberONLYOtherBothSharedV.size();i++){
+                int index = r.nextInt(finalMoveSet.size()+1);
+                finalMoveSet.insertElementAt(numberONLYOtherBothSharedV.elementAt(i) ,index  );
+            }
+            for(int i=0;i< numberONLYOtherNotSharedV.size();i++){
+                int index = r.nextInt(finalMoveSet.size()+1);
+                finalMoveSet.insertElementAt(numberONLYOtherNotSharedV.elementAt(i) ,index  );
+            }
+            for(int i=0;i< numberONLYSelfV.size();i++){
+                int index = r.nextInt(finalMoveSet.size()+1);
+                finalMoveSet.insertElementAt(numberONLYSelfV.elementAt(i) ,index  );
+            }
+            for(int i=0;i< numberANDSameV.size();i++){
+                int index = r.nextInt(finalMoveSet.size()+1);
+                finalMoveSet.insertElementAt(numberANDSameV.elementAt(i) ,index  );
+            }
+            for(int i=0;i< numberANDDifferentV.size();i++){
+                int index = r.nextInt(finalMoveSet.size()+1);
+                finalMoveSet.insertElementAt(numberANDDifferentV.elementAt(i) ,index  );
+            }
+            this.pcset.moves=finalMoveSet;
+            this.displayMovesOnClients(director, matcher);
+            this.mostRecentDirector=director;
+       }
+     
         
       
       

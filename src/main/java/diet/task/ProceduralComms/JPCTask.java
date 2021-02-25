@@ -366,7 +366,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel8.getText())-1;
          if(val<0) val=0;
          jLabel8.setText(""+(val));
-        // this.pct.numberONLYOtherNotShared=val;
+         //this.pct.numberONLYOtherNotShared=val;
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed

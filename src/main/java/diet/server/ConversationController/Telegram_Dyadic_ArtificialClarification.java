@@ -149,8 +149,8 @@ public class Telegram_Dyadic_ArtificialClarification extends TelegramController{
     //String[] whyvariants = new String[]{"why?", "sorry why?", "umm why?"};
     
     
-    String[] whyvariants = (String[])CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "What is the text file containing all the WHY? variants", "txt", "").toArray();
-    CyclicRandomTextGenerator crt = new CyclicRandomTextGenerator( new Vector<String>(Arrays.asList(whyvariants)));
+    Vector whyvariants = CustomDialog.loadTextFileWithExtensionToVector(System.getProperty("user.dir"), "What is the text file containing all the WHY? variants", "txt", "");
+    CyclicRandomTextGenerator crt = new CyclicRandomTextGenerator( whyvariants);
     
 
     HashtableOfLong htTurns = new HashtableOfLong(0);
@@ -223,9 +223,9 @@ public class Telegram_Dyadic_ArtificialClarification extends TelegramController{
          while(true){
              try{
                  wait(500);
-                 System.err.println("WAIT1");
+                 System.err.print(".");
                  if(mode==this.waitingaftertargetbeforesending){
-                      System.err.println("WAIT1");
+                      System.err.print(":");
                       long currentTime = new Date().getTime();
                       long timeSinceDetection = currentTime - this.timestampOfDetection;
                       if(timeSinceDetection>this.durationToWaitAfterTargetBeforeIntervention){

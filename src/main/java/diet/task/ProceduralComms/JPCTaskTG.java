@@ -317,7 +317,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
         int val = Integer.parseInt(jLabel7.getText())+1;
         if(val<0) val=0;
         jLabel7.setText(""+(val));
-        //this.pct.numberONLYOtherBothShared=val;
+        this.pct.numberONLYOtherBothShared=val;
        
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -327,7 +327,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel8.getText())+1;
          if(val<0) val=0;
         jLabel8.setText(""+(val));
-       //this.pct.numberONLYOtherNotShared=val;
+        this.pct.numberONLYOtherNotShared=val;
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -335,7 +335,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel9.getText())+1;
          if(val<0) val=0;
         jLabel9.setText(""+(val));
-        //this.pct.numberONLYSelf=val;
+         this.pct.numberONLYSelf=val;
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -343,7 +343,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel10.getText())+1;
          if(val<0) val=0;
         jLabel10.setText(""+(val));
-        //this.pct.numberANDSame=val;
+         this.pct.numberANDSame=val;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -351,7 +351,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel11.getText())+1;
          if(val<0) val=0;
         jLabel11.setText(""+(val));
-        //this.pct.numberANDDifferent=val;
+        this.pct.numberANDDifferent=val;
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -359,7 +359,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel7.getText())-1;
          if(val<0) val=0;
          jLabel7.setText(""+(val));
-        // this.pct.numberONLYOtherBothShared=val;
+         this.pct.numberONLYOtherBothShared=val;
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -367,7 +367,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel8.getText())-1;
          if(val<0) val=0;
          jLabel8.setText(""+(val));
-        // this.pct.numberONLYOtherNotShared=val;
+         this.pct.numberONLYOtherNotShared=val;
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -375,7 +375,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel9.getText())-1;
          if(val<0) val=0;
          jLabel9.setText(""+(val));
-         //this.pct.numberONLYSelf=val;
+         this.pct.numberONLYSelf=val;
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -383,7 +383,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel10.getText())-1;
          if(val<0) val=0;
          jLabel10.setText(""+(val));
-        // this.pct.numberANDSame=val;
+        this.pct.numberANDSame=val;
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -391,7 +391,7 @@ public class JPCTaskTG extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel11.getText())-1;
          if(val<0) val=0;
          jLabel11.setText(""+(val));
-        //  this.pct.numberANDDifferent=val;
+         this.pct.numberANDDifferent=val;
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed

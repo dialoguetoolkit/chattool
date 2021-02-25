@@ -137,6 +137,7 @@ public class TGBOT  extends TelegramLongPollingBot{
         System.err.println("userdir is: "+userdir);
         File f = new File(userdir, "adminids.txt");
         System.err.println("Loading adminids");
+        if(!f.exists())return;
         try(BufferedReader br = new BufferedReader(new FileReader(f))) {
            String line="";
             while((line=br.readLine())!=null){
