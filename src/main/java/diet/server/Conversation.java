@@ -178,18 +178,22 @@ public class Conversation extends Thread{
             
            }catch(Exception e){
                   System.err.println("COULD NOT FIND AND DYNAMICALLY LOAD CONVERSATION CONTROLLER...trying to load"+nameOfConversationController);
+                  System.err.println("THIS ERROR MESSAGE USUALLY MEANS THAT THERE WAS AN ERROR IN THE CONVERSATIONCONTROLLER OBJECT WHEN IT WAS BEING INITIALIZED");
+                    
+                    
                   e.printStackTrace();
                   InvocationTargetException ite = (InvocationTargetException)e;
                   ite.getTargetException().printStackTrace();
                   if(this.expManager.emui!=null){
                     this.expManager.emui.print("Main","Could not dynamically load "+nameOfConversationController);
+                    this.expManager.emui.print("Main", "THIS ERROR MESSAGE USUALLY MEANS THAT THERE WAS AN ERROR IN THE CONVERSATIONCONTROLLER OBJECT WHEN IT WAS BEING INITIALIZED");
                     e.printStackTrace();
                       
                     e.getCause();
                     e.getCause().printStackTrace();
 
                   }else{
-                      System.err.println("Could not dynamically load "+nameOfConversationController);
+                      //System.err.println("Could not dynamically load "+nameOfConversationController);
                       e.printStackTrace();
                   }
            }

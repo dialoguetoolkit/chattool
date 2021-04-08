@@ -131,7 +131,34 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
         htPinnedMessages.put(p, m);      
     }
     
-     public void changePinnedMessage(TelegramParticipant p,String text){
+    
+    
+    
+    public void changePinnedMessage(TelegramParticipant p,String text){
+          String mostRecent = this.htMostRecentPinnedText.get(p);
+          if(mostRecent!=null ){
+              if(mostRecent.equals(text))return;
+              if(mostRecent.equalsIgnoreCase(text)){
+                    org.telegram.telegrambots.meta.api.objects.Message m = (org.telegram.telegrambots.meta.api.objects.Message)this.htPinnedMessages.get(p);
+                    if(m!=null){
+                        c.telegram_sendEditMessageToParticipant(p, m, "processing move");
+                        htMostRecentPinnedText.put(p,"--------------------");
+                    }
+
+              }
+          }
+         
+         
+           org.telegram.telegrambots.meta.api.objects.Message m = (org.telegram.telegrambots.meta.api.objects.Message)this.htPinnedMessages.get(p);
+           if(m!=null){
+               c.telegram_sendEditMessageToParticipant(p, m, text);
+               htMostRecentPinnedText.put(p,text);
+           }
+     }
+    
+    
+    
+     public void changePinnedMessageOLD(TelegramParticipant p,String text){
           String mostRecent = this.htMostRecentPinnedText.get(p);
           if(mostRecent!=null){
               if(mostRecent.equalsIgnoreCase(text))return;

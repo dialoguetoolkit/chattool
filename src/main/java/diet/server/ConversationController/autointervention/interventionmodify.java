@@ -43,7 +43,10 @@ public class interventionmodify {
          if(!this.participantID.equalsIgnoreCase("")&! participantID.equalsIgnoreCase(pID)){
              return false;
          }
-         if(turn.contains(this.poscrit)){
+         //if(turn.contains(this.poscrit)){
+         if (turn.matches(turn)){
+             
+             
               if(this.negcrit.equalsIgnoreCase("")){
                   return true;
               }
@@ -55,7 +58,8 @@ public class interventionmodify {
     }
     
     public String getModifiedText(String originalTurn){
-         return  originalTurn.replace(this.stringToBeReplaced, stringReplacement);
+        // return  originalTurn.replace(this.stringToBeReplaced, stringReplacement);
+        return originalTurn.replaceAll(this.stringToBeReplaced, stringReplacement); 
     }
     
     
