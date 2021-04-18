@@ -31,10 +31,12 @@ public class IntelligentTextFileWriter extends Thread{
         try{
             this.f=f; 
             CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
-            encoder.onMalformedInput(CodingErrorAction.REPORT);
-            encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+            //encoder.onMalformedInput(CodingErrorAction.REPORT);
+            //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
 
-            textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.f),encoder));
+            byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+            this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
+            
            
             
             
@@ -101,7 +103,9 @@ public class IntelligentTextFileWriter extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),Charset.forName("UTF-8").newEncoder()));
+                byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+                this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
+            
                 if(f.canWrite()) wasSuccessfulReestablishing = true;
              }catch(Exception e){
                  System.err.println("Trying to re-establish file "+f.getName());

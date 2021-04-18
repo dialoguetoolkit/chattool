@@ -98,7 +98,8 @@ public class PCTask implements JTrialTimerActionRecipientInterface{
             this.jpct.setLevel((int)this.level);
           
           
-          pcset = new PCSetOfMoves(cC);
+           //Had to comment the code below out because PCSetOfMoves expects a PCSetOfMovesTG
+         //pcset = new PCSetOfMoves(cC);
           
           
           

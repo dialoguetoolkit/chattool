@@ -18,11 +18,12 @@ import java.util.Vector;
 public class PCSetOfMoves {
   
     
-    DefaultConversationController cC;
+    //DefaultConversationController cC;
     Vector<Move> moves = new Vector<Move>();
+    PCTaskTG pctg;
     
-    public PCSetOfMoves(DefaultConversationController cC) {
-        this.cC = cC;
+    public PCSetOfMoves(PCTaskTG pctg) {
+        this.pctg=pctg;
     }
     
     
@@ -32,6 +33,9 @@ public class PCSetOfMoves {
     
     
     public boolean evaluate(Participant p, String text){
+        
+        text = text.toLowerCase();
+        
         Move crnt = null;
         for(int i=0;i<moves.size();i++){
             if(!moves.elementAt(i).isSolved()){
@@ -43,6 +47,7 @@ public class PCSetOfMoves {
         
         if(crnt == null){
             Conversation.printWSln("Main", "This really shouldn't happen!");
+            Conversation.saveErr("The set of moves had no elements in it...");
             return false; //this shouldn't happen
         
             
@@ -131,6 +136,43 @@ public class PCSetOfMoves {
             sequencedesc = sequencedesc+moves.elementAt(i).getDesc();
         }
         return sequencedesc;
+    }
+    
+    
+    public void checkForTimeouts(){
+        Move crnt = null;
+        for(int i=0;i<moves.size();i++){
+            if(!moves.elementAt(i).isSolved()){
+                crnt=moves.elementAt(i);
+                break;
+            }
+        }
+       
+        
+        if(crnt == null){
+            Conversation.printWSln("Main", "This really shouldn't happen!");
+            Conversation.saveErr("This really shouldn`t happen The set of moves had no elements in it...while checking for timeouts");
+            return;
+        
+            
+        } 
+        if(crnt instanceof MoveANDSAME){
+            MoveANDSAME crntMVEANDSAME = (MoveANDSAME)crnt;
+            boolean hastimedout= crntMVEANDSAME.isTimedOut();
+            if(hastimedout){
+                crntMVEANDSAME.setSolved(false);
+                this.pctg.displayMovesOnClients_DIRECTOR();
+            }    
+            
+        }
+        if(crnt instanceof MoveANDDIFFERENT){
+            MoveANDDIFFERENT crntMVEANDDIFFERENT = (MoveANDDIFFERENT)crnt;
+            boolean hastimedout= crntMVEANDDIFFERENT.isTimedOut();
+            if(hastimedout){
+                crntMVEANDDIFFERENT.setSolved(false);
+                this.pctg.displayMovesOnClients_DIRECTOR();
+            }          
+        }
     }
     
     

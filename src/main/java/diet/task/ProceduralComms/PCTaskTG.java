@@ -7,12 +7,13 @@
 package diet.task.ProceduralComms;
 
 import diet.attribval.AttribVal;
-import diet.server.ConversationController.DefaultConversationController;
+import diet.server.Conversation;
 import diet.server.ConversationController.Telegram_Dyadic_PROCOMM;
 import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.Participant;
 import diet.tg.TelegramParticipant;
 import diet.utils.HashtableWithDefaultvalue;
+import diet.utils.VectorToolkit;
 import java.util.Random;
 import java.util.Vector;
 
@@ -29,30 +30,50 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       static HashtableWithDefaultvalue htwdcLARGESTSUCCESS = new HashtableWithDefaultvalue((long)0);
       static HashtableWithDefaultvalue htwdcCORRECTMINUSINCORRECT = new HashtableWithDefaultvalue((long)0);
       //static HashtableWithDefaultvalue htwdcLARGESTSETSIZETOBEASSIGNED = new HashtableWithDefaultvalue((long)1);
-      static HashtableWithDefaultvalue htwnumberOfSets = new HashtableWithDefaultvalue((long)1);
+      static HashtableWithDefaultvalue htwnumberOfSets = new HashtableWithDefaultvalue((long)0);
       public  static HashtableWithDefaultvalue htCurrentLevel = new HashtableWithDefaultvalue((int)0);
       
       //static HashtableWithDefaultvalue htwdcLARGESTMOSTRECENTSUCCES = new HashtableWithDefaultvalue(0);
     
-      public String sharedWhitelist = "fgh";
-      public String pAWhitelist = "asd";
-      public String pBWhitelist = "jkl";
-      static public String allowedMetaChars =  CustomDialog.getString("What is the META character?", "?");//"?";//?yn"; 
+      public String sharedWhitelist = "cd";
+      public String pAWhitelist = "ab";
+      public String pBWhitelist = "yx";
+      static public String allowedMetaChars =  "";//CustomDialog.getString("What is the META character?", "?");//"?";//?yn"; 
     
       PCSetOfMoves pcset ;
       public TelegramParticipant pA;
       public TelegramParticipant pB;
       
-      public Participant mostRecentDirector=null;
+      
+      TelegramParticipant director;
+      TelegramParticipant matcher;
+      
+      //public Participant mostRecentDirector=null;
       Telegram_Dyadic_PROCOMM cC;
       
       long durationOfTrial = 90 *1000;
       
       JTrialTimer jt;
       
+      DifficultySettings ds = new DifficultySettings();
+      
       //model = only items that are in shared
       
+       int level =0;
+       
+       boolean ispracticestage = true;
+       int maxLengthPracticeStageSequence = 5;
+       long maxLengthPracticeStageAchievedByA= 0;
+       long maxLengthPracticeStageAchievedByB= 0;
+       
+       public static int windowForJointSelection = 10000;
+       
+        static int numberOfLevelsToDecreaseOnError = 1;//CustomDialog.getInteger("How many levels to decrease on error?", 1);
+       static int streakofsuccessesbeforegoinguplevel = 2;
+       static int currentstreak=0;
       
+       public boolean debug = true;
+       
       
       public PCTaskTG(Telegram_Dyadic_PROCOMM cC, TelegramParticipant pA, TelegramParticipant pB, boolean startTimer){
           this( cC,  pA,  pB);
@@ -64,11 +85,9 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       public PCTaskTG(Telegram_Dyadic_PROCOMM cC, TelegramParticipant pA, TelegramParticipant pB){
           super(); 
-          cC.c.textOutputWindow_ChangeText("instructions", "",false, pA );
-          cC.c.textOutputWindow_ChangeText("instructions", "",false, pB );
-          jt = new JTrialTimer("Timer: "+pA.getParticipantID()+","+pA.getUsername()+"--"+pB.getParticipantID()+","+pB.getUsername(),this, durationOfTrial);
-      
-          
+          //cC.c.textOutputWindow_ChangeText("instructions", "",false, pA );
+          //cC.c.textOutputWindow_ChangeText("instructions", "",false, pB );
+          jt = new JTrialTimer("Timer: "+pA.getParticipantID()+","+pA.getUsername()+"--"+pB.getParticipantID()+","+pB.getUsername(),this, durationOfTrial);     
           this.cC=cC;
          
           //boolean defaultSettings = CustomDialog.getBoolean("Do you want to use default settings?", "yes", "no");
@@ -78,7 +97,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                   ///  this.sharedWhitelist = CustomDialog.getString("SHAREDWHITELIST", this.sharedWhitelist);
                   ///  this.pAWhitelist= CustomDialog.getString("PAWHITELIST", pAWhitelist);
                   ///  this.pBWhitelist= CustomDialog.getString("PBWHITELIST", pBWhitelist);
-                    this.allowedMetaChars = CustomDialog.getString("ALLOWEDMETACHARACTERS", this.allowedMetaChars);
+                   // this.allowedMetaChars = CustomDialog.getString("ALLOWEDMETACHARACTERS", this.allowedMetaChars);
                     
                     ///numberONLYOtherBothShared =  CustomDialog.getInteger("How many ONLY By Other shared?",  2);
                     ///numberONLYOtherNotShared= CustomDialog.getInteger("How many ONLY By Other not shared?",  2);
@@ -88,89 +107,130 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           } 
             this.pA=pA;
             this.pB=pB;
+            this.director=pA;
+            this.matcher=pB;
+            
+            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pA, VectorToolkit.getVectorOfCharactersFromString(pAWhitelist+sharedWhitelist+allowedMetaChars));
+            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pB, VectorToolkit.getVectorOfCharactersFromString(pBWhitelist+sharedWhitelist+allowedMetaChars));
+
+            
+            
             jpct = new JPCTaskTG(this); 
       
             int pALevel = (int)PCTaskTG.htCurrentLevel.getObject(pA);
             int pBLevel = (int)PCTaskTG.htCurrentLevel.getObject(pB);
             
             int minLevel = Math.min(pALevel, pBLevel);
-            this.level=(int)minLevel;
-            this.jpct.setLevel((int)this.level);
+           
+            if(debug)this.level=(int)minLevel;
+            if(debug)this.jpct.setLevel((int)this.level);
           
           
-          pcset = new PCSetOfMoves(cC);
+          pcset = new PCSetOfMoves(this);
           
           
           
           
           
           this.createNewSequence(false);
-          displayMovesOnServer(pA, pB);     
+          displayMovesOnServer();     
+          
+          Thread t = new Thread(){public void run(){checkForTimeouts();}};t.start();
       }
       
       //boolean displayDebug = false;//CustomDialog.getBoolean("Display debug info");
       
-      public synchronized void evaluate(Participant p,String text){
-          
+      public synchronized boolean evaluate(TelegramParticipant p,String textanycase){         
           synchronized(this.jt){
-               
-               boolean success = pcset.evaluate(p, text);
-               if(this.mostRecentDirector==pA){
-                   displayMovesOnServer(pA, pB);     
-               }
-               else{
-                   displayMovesOnServer(pB, pA);   
-               }
               
+              if(textanycase==null || textanycase.equalsIgnoreCase("") || textanycase.length()>1){
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message must be a single letter. Please try again!");
+                  return false;
+              }
+              
+              String text = textanycase.toUpperCase();
+              
+              String pAPossibleChars = (this.pAWhitelist+sharedWhitelist).toUpperCase();
+              String pBPossibleChars = (this.pBWhitelist+sharedWhitelist).toUpperCase();
+              
+              if(p==pA && !pAPossibleChars.contains(text.toUpperCase())){
+                  String permittedchars = "";
+                  for(int i=0;i<pAPossibleChars.length();i++){
+                      
+                       permittedchars = permittedchars+pAPossibleChars.charAt(i); 
+                  }
+                                   
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+permittedchars.toUpperCase());
+                  return false; 
+              }
+              else  if(p==pB && !pBPossibleChars.contains(text.toUpperCase())){
+                  String permittedchars = "";
+                  for(int i=0;i<pBPossibleChars.length();i++){
+                      
+                       permittedchars = permittedchars+pBPossibleChars.charAt(i); 
+                  }
+                                   
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+permittedchars.toUpperCase());
+                  return false; 
+              }
+              
+            
+              
+               boolean success = pcset.evaluate(p, text);
+               
+               displayMovesOnServer();     
+               displayMovesOnClients();      
+                          
+      
                if(success) {
                     
                     System.err.println("LEVEL:");
-                    //cC.c.changeClientInterface_clearMainWindows(pA);
-                    //cC.c.changeClientInterface_clearMainWindows(pB);
                     int sizesucc = pcset.moves.size();
                     updateScoresSuccess(pA,pB, sizesucc);
                     
-                    
-                    
-                    //cC.changePinnedMessage(pA,"CORRECT! Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA) );
-                    //cC.changePinnedMessage(pB,"CORRECT! Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB) );
-                    
+                 
                                        
                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA,"CORRECT!");
                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB,"CORRECT!" );
        
                     
-                    
-                    //cC.c.sendInstructionToParticipant(pA,"CORRECT! Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA) );
-                    //cC.c.sendInstructionToParticipant(pB,"CORRECT! Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB) );
-
-                     //cC.c.textOutputWindow_ChangeText("instructions", "CORRECT: " ,false, pA );   
-                     //cC.c.textOutputWindow_ChangeText("instructions", "CORRECT: " ,false, pB );   
                     createNewSequence(true);
                     this.jt.nextTrial();
                }    
                else{
-                   if(this.mostRecentDirector==pA){
-                           this.displayMovesOnClients(pA, pB);                      
+                   if(debug) {
+                        //cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA,"INCORRECT!");
+                        //cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB,"INCORRECT!" );
                    }
-                   else{
-                           this.displayMovesOnClients(pB, pA);
-                       
-                   }
+                   
                    
                }
           }
-              
+           return true;
       }
     
       
       
+      public void updateScoresSuccess_PRACTICE(Participant pAA, Participant pBB, long sizeOfSet){
+          if(director==pA) {
+              this.maxLengthPracticeStageAchievedByA = sizeOfSet;
+          }
+          else{
+              this.maxLengthPracticeStageAchievedByB = sizeOfSet;
+          }
+      }
     
       
       
       
     
-      public void updateScoresSuccess(Participant pAA, Participant pBB, long sizeOfSet){           
+      public void updateScoresSuccess(Participant pAA, Participant pBB, long sizeOfSet){  
+            if(ispracticestage){
+                this.updateScoresSuccess_PRACTICE(pAA, pBB, sizeOfSet);
+                return;
+            }
+           
+          
              long pALargest = (long)htwdcLARGESTSUCCESS.getObject(pAA);
              long pBLargest = (long)htwdcLARGESTSUCCESS.getObject(pBB);
              
@@ -227,23 +287,40 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       }
       
       
-      static int numberOfLevelsToDecreaseOnError = CustomDialog.getInteger("How many levels to decrease on error?", 1);
+     
       
-      
-      public void createNewSequence(boolean previousWasSuccess ){
-            if(previousWasSuccess){
-                this.level++;
-                this.jpct.setLevel(this.level);
+      public synchronized void createNewSequence(boolean previousWasSuccess ){
+              
+          
+            if(previousWasSuccess&& !this.ispracticestage){
+                currentstreak++;
+                if(currentstreak>=streakofsuccessesbeforegoinguplevel){
+                    this.level++;
+                    this.jpct.setLevel(this.level);
+                    currentstreak=0;
+                }
+                
+                
+                
                
             }
-            else{
+            else if ( !ispracticestage){
                 //this.level--;
-                
+                currentstreak=0;
                 this.level=this.level-numberOfLevelsToDecreaseOnError;
                 if(this.level<=0)this.level=0;
                 this.jpct.setLevel(this.level);
             }
              
+            
+          ;
+            this.level=19;
+            this.jpct.setLevel(2);
+            ispracticestage=false;
+            
+            
+            
+            
              PCTaskTG.htCurrentLevel.putObject(pA, this.level);
              PCTaskTG.htCurrentLevel.putObject(pB, this.level);
           
@@ -252,24 +329,11 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
              
              System.err.println("SAVINGLEVELOF:"+pA.getUsername()+" is "+level);
              System.err.println("SAVINGLEVELOF:"+pB.getUsername()+" is "+level);
-             
-             
-             
-            // cC.changePinnedMessage(pA,"Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA) );
-            // cC.changePinnedMessage(pB,"Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB) );
-            
+                       
             cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA));
             cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB));
-            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next sequence");
-            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next sequence");
+            
                 
-                
-             
-             //cC.c.textOutputWindow_ChangeText("instructions", "Your score is: "+pAScore +"\n",true, pA );   
-             //cC.c.textOutputWindow_ChangeText("instructions", "Your score is: "+pBScore +"\n",true, pB );   
-          
-          
-            //this.createRandom_MoveANDSequence();
              long pANumberOfTrials = (long)PCTaskTG.htwnumberOfSets.getObject(pA)+1;
              long pBNumberOfTrials = (long)PCTaskTG.htwnumberOfSets.getObject(pB)+1;
              
@@ -286,300 +350,280 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             else{
                 this.createRandom_MoveSequence();
             }
-                    
             
-            
-            
-            
-            if(this.mostRecentDirector==pA){
-                   displayMovesOnServer(pA, pB);     
-               }
+            if(!ispracticestage){
+            if(pA==director){
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: You are the instructor");
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: Your partner is the instructor");
+            }
+            else {
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: You are the instructor");
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: Your partner is the instructor");
+            }
+            }
             else{
-                   displayMovesOnServer(pB, pA);   
-           }
+                if(pA==director){
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Complete the sequence");
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Your partner is practising");
+                }
+                else{
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Complete the sequence");
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Your partner is practising");
+                }
+                
+            }
+            
+            
+            
+            displayMovesOnServer(); 
+            displayMovesOnClients();
+            
+            
+           
             
            
       }
      
       
-      //mode0 = Other does moves  that are shared by both
-  
-      //mode 1= Other also does moves that are not shared by both
-      //mode 2 = only moves that are shared and not shared by both
-      
-      //mode 3 =  the AND are the same letters
-      //mode 4 = the AND are different (complementary) letters
-      
-      
-      //private  int maxNumberOfAND =0;
-      //private int maxNumberOfONLY_OTHER = 1;
-      
-      
-     // need to change the processing...
-     // if there is an error then the sequence should check whether it is the legit first move of the sequence..
-      
-     /* public int numberONLYOtherBothShared =0;
-      public int numberONLYOtherNotShared=0;
-      public int numberONLYSelf=0;
-      public int numberANDSame=0;
-      public int numberANDDifferent=0;
-      */
+    
+ 
       
 
       
-      int level =0;
-      int[][] levelsettings = new int[][]  { 
-          //size ...number of 
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1},
-          {1,1}, // size 1....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type
-          {2,1}, // size 2....1 type  
-          {2,2}, // size 2....2types
-          {2,2}, // size 2....2types
-          {2,2}, // size 2....2types
-          {2,2}, // size 2....2types
-          {2,2}, // size 2....2types
-          {2,2}, // size 2....2types
-          {2,2}, // size 2....2types
-          {3,1}, // size 3.....1 type
-          {3,1}, // size 3.....1 type
-          {3,2}, // size 3.....2 types
-          {3,2}, // size 3.....2 types
-          {3,3}, // size 3....3 types
-          {3,3}, // size 3....3 types
-          {4,1}, // size 4.....1 type
-          {4,1}, // size 4.....1 type
-          {4,2}, // size 4.....2 types
-          {4,2}, // size 4.....2 types
-          {4,3}, // size 4....3 types
-          {4,3}, // size 4....3 types
-          {4,4}, // size 4....4 types
-          {4,4}, // size 4....4 types
-          
-          {5,1}, // size 5.....1 type
-          {5,1}, // size 5.....1 type
-          
-          {5,2}, // size 5.....2 types
-          {5,2}, // size 5.....2 types
-          {5,3}, // size 5....3 types
-          {5,3}, // size 5....3 types
-          {5,4}, // size 5....4 types
-          {5,4}, // size 5....4 types
-          {5,5}, // size 5....5 types
-          {5,5}, // size 5....5 types
-          
-          {6,1}, // size 6....1 types
-          {6,1}, // size 6....1 types
-          {6,2}, // size 6....2 types
-          {6,3}, // size 6....3 types
-          {6,3}, // size 6....3 types
-          {6,4}, // size 6....4 types
-          {6,4}, // size 6....4 types
-          {6,5}, // size 6....5 types
-          {6,5}, // size 6....5 types
-        
-          {7,1}, // size 7....1 types
-          {7,1}, // size 7....1 types
-          {7,2}, // size 7....2 types
-          {7,2}, // size 7....2 types
-          {7,3}, // size 7....3 types
-          {7,3}, // size 7....3 types
-          {7,4}, // size 7....4 types
-          {7,4}, // size 7....4 types
-          {7,5}, // size 7....5 types
-          {7,5}, // size 7....5 types
-        
-          {8,1}, // size 8....1 types
-          {8,1}, // size 8....1 types
-          {8,2}, // size 8....2 types
-          {8,2}, // size 8....2 types
-          {8,3}, // size 8....3 types
-          {8,3}, // size 8....3 types
-          {8,4}, // size 8....4 types
-          {8,4}, // size 8....4 types
-          {8,5}, // size 8....4 types
-          {8,5}, // size 8....4 types
-         
-        
-          {9,1}, // size 9....1 types
-          {9,1}, // size 9....1 types
-      };
+     
+     
       
       public void setLevel(int lev){
           this.level=lev;
       }
      
       
-     
+       
+
       
-      
-      
-      
-        public void createRandom_MoveSequence(){
-            Participant director;
-            Participant matcher;
+       
+       public void createRandom_MoveSequence_PracticeStage(){
+            
             String directorWhitelist;
             String matcherWhitelist;
-            if(mostRecentDirector==pB || mostRecentDirector==null){
+            if(director==pB || director==null){
                 director=pA; matcher=pB;
-                directorWhitelist = this.pAWhitelist;
-                matcherWhitelist = this.pBWhitelist;
+                directorWhitelist = this.pAWhitelist+this.sharedWhitelist;
+                matcherWhitelist = this.pBWhitelist+this.sharedWhitelist;
             }
             else{
                 director=pB; matcher=pA;
-                directorWhitelist = this.pBWhitelist;
-                matcherWhitelist = this.pAWhitelist;
+                directorWhitelist = this.pBWhitelist+this.sharedWhitelist;
+                matcherWhitelist = this.pAWhitelist+this.sharedWhitelist;
             }
-            Vector<MoveONLY> numberONLYOtherBothSharedV = new Vector();
-            Vector<MoveONLY> numberONLYOtherNotSharedV = new Vector();
+            
+            long maxLengthAchievedByBoth = Math.min(this.maxLengthPracticeStageAchievedByA, this.maxLengthPracticeStageAchievedByB);
+            
+            
             Vector<MoveONLY> numberONLYSelfV = new Vector();
-            Vector<MoveANDSAME> numberANDSameV = new Vector();
-            Vector numberANDDifferentV = new Vector(); 
-            
-            
-            //this.levelsettings[level][0];
-            
-            int level_setsize = this.levelsettings[level][0];
-            int level_typesize =  this.levelsettings[level][1];
-            
-            
-            System.err.println("NEXTSETNEXTSETNEXTSET:---------------");
-            System.err.println("LevelTypeSize: "+level_typesize);
-            System.err.println("LevelSetSize: "+level_setsize);
-            
-            int level_activetypes_count=0;
-            boolean[] level_activetypes = {false,false,false,false,false};
-            if(this.level<10){
-                level_activetypes[0] = true;
-                level_activetypes_count=1;
-            }
-            
-            
-            while(level_activetypes_count<level_typesize){
-                 int activeIDX = r.nextInt(level_activetypes.length);
-                 level_activetypes[activeIDX ]=true;
-                 level_activetypes_count=0;
-                 for(int i=0;i<level_activetypes.length;i++){
-                    System.err.println("------------LEVELACTIVETYPES:---------------");
-                    System.err.println(i+": "+level_activetypes[i]);
-                    if(level_activetypes[i]) level_activetypes_count++;
-                 }    
-            }
-            
-            
-            
             
             
            
-            while(numberONLYOtherBothSharedV.size() + numberONLYOtherNotSharedV.size() + numberONLYSelfV.size()  +  numberANDSameV.size()  +     numberANDDifferentV.size()            <level_setsize){
-                int indexType = r.nextInt(5);
+            for(int i=0;i<maxLengthAchievedByBoth+1;i++){
+                int indexOfChar = r.nextInt(directorWhitelist.length());
+                String s = ""+directorWhitelist.charAt(indexOfChar);
+                MoveONLY mo = new MoveONLY(this.pcset,director,s);
+                numberONLYSelfV.add(mo);
+            }
                 
-                if(indexType==0 &&level_activetypes[0]){
-                     int index = r.nextInt(this.sharedWhitelist.length());
-                     String s = ""+sharedWhitelist.charAt(index);
-                     MoveONLY mo = new MoveONLY(this.pcset,matcher,s);
-                     numberONLYOtherBothSharedV.add(mo);
-                }
-                else if(indexType==1 &&level_activetypes[1]){
-                    int index = r.nextInt(matcherWhitelist.length());
-                    String s = ""+matcherWhitelist.charAt(index);
-                    MoveONLY mo = new MoveONLY(this.pcset,matcher,s);
-                    numberONLYOtherNotSharedV.add(mo);
-                }
-                else if(indexType==2 && level_activetypes[2]){
-                    int index = r.nextInt(directorWhitelist.length());
-                    String s = ""+directorWhitelist.charAt(index);
-                    MoveONLY mo = new MoveONLY(this.pcset,director,s);
-                    numberONLYSelfV.add(mo);
-                 }
-                else if(indexType==3 &&level_activetypes[3]&r.nextBoolean()&r.nextBoolean()){
-                    int index = r.nextInt(sharedWhitelist.length());
-                    String s = ""+sharedWhitelist.charAt(index);
-                    MoveANDSAME mas = new MoveANDSAME(this.pcset,director,matcher,s);
-                    numberANDSameV.add(mas);
-                 }   
-                else if(indexType==4 &&level_activetypes[4]&r.nextBoolean() &&r.nextBoolean()){
-                    int indexD = r.nextInt(directorWhitelist.length());
-                    String sD = ""+directorWhitelist.charAt(indexD);
-                    String matcherWhitelistFiltered = (matcherWhitelist+"").replace(sD, "");
-                    int indexM = r.nextInt(matcherWhitelistFiltered.length());
-                    String sM = ""+matcherWhitelistFiltered.charAt(indexM);                
-                    MoveANDDIFFERENT mad = new MoveANDDIFFERENT(this.pcset,director, sD, matcher,sM);
-                    numberANDDifferentV.add(mad);
-                  }
-            }
-            
-           
-            
-            
-            
-            
-            
-            
-            
             
             Vector finalMoveSet = new Vector();
-            for(int i=0;i< numberONLYOtherBothSharedV.size();i++){
-                int index = r.nextInt(finalMoveSet.size()+1);
-                finalMoveSet.insertElementAt(numberONLYOtherBothSharedV.elementAt(i) ,index  );
-            }
-            for(int i=0;i< numberONLYOtherNotSharedV.size();i++){
-                int index = r.nextInt(finalMoveSet.size()+1);
-                finalMoveSet.insertElementAt(numberONLYOtherNotSharedV.elementAt(i) ,index  );
-            }
+            
             for(int i=0;i< numberONLYSelfV.size();i++){
                 int index = r.nextInt(finalMoveSet.size()+1);
                 finalMoveSet.insertElementAt(numberONLYSelfV.elementAt(i) ,index  );
             }
-            for(int i=0;i< numberANDSameV.size();i++){
-                int index = r.nextInt(finalMoveSet.size()+1);
-                finalMoveSet.insertElementAt(numberANDSameV.elementAt(i) ,index  );
-            }
-            for(int i=0;i< numberANDDifferentV.size();i++){
-                int index = r.nextInt(finalMoveSet.size()+1);
-                finalMoveSet.insertElementAt(numberANDDifferentV.elementAt(i) ,index  );
-            }
+            
             this.pcset.moves=finalMoveSet;
-            this.displayMovesOnClients(director, matcher);
-            this.mostRecentDirector=director;
+            this.displayMovesOnClients();
+           
        }
       
       
       
+       public void createRandom_MoveSequence(){
+           if(ispracticestage & Math.min(this.maxLengthPracticeStageAchievedByA, this.maxLengthPracticeStageAchievedByB)>=maxLengthPracticeStageSequence){
+               this.ispracticestage=false;
+               CustomDialog.showDialog("START THE EXPERIMENT!");
+               cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "The game starts!");
+               cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "The game starts!");
+               createRandom_MoveSequence_Experiment();
+           }
+           else if(this.ispracticestage){
+               createRandom_MoveSequence_PracticeStage();
+           }
+           else{
+               createRandom_MoveSequence_Experiment();
+           }
+               
+           
+       }
+       
+       double singlenotes_probabilityshared,  simultaneousnotes_probabilityshared =0.5;
       
+        public void createRandom_MoveSequence_Experiment(){
+              
+            
+            if(director==pB || director==null){
+                director=pA; matcher=pB;     
+            }
+            else{
+                director=pB; matcher=pA;
+              
+            }
+            
+            
+                   Vector vseq = (Vector) ds.returnSequenceForLevelOrLower(level);
+                  
+                   Vector<String> directorpermittedkeys = new Vector();
+                   Vector<String> matcherpermittedkeys = new Vector();
+                   
+                   String pANotes = this.pAWhitelist+this.sharedWhitelist;
+                   String pBNotes = this.pBWhitelist+this.sharedWhitelist;
+                   
+                   if(pA==director){
+                       for(int i=0;i<pANotes.length();i++){
+                            directorpermittedkeys.add(pANotes.charAt(i)+"");
+                       }
+                        for(int i=0;i<pBNotes.length();i++){
+                            matcherpermittedkeys.add(pBNotes.charAt(i)+"");
+                       }
+                   }
+                   else{
+                       
+                       for(int i=0;i<pANotes.length();i++){
+                            matcherpermittedkeys.add(pANotes.charAt(i)+"");
+                       }
+                        for(int i=0;i<pBNotes.length();i++){
+                            directorpermittedkeys.add(pBNotes.charAt(i)+"");
+                       }
+                   
+                   }
+                   
+                   
+                   Vector newAllMoves = this.generateNotesFromSequence(vseq , singlenotes_probabilityshared, singlenotes_probabilityshared, simultaneousnotes_probabilityshared, directorpermittedkeys, matcherpermittedkeys);
+
+                   Vector finalMoveSet = new Vector();
+                   
+                   for(int i=0;i<newAllMoves.size();i++){
+                       int index = 0;
+                       if(i>0)index = r.nextInt(finalMoveSet.size());
+                       finalMoveSet.insertElementAt(newAllMoves.elementAt(i), index);
+                   }
+                   this.pcset.moves=finalMoveSet;
+                   
+                   
+        }
+       
       
+        public Vector<Move> generateNotesFromSequence(    Vector<String> seq, double probOfSharedNotesDirector, double probOfSharedNotesMatcher, double probOfSharedNotesSimultaneous, Vector<String> directorpermittedkeys, Vector<String> matcherpermittedkeys){
+          
+       
+        
+         Vector<String> sharednotes = new Vector();
+        for(int i = 0;i<directorpermittedkeys.size();i++){
+            //System.err.println("idirectorpermittedkeys"+directorpermittedkeys.elementAt(i));
+            
+            for(int j=0;j<matcherpermittedkeys.size();j++){
+                System.err.println("imatcherpermittedkeys"+matcherpermittedkeys.elementAt(j));
+                if(directorpermittedkeys.elementAt(i).equalsIgnoreCase(matcherpermittedkeys.elementAt(j))){
+                    sharednotes.addElement(directorpermittedkeys.elementAt(i));
+                    System.err.println("SHAREDNOTE: "+directorpermittedkeys.elementAt(i));
+                }
+            }
+        }
+       
+        Vector<String> directorNonSharedNotes = new Vector();
+        for(int i=0;i<directorpermittedkeys.size();i++){
+            if(!sharednotes.contains(directorpermittedkeys.elementAt(i))){
+                 directorNonSharedNotes.addElement(directorpermittedkeys.elementAt(i));
+            }
+        }
+        Vector<String> matcherNonSharedNotes = new Vector();
+        for(int i=0;i<matcherpermittedkeys.size();i++){
+            if(!sharednotes.contains(matcherpermittedkeys.elementAt(i))){
+                 matcherNonSharedNotes.addElement(matcherpermittedkeys.elementAt(i));
+            }
+        }
+       
+        Vector allNewNotes = new Vector();
+        
+        
+         //generateAllVariants(vsclone, "MSS");
+        //generateAllVariants(vsclone, "MSN");
+        //generateAllVariants(vsclone, "DS");
+        //generateAllVariants(vsclone, "DMS");
+        //generateAllVariants(vsclone, "DMD");
+        
+        
+        for(int i=0;i<seq.size();i++){
+              String s = seq.elementAt(i);
+              
+              boolean doSharedDirector = false;
+              boolean doSharedMatcher = false;
+              boolean doSharedSimultaneous = false;
+              double rseed = r.nextDouble();
+              
+              if(rseed<probOfSharedNotesDirector) doSharedDirector = true;
+              //rseed = r.nextDouble();
+              if(rseed<probOfSharedNotesMatcher) doSharedMatcher = true;
+              //rseed = r.nextDouble();
+              if(rseed<probOfSharedNotesSimultaneous) doSharedSimultaneous = true;
+               System.err.println("SEED"+rseed);
+              
+              //doSharedMatcher = true;
+              
+              if (s.equalsIgnoreCase("DS")){
+                   if(doSharedDirector)allNewNotes.addElement(new MoveONLY(pcset, director, sharednotes.elementAt(r.nextInt(sharednotes.size()))));
+                   else allNewNotes.addElement(new MoveONLY(pcset, director,directorNonSharedNotes.elementAt(r.nextInt(directorNonSharedNotes.size()))));
+              }
+              else if (s.equalsIgnoreCase("MS")){
+                   if(doSharedMatcher){
+                       allNewNotes.addElement(new MoveONLY(pcset, matcher, sharednotes.elementAt(r.nextInt(sharednotes.size()))));
+                      
+                   }
+                   else allNewNotes.addElement(new MoveONLY(pcset, matcher, matcherNonSharedNotes.elementAt(r.nextInt(matcherNonSharedNotes.size()))));
+              }
+              else if (s.equalsIgnoreCase("DMS")){               
+                  if(doSharedSimultaneous){
+                       String directornote = sharednotes.elementAt(r.nextInt(sharednotes.size()));
+                       String matchernote = sharednotes.elementAt(r.nextInt(sharednotes.size()));
+                       if(directornote.equalsIgnoreCase(matchernote)){
+                           allNewNotes.addElement(new MoveANDSAME(pcset, director, matcher,directornote));
+                       }
+                       else{
+                           allNewNotes.addElement(new MoveANDDIFFERENT(pcset, director, directornote, matcher, matchernote));
+                       }
+                       
+                  }
+                  else{
+                       String directornote = directorNonSharedNotes.elementAt(r.nextInt(directorNonSharedNotes.size()));
+                       String matchernote = matcherNonSharedNotes.elementAt(r.nextInt(matcherNonSharedNotes.size()));
+                       allNewNotes.addElement(new MoveANDDIFFERENT(pcset, director, directornote, matcher, matchernote));
+                  }
+                  
+                  
+              }
+              
+              
+              
+          }
+        //System.err.println(this.allPossSequences.size()+": "+debugseqno+ " GENERATED NOTES: "+allNotes.size());
+        debugseqno++;
+        return allNewNotes;
+    }
+        
+        int debugseqno = 0;
+       
       
-        public void displayMovesOnClients(Participant director, Participant matcher){
+       
+      
+        public void displayMovesOnClientsTLi(){
            
           
            String pAOutput = "";
@@ -615,12 +659,16 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                if(mve instanceof MoveONLY){
                     MoveONLY mo = (MoveONLY)mve;
                     if(mo.getPerformer()==matcher){
-                         if(mo.isSolved())   output = output +    renderMove(mo.getText().toUpperCase(), " ");
-                         else                output = output +    renderMove(mo.getText().toLowerCase(), " ");
+                         if(mo.isSolved())   output = output +    renderMove("&#8594"+mo.getText().toUpperCase(), "&#9633");
+                         else                output = output +    renderMove("&#8674"+mo.getText().toLowerCase(), "&#9633");
+                         //if(mo.isSolved())   output = output +    renderMove("=", "=");
+                         //else                output = output +    renderMove(mo.getText(), "&#9633");
                     }
                     else{
-                       if(mo.isSolved()) output = output + renderMove(" ",mo.getText().toUpperCase());
-                       else              output = output + renderMove(" ",mo.getText().toLowerCase());
+                       if(mo.isSolved()) output = output + renderMove("&#8594"+"[",mo.getText().toUpperCase()+"]");
+                       else              output = output + renderMove("&#8674"+"[",mo.getText().toLowerCase()+"]");
+                       //if(mo.isSolved()) output = output + renderMove("=","=");
+                       //else              output = output + renderMove("&#9633",mo.getText());
                     }
                          
                }
@@ -629,16 +677,24 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                     
                     
                     if(mas.isPartiallySolved(matcher) && mas.isPartiallySolved(director) ){
-                        output = output +   renderMove(mas.getText().toLowerCase(), mas.getText().toLowerCase());
+              
+                        
+                        output = output +   renderMove("&#8658"+mas.getText().toUpperCase(), mas.getText().toUpperCase());
+                        //output = output +   renderMove("=", "=");
+                        
+                        
                     }
-                    else if(mas.isPartiallySolved(matcher) &! mas.isPartiallySolved(director) ){
-                         output = output +   renderMove(mas.getText().toUpperCase(), mas.getText().toLowerCase());
+                    else if(mas.isPartiallySolved(matcher) & !mas.isPartiallySolved(director) ){
+                         output = output +   renderMove("&#8594"+mas.getText().toUpperCase(), mas.getText().toLowerCase());
+                         //output = output +   renderMove("=", mas.getText());
                     }
                     else if(!mas.isPartiallySolved(matcher) && mas.isPartiallySolved(director) ){
-                       output = output +   renderMove(mas.getText().toLowerCase(), mas.getText().toUpperCase());
+                       output = output +   renderMove("&#8594"+mas.getText().toLowerCase(), mas.getText().toUpperCase());
+                       //output = output +   renderMove(mas.getText(), "=");
                     }
                     else{
-                        output = output +   renderMove(mas.getText().toUpperCase(), mas.getText().toUpperCase());
+                        output = output +   renderMove("&#8594"+mas.getText().toLowerCase(), mas.getText().toLowerCase());
+                        //output = output +   renderMove(mas.getText(), mas.getText());
                     }
                     
                     
@@ -646,17 +702,22 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                else if(mve instanceof MoveANDDIFFERENT){
                     MoveANDDIFFERENT mad = (MoveANDDIFFERENT)mve;     
                     if(mad.isPartiallySolved(matcher) && mad.isPartiallySolved(director) ){
-                        output = output +   renderMove(mad.getText(matcher).toLowerCase(), mad.getText(director).toLowerCase());
                         
+                        output = output +   renderMove("&#8658"+mad.getText(matcher).toUpperCase(), mad.getText(director).toUpperCase());
+                        //output = output +   renderMove("=", "=");
                     }
-                    else if(mad.isPartiallySolved(matcher) &! mad.isPartiallySolved(director) ){
-                        output = output +   renderMove(mad.getText(matcher).toUpperCase(), mad.getText(director).toLowerCase());
+                    else if(mad.isPartiallySolved(matcher) & !mad.isPartiallySolved(director) ){
+                        output = output +   renderMove("&#8594"+mad.getText(matcher).toUpperCase(), mad.getText(director).toLowerCase());
+                    //output = output +   renderMove("=", mad.getText(director));
                     }
                     else if(!mad.isPartiallySolved(matcher) && mad.isPartiallySolved(director) ){
-                       output = output +   renderMove(mad.getText(matcher).toUpperCase(), mad.getText(director).toUpperCase());
+                       output = output +   renderMove("&#8594"+mad.getText(matcher).toLowerCase(), mad.getText(director).toUpperCase());
+                    //output = output +   renderMove(mad.getText(matcher), "=");
                     }
                     else{
-                        output = output +   renderMove(mad.getText(matcher).toUpperCase(), mad.getText(director).toUpperCase());
+                        //output = output +   renderMove(mad.getText(matcher).toUpperCase(), mad.getText(director).toUpperCase());
+                        output = output +   renderMove("&#8594"+mad.getText(matcher).toLowerCase(), mad.getText(director).toLowerCase());
+                   //output = output +   renderMove(mad.getText(matcher), mad.getText(director));
                     }
                }
                
@@ -669,17 +730,152 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
            else{
                cC.changePinnedMessage(pB,pBOutput+output);
                cC.changePinnedMessage(pA,"Follow your partner`s instructions"+pAOutput);
-           }
-           
-           
-           
-                   
-           
-           
+           }   
       }
       
         
        public String renderMove(String firstText, String secondText){
+           
+           //return "    "+    "["+ firstText+", "+ secondText+"]";
+           
+           return ""+firstText + secondText; 
+           
+       }
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        public void displayMovesOnClients(){
+            this.displayMovesOnClients_DIRECTOR();
+            this.displayMovesOnClientMATCHER();
+        }
+        
+        
+        
+        
+      
+      
+      
+      
+        public void displayMovesOnClients_DIRECTOR(){
+           
+          
+           String pAOutput = "";
+           String pBOutput = "";
+           
+         
+           
+           String output = "";// PARTNER "+"   YOU   "+"\n";
+           for(int i=0;i<this.pcset.moves.size();i++){
+               Move mve = (Move)this.pcset.moves.elementAt(i);
+               if(mve instanceof MoveONLY){
+                    MoveONLY mo = (MoveONLY)mve;
+                    if(mo.getPerformer()==matcher){      
+                         if(mo.isSolved())   output = output +   stringutf8(8594)+mo.getText().toUpperCase() + stringutf8(818);
+                         else                output = output +   stringutf8(8674)+mo.getText().toLowerCase() + stringutf8(818);            
+                         
+                    }
+                    else{
+                        if(mo.isSolved()) output = output +stringutf8(8594) +mo.getText().toUpperCase();
+                        else              output = output +stringutf8(8674) +mo.getText().toLowerCase();
+                    }
+                         
+               }
+               else if(mve instanceof MoveANDSAME){
+                    MoveANDSAME mas = (MoveANDSAME)mve;     
+                    
+                    //...fix this
+                    
+                    
+                    if(!mas.isPartiallySolved(director) && !mas.isPartiallySolved(matcher) ){
+                        output = output +   stringutf8(8674)+ mas.getText().toLowerCase()+ mas.getText().toLowerCase()+ stringutf8(818);
+                    }
+                    else if(mas.isPartiallySolved(director) &! mas.isPartiallySolved(matcher) ){
+                         output = output +   stringutf8(8674)+ mas.getText().toUpperCase()+ mas.getText().toLowerCase()+stringutf8(818);
+                    }
+                    else if(!mas.isPartiallySolved(director) && mas.isPartiallySolved(matcher) ){
+                       output = output +  stringutf8(8674)+   mas.getText().toLowerCase()+ mas.getText().toUpperCase()+ stringutf8(818);
+                    }
+                    else{
+                        output = output +  stringutf8(8594)+ mas.getText().toUpperCase()+ mas.getText().toUpperCase()+ stringutf8(818);
+                    }
+                    
+                    
+               }
+               else if(mve instanceof MoveANDDIFFERENT){
+                    MoveANDDIFFERENT mad = (MoveANDDIFFERENT)mve;     
+                    
+                    if(!mad.isPartiallySolved(director) && !mad.isPartiallySolved(matcher) ){
+                        output = output +   stringutf8(8674)+mad.getText(director).toLowerCase() + mad.getText(matcher).toLowerCase()+stringutf8(818);
+                        
+                    }
+       
+                    else if(mad.isPartiallySolved(director) &! mad.isPartiallySolved(matcher) ){
+                        output = output +   stringutf8(8674)+mad.getText(director).toUpperCase()+mad.getText(matcher).toLowerCase()+stringutf8(818);
+                    }
+                    else if(!mad.isPartiallySolved(director) && mad.isPartiallySolved(matcher) ){
+                       output = output +   stringutf8(8674)+mad.getText(director).toLowerCase()+mad.getText(matcher).toUpperCase()+stringutf8(818);
+                    }
+                    else {
+                        output = output +   stringutf8(8674)+mad.getText(matcher).toUpperCase()+mad.getText(matcher).toUpperCase()+stringutf8(818);
+                    }
+               }
+               
+           }
+           
+           
+           
+            if(pA==director){
+               cC.changePinnedMessage(pA,pAOutput+output);
+            }
+             else{
+               cC.changePinnedMessage(pB,pBOutput+output);
+            }
+                   
+           
+           
+      }
+        
+       public void displayMovesOnClientMATCHER(){
+           if(pA==director){
+              
+               if(ispracticestage){
+                   cC.changePinnedMessage(pB,"Please wait while your partner practices");   
+               }
+               else{
+                    cC.changePinnedMessage(pB,"Follow your partner`s instructions");
+               }
+               
+              
+           }
+           else{
+               
+               if(ispracticestage){
+                   cC.changePinnedMessage(pA,"Please wait while your partner practices");
+
+               }
+               else{  
+                   cC.changePinnedMessage(pA,"Follow your partner`s instructions");
+               }
+           }
+       } 
+        
+        
+      
+        
+       public String renderMoveOLD2(String firstText, String secondText){
            return "         "+    "[ "+ firstText+" , "+ secondText+" ]";
        }
         
@@ -786,7 +982,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
            
       }
       
-       public void displayMovesOnServer(Participant director, Participant matcher){
+       public void displayMovesOnServer(){
            
            //cC.c.textOutputWindow_ChangeText("instructions", "Your partner is giving you instructions:" ,true, matcher );  
            //cC.c.textOutputWindow_ChangeText("instructions", "This is the sequence you need to perform:\n\n" ,true, director );  
@@ -888,7 +1084,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
        //6  (3 each)...you need to get your participant to two 
 
     @Override
-    public void processNotification(String s) {
+    public synchronized void processNotification(String s) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
        
         if(s.equalsIgnoreCase("timeout")){
@@ -946,10 +1142,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           }
           AttribVal av0A = new AttribVal("level",this.level);
          
-          int levelsetsize = this.levelsettings[level][0];
-          int levelsetvariety = this.levelsettings[level][1];
-          AttribVal av0B = new AttribVal("levelsetsize",levelsetsize); 
-          AttribVal av0C = new AttribVal("levelsetvariety",levelsetvariety); 
+          
+        
           
           AttribVal av1 = new AttribVal("numberofsets",pNumberOfTrials);
           AttribVal av2 = new AttribVal("setsize",setsize);
@@ -964,8 +1158,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           }
           AttribVal av5 = new AttribVal("sequence",this.pcset.getSequenceDescription());
           avs.addElement(av0A);
-          avs.addElement(av0B);
-          avs.addElement(av0C);
+         
           avs.addElement(av1);
           avs.addElement(av2);
           avs.addElement(av3);
@@ -1080,11 +1273,10 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       
        public void createRandom_MoveSequenceFromGUI(){
-            Participant director;
-            Participant matcher;
+           
             String directorWhitelist;
             String matcherWhitelist;
-            if(mostRecentDirector==pB || mostRecentDirector==null){
+            if(director==pB || director==null){
                 director=pA; matcher=pB;
                 directorWhitelist = this.pAWhitelist;
                 matcherWhitelist = this.pBWhitelist;
@@ -1159,8 +1351,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                 finalMoveSet.insertElementAt(numberANDDifferentV.elementAt(i) ,index  );
             }
             this.pcset.moves=finalMoveSet;
-            this.displayMovesOnClients(director, matcher);
-            this.mostRecentDirector=director;
+            this.displayMovesOnClients();
+            
        }
      
         
@@ -1173,6 +1365,31 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           this.jpct.setVisible(false);
       }
     
+      
+      public static String stringutf8(int codePoint) {
+            return new String(Character.toChars(codePoint));
+     }
+      
+      
+      
+      
+      private synchronized void checkForTimeouts(){
+          while(true){
+              try{
+                  wait(500);
+                  if(this.pcset!=null){
+                      pcset.checkForTimeouts();
+                  }
+              }catch(Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+              }
+            
+          }
+          
+      }
+      
+      
       
       
 }

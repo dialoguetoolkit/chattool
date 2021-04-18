@@ -76,7 +76,7 @@ public class PCTaskBACKUP implements JTrialTimerActionRecipientInterface{
           
           
           
-          pcset = new PCSetOfMoves(cC);
+          //pcset = new PCSetOfMoves(cC);
           this.pA=pA;
           this.pB=pB;
           

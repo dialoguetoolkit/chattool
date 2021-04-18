@@ -6,7 +6,6 @@
 
 package diet.tg;
 
-import diet.server.io.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,6 +13,7 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
+import java.nio.charset.MalformedInputException;
 import java.util.Vector;
 
 /**
@@ -34,12 +34,15 @@ public class TelegramIDLOGFILE extends Thread{
     public TelegramIDLOGFILE(File f){
         try{
             this.f=f; 
-            CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
-            encoder.onMalformedInput(CodingErrorAction.REPORT);
-            encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+            //CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
+            //encoder.onMalformedInput(CodingErrorAction.REPORT);
+            //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
 
-            textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),encoder));
+            //textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),encoder));
            
+            byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+            this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
+               
             
             
              
@@ -90,7 +93,11 @@ public class TelegramIDLOGFILE extends Thread{
                   
                   
                           
-              }catch(Exception e){
+              }
+
+              
+              
+              catch(Exception e){
                   e.printStackTrace();
                  
                   this.reestablishFile();
@@ -105,7 +112,10 @@ public class TelegramIDLOGFILE extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f),Charset.forName("UTF-8").newEncoder()));
+                byte[] bytesReplacementForMalformedInput = ("█").getBytes(); 
+                 
+                 
+                this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
                 if(f.canWrite()) wasSuccessfulReestablishing = true;
              }catch(Exception e){
                  System.err.println("Trying to re-establish file "+f.getName());

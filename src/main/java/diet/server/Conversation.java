@@ -33,6 +33,7 @@ import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import diet.tg.tgSTARTER;
 import java.awt.Color;
+import static java.awt.SystemColor.text;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -51,10 +52,10 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 
@@ -2914,13 +2915,13 @@ public class Conversation extends Thread{
         //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
      }
      
-      public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, String text, String[] buttons, int columns){
+      public void telegram_sendInstructionToParticipantWithForcedKeyboardButtonsDEPRECATED(TelegramParticipant recipient, String text, String[] buttons, int columns){
         try{  
           Vector<Vector<String>> rows=new Vector();
           Vector<String> currentRow = new Vector();
           
           for(int i=0;i<buttons.length;i++){
-               currentRow.add(buttons[i]);
+               //currentRow.add(new KeyboardButton(buttons[i]));
                if(currentRow.size()>columns){
                    rows.add(currentRow);
                    currentRow=new Vector<String>();
@@ -2943,10 +2944,7 @@ public class Conversation extends Thread{
           }
           telegram_sendInstructionToParticipantWithForcedKeyboardButtons(recipient,  text, rowA);
           
-        
-          
-          
-          
+     
         }catch(Exception e){
             e.printStackTrace();
             Conversation.saveErr(e);
@@ -2956,6 +2954,76 @@ public class Conversation extends Thread{
           
       }
      
+  
+      
+      
+       public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, Vector<String> buttonnames){
+            String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+        try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText("This is test  text");
+                 message = message.disableNotification();
+                 message.enableHtml(true);
+                 message.setText("<code>"+text+"</code>");  
+                 
+                
+                 
+               ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+               // Create the keyboard (list of keyboard rows)
+               List<KeyboardRow> keyboard = new ArrayList<>();
+                KeyboardRow row = new KeyboardRow();
+                for(int i=0;i<buttonnames.size();i++){
+                    row.add(new KeyboardButton(buttonnames.elementAt(i)));
+                    System.err.println("ADDINGKEYBOARD:"+buttonnames.elementAt(i));
+                }
+                
+                
+                
+               
+                   keyboard.add(row);
+                  
+               keyboardMarkup.setKeyboard(keyboard);
+                keyboardMarkup.setOneTimeKeyboard(false);
+
+                message.setReplyMarkup(keyboardMarkup);
+          
+                keyboardMarkup.setResizeKeyboard(true);
+               
+                 
+               recipient.sendMessage(message);
+               
+               String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+               
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+               Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+               AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipantwithforcedkeyboard");
+               additionalValues.add(av1);
+               AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+               additionalValues.add(av2);     
+               AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+               additionalValues.add(av3);
+             
+              // cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server","", recipientsNames, additionalValues, false);
+               
+               
+               
+               System.err.println("HEREINCOMING102SENT + text");
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+       
+       }
+      
      
      
      public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, String text, String[][] buttongrid){
@@ -2984,10 +3052,11 @@ public class Conversation extends Thread{
                    keyboard.add(row);
                }      
                keyboardMarkup.setKeyboard(keyboard);
-        
+                keyboardMarkup.setOneTimeKeyboard(false);
+
                 message.setReplyMarkup(keyboardMarkup);
           
-                keyboardMarkup.setOneTimeKeyboard(true);
+               
                  
                recipient.sendMessage(message);
                

@@ -63,6 +63,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
              
              
         }
+        //c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is text", new String[]{"A","B","C"}, 3);
     }
     
      
@@ -91,6 +92,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
               pctg = new PCTaskTG(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1));
              
         }
+        //c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is tnew ext", new String[]{"A","B","C"}, 3);
+       
     }
      
 
@@ -102,18 +105,32 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
                  generatePinnedMessage(sender);
              }
              else{
-                 c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);   
-                 this.pctg.evaluate(sender, text);
-                 
+                    
+                 boolean relay = this.pctg.evaluate(sender, text);
+                 if(relay) c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
                  
              }
              
              
-             
-        }          
-        else{    
-             c.telegram_sendInstructionToParticipant_MonospaceFont(sender, "Please only send text");
         }
+        else{
+        try{
+            Message pm = tmfc.u.getMessage().getPinnedMessage();
+            if(pm!=null&&pm.hasText()){
+                
+            }else{
+                 c.telegram_sendInstructionToParticipant_MonospaceFont(sender, "Please only send text");
+            }
+            
+        }catch(Exception e){
+               c.telegram_sendInstructionToParticipant_MonospaceFont(sender, "Please only send text");   
+               e.printStackTrace();
+               Conversation.saveErr(e);
+        }
+        }        
+          
+
+        
     
     }
     
@@ -126,6 +143,10 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
     public void generatePinnedMessage(TelegramParticipant p){ 
+        if(p==null){
+            Conversation.saveErr("Trying to generate pinned message for null participant");
+            return;
+        }
         Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Please do not close this message. You will need it in the task");
         c.telegram_sendPinChatMessageToParticipant(p, m);
         htPinnedMessages.put(p, m);      
@@ -135,6 +156,10 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
     public void changePinnedMessage(TelegramParticipant p,String text){
+         if(p==null){
+            Conversation.saveErr("Trying to change pinned message for null participant. "+text);
+            return;
+        }
           String mostRecent = this.htMostRecentPinnedText.get(p);
           if(mostRecent!=null ){
               if(mostRecent.equals(text))return;
