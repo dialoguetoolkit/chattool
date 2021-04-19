@@ -162,6 +162,7 @@ public class PCSetOfMoves {
             if(hastimedout){
                 crntMVEANDSAME.setSolved(false);
                 this.pctg.displayMovesOnClients_DIRECTOR();
+                this.pctg.displayMovesOnServer();
             }    
             
         }
@@ -171,6 +172,7 @@ public class PCSetOfMoves {
             if(hastimedout){
                 crntMVEANDDIFFERENT.setSolved(false);
                 this.pctg.displayMovesOnClients_DIRECTOR();
+                this.pctg.displayMovesOnServer();
             }          
         }
     }

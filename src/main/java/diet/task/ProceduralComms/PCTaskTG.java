@@ -38,7 +38,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
     
       public String sharedWhitelist = "cd";
       public String pAWhitelist = "ab";
-      public String pBWhitelist = "yx";
+      public String pBWhitelist = "ef";
       static public String allowedMetaChars =  "";//CustomDialog.getString("What is the META character?", "?");//"?";//?yn"; 
     
       PCSetOfMoves pcset ;
