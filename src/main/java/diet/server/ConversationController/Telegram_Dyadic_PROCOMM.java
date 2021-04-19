@@ -106,8 +106,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
              }
              else{
                     
-                 boolean relay = this.pctg.evaluate(sender, text);
-                 if(relay) c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
+                 if(this.pctg!=null) this.pctg.evaluate(sender, tmfc);
+                
                  
              }
              

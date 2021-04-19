@@ -2965,10 +2965,10 @@ public class Conversation extends Thread{
         try{
                 SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                        .setChatId(recipientID)
-                       .setText("This is test  text");
+                       .setText("Setting up");
                  message = message.disableNotification();
-                 message.enableHtml(true);
-                 message.setText("<code>"+text+"</code>");  
+                 message.enableHtml(false);
+                 //message.setText("<code>"+text+"</code>");  
                  
                 
                  
@@ -2984,7 +2984,7 @@ public class Conversation extends Thread{
                 
                 
                
-                   keyboard.add(row);
+                keyboard.add(row);
                   
                keyboardMarkup.setKeyboard(keyboard);
                 keyboardMarkup.setOneTimeKeyboard(false);

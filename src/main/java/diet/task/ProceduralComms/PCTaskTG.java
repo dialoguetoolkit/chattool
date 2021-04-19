@@ -11,6 +11,7 @@ import diet.server.Conversation;
 import diet.server.ConversationController.Telegram_Dyadic_PROCOMM;
 import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.Participant;
+import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import diet.utils.HashtableWithDefaultvalue;
 import diet.utils.VectorToolkit;
@@ -140,15 +141,23 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       //boolean displayDebug = false;//CustomDialog.getBoolean("Display debug info");
       
-      public synchronized boolean evaluate(TelegramParticipant p,String textanycase){         
+      public synchronized void evaluate(TelegramParticipant p,TelegramMessageFromClient tmfc){         
           synchronized(this.jt){
               
-              if(textanycase==null || textanycase.equalsIgnoreCase("") || textanycase.length()>1){
-                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message must be a single letter. Please try again!");
-                  return false;
+              if(tmfc==null|| !tmfc.u.hasMessage()){
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message must be a single letter. Please try again!");
+                  return;
               }
               
+              
+              String textanycase=tmfc.u.getMessage().getText();
               String text = textanycase.toUpperCase();
+                 
+                      
+                      
+             
+              
+             
               
               String pAPossibleChars = (this.pAWhitelist+sharedWhitelist).toUpperCase();
               String pBPossibleChars = (this.pBWhitelist+sharedWhitelist).toUpperCase();
@@ -161,7 +170,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                   }
                                    
                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+permittedchars.toUpperCase());
-                  return false; 
+                  return ; 
               }
               else  if(p==pB && !pBPossibleChars.contains(text.toUpperCase())){
                   String permittedchars = "";
@@ -171,11 +180,16 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                   }
                                    
                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+permittedchars.toUpperCase());
-                  return false; 
+                  return ; 
               }
               
-            
               
+              cC.c.telegram_relayMessageTextToOtherParticipants(p, tmfc);
+                
+              
+              
+              
+             
                boolean success = pcset.evaluate(p, text);
                
                displayMovesOnServer();     
@@ -206,7 +220,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                    
                }
           }
-           return true;
+           return ;
       }
     
       
@@ -314,8 +328,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
              
             
           ;
-            this.level=19;
-            this.jpct.setLevel(2);
+            //this.level=19;
+            //this.jpct.setLevel(2);
             ispracticestage=false;
             
             
@@ -829,7 +843,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                        output = output +   stringutf8(8674)+mad.getText(director).toLowerCase()+mad.getText(matcher).toUpperCase()+stringutf8(818);
                     }
                     else {
-                        output = output +   stringutf8(8674)+mad.getText(matcher).toUpperCase()+mad.getText(matcher).toUpperCase()+stringutf8(818);
+                        output = output +   stringutf8(8674)+mad.getText(director).toUpperCase()+mad.getText(matcher).toUpperCase()+stringutf8(818);
                     }
                }
                
