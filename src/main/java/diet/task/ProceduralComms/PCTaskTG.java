@@ -70,9 +70,16 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
        public static int windowForJointSelection = 10000;
        
         static int numberOfLevelsToDecreaseOnError = 1;//CustomDialog.getInteger("How many levels to decrease on error?", 1);
-       static int streakofsuccessesbeforegoinguplevel = 2;
+       static int streakofsuccessesbeforegoinguplevel = 3;
        static int currentstreak=0;
       
+      static  int difficultysettings_maxSwitchCost =  2;
+      static int difficulty_settings_singleNotesCoef = 1;
+      static int difficultysettings_simulNotesCoef = 4; 
+       
+       // double singlenotes_probabilityshared,  simultaneousnotes_probabilityshared =0.5;
+        double probabilityshared = 0.5;
+       
        public boolean debug = true;
        
       
@@ -478,7 +485,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
            
        }
        
-       double singlenotes_probabilityshared,  simultaneousnotes_probabilityshared =0.5;
+      
       
         public void createRandom_MoveSequence_Experiment(){
               
@@ -519,8 +526,12 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                    
                    }
                    
+                   double adjustedprobabilityshared = probabilityshared;
+                   if(this.level==0 | this.level==1){
+                        adjustedprobabilityshared = 1;
+                    }
                    
-                   Vector newAllMoves = this.generateNotesFromSequence(vseq , singlenotes_probabilityshared, singlenotes_probabilityshared, simultaneousnotes_probabilityshared, directorpermittedkeys, matcherpermittedkeys);
+                   Vector newAllMoves = this.generateNotesFromSequence(vseq ,adjustedprobabilityshared, directorpermittedkeys, matcherpermittedkeys);
 
                    Vector finalMoveSet = new Vector();
                    
@@ -534,9 +545,14 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                    
         }
        
-      
-        public Vector<Move> generateNotesFromSequence(    Vector<String> seq, double probOfSharedNotesDirector, double probOfSharedNotesMatcher, double probOfSharedNotesSimultaneous, Vector<String> directorpermittedkeys, Vector<String> matcherpermittedkeys){
+        public Vector<Move> generateNotesFromSequence(    Vector<String> seq, double probOfSharedNotes, Vector<String> directorpermittedkeys, Vector<String> matcherpermittedkeys){
+
+        //public Vector<Move> generateNotesFromSequence(    Vector<String> seq, double probOfSharedNotesDirector, double probOfSharedNotesMatcher, double probOfSharedNotesSimultaneous, Vector<String> directorpermittedkeys, Vector<String> matcherpermittedkeys){
           
+          
+        
+          if(probabilityshared>1)probabilityshared=1;
+          if(probabilityshared<0)probabilityshared=0;
        
         
          Vector<String> sharednotes = new Vector();
@@ -583,13 +599,15 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
               boolean doSharedSimultaneous = false;
               double rseed = r.nextDouble();
               
-              if(rseed<probOfSharedNotesDirector) doSharedDirector = true;
-              //rseed = r.nextDouble();
-              if(rseed<probOfSharedNotesMatcher) doSharedMatcher = true;
-              //rseed = r.nextDouble();
-              if(rseed<probOfSharedNotesSimultaneous) doSharedSimultaneous = true;
-               System.err.println("SEED"+rseed);
+             
               
+              
+              if(rseed<probOfSharedNotes){
+                  doSharedDirector = true;
+                  doSharedMatcher = true;
+                  doSharedSimultaneous = true;
+              }
+             
               //doSharedMatcher = true;
               
               if (s.equalsIgnoreCase("DS")){

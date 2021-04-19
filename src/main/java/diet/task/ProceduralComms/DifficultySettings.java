@@ -21,9 +21,7 @@ public class DifficultySettings {
      Hashtable ht = new Hashtable();
      Vector<Vector<String>> allPossibleSequences = new Vector();
 
-    int maxSwitchCost =  2;
-    int singleNotesCoef = 1;
-    int simulNotesCoef = 4; 
+    
     
     public static void main(String[] args){
         DifficultySettings ds = new DifficultySettings();
@@ -98,7 +96,7 @@ public class DifficultySettings {
                  
         }
         
-        int difficulty =   Math.min(switchcount, this.maxSwitchCost) +  singlenotescount*singleNotesCoef +  simnotescount*simulNotesCoef  ;
+        int difficulty =   Math.min(switchcount, PCTaskTG.difficultysettings_maxSwitchCost) +  singlenotescount*PCTaskTG.difficulty_settings_singleNotesCoef +  simnotescount*PCTaskTG.difficultysettings_simulNotesCoef  ;
         difficulty=difficulty-1;
         if(difficulty<0)difficulty=0;
         
@@ -137,8 +135,8 @@ public  boolean isPermissible(Vector<String> vs){
      public String prettyPrintAll(){
                 
         
-        String text ="SimultaneousNotes Coefficient: "+simulNotesCoef+"\n"
-                + "SingleNotes Coefficient: "+singleNotesCoef+"\n"
+        String text ="SimultaneousNotes Coefficient: "+PCTaskTG.difficultysettings_simulNotesCoef+"\n"
+                + "SingleNotes Coefficient: "+  PCTaskTG.difficulty_settings_singleNotesCoef+"\n"
                ;
         
         
