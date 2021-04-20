@@ -3475,6 +3475,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
      
      public org.telegram.telegrambots.meta.api.objects.Message telegram_sendPhoto_By_File(TelegramParticipant recipient, File f, String[][] buttons, String[][] actions){
         String subdialogueID = cC.pp.getSubdialogueID(recipient);
+      //  CustomDialog.showDialog("142:SENDING STIMULU0");
         
         long recipientID = recipient.getConnection().telegramID;
             
@@ -3537,7 +3538,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
                      e.printStackTrace();
                  }
                 
-                  
+               // CustomDialog.showDialog("142:SENDING STIMULUA");
                 return recipient.sendPhoto(msg);
                  //System.err.println("HEREINCOMING102");
               } catch (Exception e){

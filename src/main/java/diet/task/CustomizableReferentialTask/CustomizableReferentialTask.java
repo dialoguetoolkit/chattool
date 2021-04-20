@@ -284,6 +284,17 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 }             
             }
         try{
+            while(jcrt==null){
+                try{
+                   Thread.sleep(50);
+                   System.err.println("Waiting for Java component to initialize");
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+            
+            
+            
             this.jcrt.setLeftParticipantName(this.pA.getParticipantID(),this.pA.getUsername());
             this.jcrt.setRightParticipantName(this.pB.getParticipantID(),this.pB.getUsername());
         }catch(Exception e){
@@ -577,16 +588,28 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                      telegrambuttonoptions tbo = getButtons();
                  
                      if(participantCanMakeChoice(pA)){
-                         if(showButtons) this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, tbo.buttons, tbo.actions);
+                         if(showButtons) {
+                             this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, tbo.buttons, tbo.actions);
+                         }
+                         else{
+                             this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, null, null);
+                         }
+                             
                      }
                      else{
-                         if(showButtons) this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, null, null);
+                          this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, null, null);
                      }
                      if(participantCanMakeChoice(pB)){
-                         if(showButtons) this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, tbo.buttons, tbo.actions);
+                         if(showButtons) {
+                             this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, tbo.buttons, tbo.actions);
+                         }
+                         else{
+                             this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, null, null);
+                         }
+                             
                      }
                      else{
-                         if(showButtons) this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, null, null);
+                          this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, null, null);
                      }
                      Conversation.printWSln("Main", "THE STIMULI ARE:"  + this.currentTrial[0]+"----"+this.currentTrial[1]);
             }
