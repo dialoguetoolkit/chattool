@@ -149,6 +149,7 @@ public class HahaVariantGenerator {
       
       
       public  int[] doesTextContainHaha(String originalTurn){
+        try{
         int[] d = {0,0};
         String originalTurnLower = originalTurn.toLowerCase();
         
@@ -162,7 +163,11 @@ public class HahaVariantGenerator {
                  return d;
              }
         }
-        return null;
+        }catch(Exception e){
+            e.printStackTrace();
+           
+        }
+         return null;
         
     }
         

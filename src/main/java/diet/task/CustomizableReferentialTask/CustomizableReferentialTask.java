@@ -111,6 +111,9 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
     
     */
     
+   boolean showScoreOnEachGame = false;
+   boolean showIfSelectionWasCorrrectOrIncorrect = false;
+   boolean advanceToNextManually = false;
     
     
     
@@ -134,6 +137,12 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.telegram=crts.telegram;
          this.vstimuli=crts.vstimuli;
          this.vstimuliFULL=crts.vstimuliFULL;
+         
+         
+         this. showScoreOnEachGame = crts.showScoreOnEachGame;
+        this.showIfSelectionWasCorrrectOrIncorrect = crts.showIfSelectionWasCorrrectOrIncorrect;
+
+        this.advanceToNextManually = crts.advanceToNextManually;
          
         
          
@@ -843,8 +852,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                                
                             }
                             else{
-                                cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "Your score is: "+ outputPA );
-                                cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Your score is: "+ outputPB );
+                                if(this.showScoreOnEachGame)  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "Your score is: "+ outputPA );
+                                if(this.showScoreOnEachGame)  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Your score is: "+ outputPB );
                                 
                                 if(this.currentTrial.length>6){
                                    String msgToP1 = currentTrial[5];
@@ -948,6 +957,12 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         this.jcrt.processChatText(sender.getUsername(),txt);
         
         if(!txt.startsWith("/"))return;     
+        
+        if(txt.startsWith("/NEXT" )|| txt.startsWith("/Next") || txt.startsWith("/next") && this.advanceToNextManually){
+            this.currentsethasbeensolved = true;
+        }
+        
+        
         if(this.currentsethasbeensolved){
             cC.c.sendInstructionToParticipant(sender,"The current set has already been solved");
             return;
@@ -1023,12 +1038,12 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                   String scoreB = " Score: "+(Double)this.htPOINTS.getObject(pB);
                  
                       if(telegram){
-                         cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "CORRECT! " + scoreA);
-                         cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "CORRECT! " + scoreB);
+                         if(this.showIfSelectionWasCorrrectOrIncorrect)cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "CORRECT! " + scoreA);
+                         if(this.showIfSelectionWasCorrrectOrIncorrect)cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "CORRECT! " + scoreB);
                       }
                       else{
-                         cC.c.sendInstructionToParticipant(pA, "CORRECT! " + scoreA);
-                         cC.c.sendInstructionToParticipant(pB, "CORRECT! " + scoreB);
+                        if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pA, "CORRECT! " + scoreA);
+                        if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pB, "CORRECT! " + scoreB);
                       }   
                   
                   
@@ -1044,12 +1059,12 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  String scoreA = " Score: "+(Double)this.htPOINTS.getObject(pA);
                  String scoreB = " Score: "+(Double)this.htPOINTS.getObject(pB);
                  if(telegram){
-                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "INCORRECT! " + scoreA);
-                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "INCORRECT! " + scoreB);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "INCORRECT! " + scoreA);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "INCORRECT! " + scoreB);
                  }
                  else{
-                     cC.c.sendInstructionToParticipant(pA, "INCORRECT! " + scoreA);
-                     cC.c.sendInstructionToParticipant(pB, "INCORRECT! " + scoreB);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pA, "INCORRECT! " + scoreA);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pB, "INCORRECT! " + scoreB);
                  }
                  
                  
