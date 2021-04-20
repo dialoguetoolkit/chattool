@@ -13,6 +13,7 @@ Without this configuration present, some functionality in the IDE may be limited
             <configuration id="NOGUI Telegram Referential Task" profiles=""/>
             <configuration id="WIDTHHEIGHT" profiles=""/>
             <configuration id="excelo" profiles=""/>
+            <configuration id="haha" profiles=""/>
         </configurations>
     </config-data>
 </project-shared-configuration>

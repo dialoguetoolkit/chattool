@@ -9,13 +9,9 @@ import diet.server.Conversation;
 import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.ConversationController.ui.JInterfaceMenuButtonsReceiverInterface;
 import diet.server.ConversationController.ui.JInterfaceTwelveButtons;
+import diet.textmanipulationmodules.haha.HahaVariantGenerator;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
-import java.awt.Dimension;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Vector;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -49,12 +45,12 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
     
     public Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA(Conversation c) {
         super(c);
-        sortTargetList();
+        
     }
 
     public Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA(Conversation c, long istypingtimeout) {
         super(c, istypingtimeout);
-        sortTargetList();
+       
     }
 
     
@@ -217,140 +213,9 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
      //has to be organized from longest to shortest
      //"what about ha"
    
-    String[] hahavariants = { 
-       
-        "haha", 
-        "hahah", 
-        "hahaha", 
-        "hahahah", 
-        "hahahaha",
-        "hahahahah",
-        "hahahahaha",
-        
-        "haaha", 
-        "haahah", 
-        "haahaha", 
-        "haahahah", 
-        "haahahaha",
-        "haahahahah",
-        "haahahahaha",
-        
-        "haahaa", 
-        "haahaha", 
-        "haahaaha", 
-        "haahaahah", 
-        "haahaahaha",
-        "haahaahahah",
-        "haahaahahaha",
-        
-        "haaahaa", 
-        "haaahaaha", 
-        "haaahaaha", 
-        "haaahaahah", 
-        "haaahaahaha",
-        "haaahaahahah",
-        "haaahaahahaha",
-        
-        "ahaha", 
-        "ahahah", 
-        "ahahaha", 
-        "ahahahah", 
-        "ahahahaha",
-        "ahahahahah",
-        "ahahahahaha",
-        
-        "aahaha", 
-        "aahahah", 
-        "aahahaha", 
-        "aahahahah", 
-        "aahahahaha",
-        "aahahahahah",
-        "aahahahahaha",
-        
-        "aaahaha", 
-        "aaahahah", 
-        "aaahahaha", 
-        "aaahahahah", 
-        "aaahahahaha",
-        "aaahahahahah",
-        "aaahahahahaha",
-        
-        "aahaha", 
-        "ahahah", 
-        "ahahaha", 
-        "ahahahah", 
-        "ahahahaha",
-        "ahahahahah",
-        "ahahahahaha",
-        
-        "hhah",
-        "hhaha",
-        "hhahahaa",
-        "hhahhaaa",
-        
-        "hahaa",
-        "hahahaa",
-        "hahahaaa",
-        "haahaa",
-        "haaahaaa",
-        "haahaaaa",
-        "hahahaah",
-        "hahahaaah",
-        "hahahaaaah",
-        "hahaaahahaa",
-        
-        "hahaah",
-        "hahaaha",
-        
-        "hahaaheh",
-        "hahaheh",
-        "ahhaah",
-        
-        "hahha",
-        "hahhaha",
-        "hahahahhaa",
-        "hahahha",
-        "hhhahhah", 
-        "aahahaahhaha",
-            
-        "ahhaha",
-        "hahahha"
-   
     
-    };
+    HahaVariantGenerator hvg = new HahaVariantGenerator();
     
-    Vector<String> vHahaSorted = new Vector();
-    
-    public void sortTargetList(){
-        List<String> haha = Arrays.asList(hahavariants);
-        List hahalistsorted = sortStringListByLength(haha);
-        vHahaSorted = new Vector(hahalistsorted);
-        
-    }
-    
-    private static List sortStringListByLength(List<String> list) {
-        System.out.println("-- sorting list of string --");
-        Collections.sort(list, Comparator.comparing(String::length));
-        list.forEach(System.out::println);
-        return list;
-    }
-    
-    public  int[] doesTextContainHaha(String originalTurn){
-        int[] d = {0,0};
-        String originalTurnLower = originalTurn.toLowerCase();
-        
-        for(int i=vHahaSorted.size()-1;i>=0;i--){
-             int startIndex = originalTurnLower.indexOf(vHahaSorted.elementAt(i));
-             if(startIndex>=0){
-                 c.printWln("Main", "Found haha! startindex:"+startIndex+ " length:"+vHahaSorted.elementAt(i).length());
-                 d[0] = startIndex;
-                 d[1] = vHahaSorted.elementAt(i).length();
-                 return d;
-             }
-        }
-        return null;
-        
-    }
     
     
     public void processMessageFromClient(TelegramParticipant sender, TelegramMessageFromClient tmfc){
@@ -359,7 +224,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
           String textFromSender = tmfc.u.getMessage().getText();
           
           String newText = ""+textFromSender;
-          int[] d = this.doesTextContainHaha(textFromSender);
+          int[] d = hvg.doesTextContainHaha(textFromSender);
           if(d==null){
               c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
           }
