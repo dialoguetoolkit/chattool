@@ -162,7 +162,7 @@ public class CustomizableReferentialTaskSettings  {
          
          
         showScoreOnEachGame = CustomDialog.getBoolean("Do you want to show the score after each trial?", "Show", "Don`t show");
-        showIfSelectionWasCorrrectOrIncorrect = CustomDialog.getBoolean("Do you want to show the score after each trial?", "Show", "Don`t show");
+        showIfSelectionWasCorrrectOrIncorrect = CustomDialog.getBoolean("Do you want to show if the previous trial was correct / incorrect?", "Show", "Don`t show");
 
         advanceToNextManually =   CustomDialog.getBoolean("Do you want participants to advance automatically\n or do participants have to type /NEXT to advance to next stimuli?", "Automatic advancement", "Manual advancement by typing /NEXT");
         
