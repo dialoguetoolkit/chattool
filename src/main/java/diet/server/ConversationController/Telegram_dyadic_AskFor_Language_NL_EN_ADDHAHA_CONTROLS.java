@@ -369,7 +369,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_CONTROLS extends Tele
     
     
    public static boolean showcCONGUI() {
-        return true;
+        return false;
     }
     
 }

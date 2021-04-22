@@ -204,7 +204,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
    public static boolean showcCONGUI() {
-        return true;
+        return false;
     }
     
    

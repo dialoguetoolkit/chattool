@@ -262,7 +262,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
     
     
    public static boolean showcCONGUI() {
-        return true;
+        return false;
     }
     
 }

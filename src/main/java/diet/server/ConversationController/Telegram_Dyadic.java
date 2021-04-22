@@ -88,11 +88,11 @@ public class Telegram_Dyadic extends TelegramController{
         
       // c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is a question",  new String[]{"a", "b", "c", "d", "e", "f", "g"},3);
         
-      Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "this is the initial message from the serverA");
+     // Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "this is the initial message from the serverA");
       
-      c.telegram_sendPinChatMessageToParticipant(p, m);
+     // c.telegram_sendPinChatMessageToParticipant(p, m);
       
-      c.telegram_sendEditMessageToParticipant(p, m, "This is the replacement textB");
+     // c.telegram_sendEditMessageToParticipant(p, m, "This is the replacement textB");
       
       //c.deprecated_telegram_sendEditMessage(p, sm, "this is edited");
       
@@ -113,6 +113,9 @@ public class Telegram_Dyadic extends TelegramController{
     public void telegram_processTelegramMessageFromClient(TelegramParticipant sender, TelegramMessageFromClient tmfc) {
         if(tmfc.u.hasMessage()  && tmfc.u.getMessage().hasText()){
              String text=tmfc.u.getMessage().getText();
+             
+             if(text.contains("\n"))System.err.println("Message has newline");
+             
             // this.crt.processChatText(sender, text);
              if(!text.startsWith("/")){
                 c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);      

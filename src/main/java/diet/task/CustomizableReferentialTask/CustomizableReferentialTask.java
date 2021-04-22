@@ -958,10 +958,19 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         
         if(!txt.startsWith("/"))return;     
         
-        if((txt.startsWith("/NEXT" )|| txt.startsWith("/Next") || txt.startsWith("/next") )&& this.advanceToNextManually){
-            this.currentsethasbeensolved = true;
-            return;
+        System.err.println("Manual or automatic advancing to next set0");
+        if(this.advanceToNextManually){
+            System.err.println("Manual advancing to next set1");
+            if(   txt.startsWith("/NEXT" )|| txt.startsWith("/Next") || txt.startsWith("/next") ){
+                System.err.println("Manual advancing to next set2");
+                this.currentsethasbeensolved = true;
+                return;
+            }
+            
         }
+                
+                
+       
         
         
         if(this.currentsethasbeensolved){
@@ -1056,7 +1065,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                       }   
                   
                   
-                if(this.advanceToNextManually) this.currentsethasbeensolved=true;
+                if(!this.advanceToNextManually) this.currentsethasbeensolved=true;
                  //doCountdowntoNextSet_DEPRECATED("CORRECT! They are the SAME", "Next face in "  );
                  
                  
@@ -1078,7 +1087,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  
                  
                 
-                if(this.advanceToNextManually) this.currentsethasbeensolved=true;
+                if(!this.advanceToNextManually) this.currentsethasbeensolved=true;
                 //doCountdowntoNextSet_DEPRECATED("INCORRECT! They are  DIFFERENT","Next face in " );
                 
             }
@@ -1087,7 +1096,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         else{
             if(telegram){
                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "Invalid command.");
-                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Please reread the experiment istructions");
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Please reread the experiment instructions");
             }
             else{
                 cC.c.sendInstructionToParticipant(sender,"Invalid command.");

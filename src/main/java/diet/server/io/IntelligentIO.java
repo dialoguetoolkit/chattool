@@ -243,6 +243,8 @@ public class IntelligentIO {
 
        //   System.err.println("SL07A");
         
+        line = line.replaceAll("\n",  diet.server.Configuration.outputfile_newline_replacement_character);
+       
         this.writeToTextFileCreatingIfNecessary("turns.txt", line+"\n");
         
        // System.exit(-567);

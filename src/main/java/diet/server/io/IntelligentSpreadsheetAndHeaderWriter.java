@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 import java.util.Vector;
 
@@ -109,7 +108,7 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
               try{
                  
                   
-                  String spreadsheetROW = processAttribVals(v).replaceAll("\n", "")+"\n";
+                  String spreadsheetROW = processAttribVals(v).replaceAll("\n", diet.server.Configuration.outputfile_newline_replacement_character)+"\n";
                   
                   textOut.append(spreadsheetROW);
                   textOut.flush();

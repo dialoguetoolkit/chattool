@@ -566,6 +566,8 @@ public class Conversation extends Thread{
                        String timeOnClientOfShowing = "(TimeOnClientOfShowing:"+mpr.timeOnClientOfDisplay+")";
                        String timeOnClientOfChoice = "(TimeOnClientOfSelecting:"+mpr.timeOfChoice+")";
                        
+                     
+                       
                        
                        String textToSave = (title+"/"+question+"/"+optionsFLATTENED).replaceAll("\n","(NEWLINE)")+ timeOnClientOfShowing+timeOnClientOfChoice+"_"+mpr.getSelection()+"__"+mpr.getSelectedValue();
                        

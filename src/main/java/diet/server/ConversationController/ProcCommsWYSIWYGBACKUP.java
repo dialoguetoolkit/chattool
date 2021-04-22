@@ -119,7 +119,7 @@ public class ProcCommsWYSIWYGBACKUP extends DefaultWYSIWYGConversationController
     
       
        public static boolean showcCONGUI(){
-        return true;
+        return false;
     }     
     
     
