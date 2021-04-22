@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lx</groupId>
     <artifactId>chattoolTG</artifactId>
-    <version>5.0</version>
+    <version>5.2</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -151,5 +151,7 @@
         
     </resources>
     
-    </build>    
+    </build>
+    <description>Dialogue Experimental Chattool (DiET)</description>
+    <name>Dialogue Experimental Chattool (DiET)</name>
 </project>

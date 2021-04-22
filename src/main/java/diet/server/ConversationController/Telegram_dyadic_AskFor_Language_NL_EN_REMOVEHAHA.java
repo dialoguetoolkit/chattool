@@ -176,6 +176,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
         
          vQueuedOTHER.add(p);
+         Conversation.printWSln("Main", "Current queue size: NL QUEUE: "+vQueuedNL.size()+" OTHER QUEUE: "+this.vQueuedOTHER.size());
        
     }
      
@@ -223,28 +224,21 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
         try{
           String textFromSender = tmfc.u.getMessage().getText();
           
-          String newText = ""+textFromSender;
-          int[] d = hvg.doesTextContainHaha(textFromSender);
-          if(d==null){
+          String newText = hvg.filterOutHaha(textFromSender);
+          if(newText==null ){
               c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
           }
-          else{
-               if(d[0]==0){
-                   newText = textFromSender.substring(d[1]);
-               }
-               else{
-                   newText = textFromSender.substring(0,d[0])  + textFromSender.substring(d[0]+d[1]);
-                  
-               }
-               if(newText.replace(" ", "").length()==0){
-                   
-               }
-               else{
-                   c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(sender, newText);
-               }
+          else if(newText.equalsIgnoreCase("")||newText.equalsIgnoreCase("\n")){
+              //Don`t send anything
+          }
+          
+          
+          else {
+              c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(sender, newText);
+          }
                    
                 
-          }
+          
         }catch(Exception e){
             e.printStackTrace();
             Conversation.saveErr(e);

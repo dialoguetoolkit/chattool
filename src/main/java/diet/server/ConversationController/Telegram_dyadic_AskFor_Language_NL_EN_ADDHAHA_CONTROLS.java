@@ -175,7 +175,8 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_CONTROLS extends Tele
     @Override
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
         
-        
+         vQueuedOTHER.add(p);
+         Conversation.printWSln("Main", "Current queue size: NL QUEUE: "+vQueuedNL.size()+" OTHER QUEUE: "+this.vQueuedOTHER.size());
        
     }
      

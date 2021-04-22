@@ -54,7 +54,6 @@ public class HahaVariantGenerator {
           
           
           generateVVariants(ahah , "ahah");
-          
           generateVVariants(aahah,  "aahah");
           generateVVariants(ahhah , "ahhah");
           
@@ -114,7 +113,7 @@ public class HahaVariantGenerator {
         public  void generateVVariants(Vector v, String s){
           
             
-             v.addElement(s);
+             v.addElement(" "+s+" ");
             if(s.length()>maxlength){
                 //v.addElement(s);
                 //System.out.print(".");
@@ -123,7 +122,7 @@ public class HahaVariantGenerator {
             else{
                
                
-                 generateVVariants(v,s+"h");
+                generateVVariants(v,s+"h");
                 
                 generateVVariants(v,s+"a");
             }
@@ -168,17 +167,80 @@ public class HahaVariantGenerator {
            
         }
          return null;
+         
+         
+         
         
     }
         
+      
+      
+      
+      public String filterOutHaha(String source){
+          
+          String source_spaceprefix_spacesuffix =  " "+source+" ";
+           String source_cleaned = source.replaceAll("[^A-Za-z0-9]", " ");
+           String source_cleaned_spaceprefix_space_suffix = " "+source_cleaned + " ";
+           
+           int[] d = this.doesTextContainHaha(source_cleaned_spaceprefix_space_suffix);
+           String filtered ="";
+           
+           //******** HAHA ******
+           //        <---->
+           if(d==null)return null;
+           if(d[0]==0){ //Turn starts with haha
+               filtered = source_spaceprefix_spacesuffix.substring(d[1]-1).trim();
+               return filtered;
+           }
+           else if(d[0]>0){ //Turn starts with haha
+               String filteredleftpart  = source_spaceprefix_spacesuffix.substring(0,d[0]+1);
+               String filteredrightpart = source_spaceprefix_spacesuffix.substring(d[0]+d[1]-1);
+               filtered = (filteredleftpart +""+filteredrightpart).trim();
+               return filtered;
+           }
+           return null;
+      }
+      
+      
+      
+      
+      
+      
+      
     
       public static void main (String[] args){
            
+           HahaVariantGenerator hvg = new HahaVariantGenerator();
           
+           
+           //if end index is too big..shorten it
+           
+           //String teststring ="123456789";
+           //System.out.println(teststring.substring(0,3));
+           //System.out.println(teststring.substring(3,teststring.length()));
+           //haha
+           //haha.
+           //hah
+           //thah
+           //hah.that is
+           //haha haha haha
+           //haha this is funny
+           //haha    this is funny
+           // haha this is so funny
+           // ha
+           // hatch
+           //er terte haha
+           //er rerert haha  (SPACE)
+           
+           
+           
+           
+           System.out.println(hvg.filterOutHaha("haha"));
+           System.exit(-56);
           
            long startTime = new Date().getTime();
            
-           HahaVariantGenerator hvg = new HahaVariantGenerator();
+           //HahaVariantGenerator hvg = new HahaVariantGenerator();
            
            Vector<String> v = hvg.allVariantsSORTED;
           

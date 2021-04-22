@@ -958,13 +958,14 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         
         if(!txt.startsWith("/"))return;     
         
-        if(txt.startsWith("/NEXT" )|| txt.startsWith("/Next") || txt.startsWith("/next") && this.advanceToNextManually){
+        if((txt.startsWith("/NEXT" )|| txt.startsWith("/Next") || txt.startsWith("/next") )&& this.advanceToNextManually){
             this.currentsethasbeensolved = true;
+            return;
         }
         
         
         if(this.currentsethasbeensolved){
-            cC.c.sendInstructionToParticipant(sender,"The current set has already been solved");
+            if(!this.telegram)cC.c.sendInstructionToParticipant(sender,"The current set has already been solved");
             return;
             
         }
@@ -1007,10 +1008,18 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         //Next check if the command is permitted
         
         String validTokens = currentTrial[3];
+        System.err.println("Validtokens1:"+validTokens);
         validTokens=validTokens.replace(" ", "");
-        String[] validTokensArray = validTokens.split(",");
+        
+        String sepChar = ",";
+        if(currentTrial[3].contains(";"))sepChar = ";";
+        
+        
+        
+        String[] validTokensArray = validTokens.split(sepChar);
         boolean isValidToken = false;
         for(int i=0;i<validTokensArray.length;i++){
+             System.err.println("Validtokens2:"+validTokensArray[i]);
             if(validTokensArray[i].equalsIgnoreCase(command))isValidToken = true;
             this.dbg(sender, "validtokens: "+validTokensArray[i]);
         }  
@@ -1021,7 +1030,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
             
             String correctoptions = currentTrial[4];
             correctoptions = correctoptions.replace(" ", "");
-            String[] correctoptionsArray = correctoptions.split(",");
+            String[] correctoptionsArray = correctoptions.split("sepChar");
             for(int i=0;i<correctoptionsArray.length;i++){
                 if(correctoptionsArray[i].equalsIgnoreCase(command )) {
                     selectionCorrect = true;
@@ -1047,7 +1056,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                       }   
                   
                   
-                 this.currentsethasbeensolved=true;
+                if(this.advanceToNextManually) this.currentsethasbeensolved=true;
                  //doCountdowntoNextSet_DEPRECATED("CORRECT! They are the SAME", "Next face in "  );
                  
                  
@@ -1069,7 +1078,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  
                  
                 
-                this.currentsethasbeensolved=true;
+                if(this.advanceToNextManually) this.currentsethasbeensolved=true;
                 //doCountdowntoNextSet_DEPRECATED("INCORRECT! They are  DIFFERENT","Next face in " );
                 
             }
