@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -195,10 +196,25 @@ public class JRulesBasedInterventions extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        c.ai.loadFromFile();
-         jrbittmBLOCK.refresh();
-        jrbittmMODIFY.refresh();
-        jrbittmDELAY.refresh();
+        Thread t = new Thread(){
+            public void run(){
+                
+                c.ai.loadFromFile();
+                
+                SwingUtilities.invokeLater(new Runnable(){
+                     public void run(){
+                         jrbittmBLOCK.refresh();
+                         jrbittmMODIFY.refresh();
+                         jrbittmDELAY.refresh();
+                     }
+                   
+                });
+                
+            }
+        };
+        t.start();
+        
+        
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
