@@ -147,7 +147,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
             Conversation.saveErr("Trying to generate pinned message for null participant");
             return;
         }
-        Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Please do not close this message. You will need it in the task");
+        Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "please do not close this message. You will need it in the task");
         c.telegram_sendPinChatMessageToParticipant(p, m);
         htPinnedMessages.put(p, m);      
     }
@@ -204,7 +204,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
    public static boolean showcCONGUI() {
-        return false;
+        return true;
     }
     
    

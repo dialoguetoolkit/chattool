@@ -156,4 +156,6 @@ public class MoveANDSAME extends Move{
         
     }
     
+    
+    
 }

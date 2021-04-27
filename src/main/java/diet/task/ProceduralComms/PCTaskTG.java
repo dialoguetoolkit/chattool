@@ -36,10 +36,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       //static HashtableWithDefaultvalue htwdcLARGESTMOSTRECENTSUCCES = new HashtableWithDefaultvalue(0);
     
-      public String sharedWhitelist = "cd";
-      public String pAWhitelist = "ab";
-      public String pBWhitelist = "ef";
-      static public String allowedMetaChars =  "";//CustomDialog.getString("What is the META character?", "?");//"?";//?yn"; 
+     //CustomDialog.getString("What is the META character?", "?");//"?";//?yn"; 
     
       PCSetOfMoves pcset ;
       public TelegramParticipant pA;
@@ -73,7 +70,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
        static int streakofsuccessesbeforegoinguplevel = 3;
        static int currentstreak=0;
       
-      static  int difficultysettings_maxSwitchCost =  2;
+      static  int difficultysettings_maxSwitchCost =  3;
       static int difficulty_settings_singleNotesCoef = 1;
       static int difficultysettings_simulNotesCoef = 4; 
        
@@ -118,8 +115,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             this.director=pA;
             this.matcher=pB;
             
-            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pA, VectorToolkit.getVectorOfCharactersFromString(pAWhitelist+sharedWhitelist+allowedMetaChars));
-            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pB, VectorToolkit.getVectorOfCharactersFromString(pBWhitelist+sharedWhitelist+allowedMetaChars));
+            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pA, VectorToolkit.getVectorOfCharactersFromString(this.translateFromSystemToGUI(pA,   (pAWhitelist+sharedWhitelist+allowedMetaChars))));
+            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pB, VectorToolkit.getVectorOfCharactersFromString(this.translateFromSystemToGUI(pB,  (pBWhitelist+sharedWhitelist+allowedMetaChars))));
 
             
             
@@ -148,6 +145,131 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       //boolean displayDebug = false;//CustomDialog.getBoolean("Display debug info");
       
+      
+      
+      
+      public String sharedWhitelist     = "wx";
+      public String sharedWhitelist_GUI = "cd";
+      
+      public String pAWhitelist          = "uv";
+         
+      public String pBWhitelist         = "yz";
+     
+      public String whitelist_SelfGUI  = "ab";
+      public String whitelist_OtherGUI = "ef";
+     
+      
+      static public String allowedMetaChars =  "";
+      
+      //        System        PB
+      // PA a   -> u    ->    e
+      // PA b   -> v    ->    f
+      // PA c   -> w    ->    c
+      // PA d   -> x    ->    d
+      
+      // PB a   -> y    ->         e
+      // PB b   -> z    ->         f
+      //
+      
+      
+      
+    public String translateCharFromSystemToGUI(Participant recipient, char textfromsystem) {
+          
+          
+           char textfromsystemlowercase =  Character.toLowerCase(textfromsystem);
+          
+           int index = sharedWhitelist.indexOf(textfromsystemlowercase);
+           if(index>=0){
+                if( Character.isUpperCase(textfromsystem)) return (""+(sharedWhitelist_GUI.charAt(index))).toUpperCase();
+                return (""+(sharedWhitelist_GUI.charAt(index))).toLowerCase();     
+           }
+           
+           if(recipient==pA ){
+                index = pAWhitelist.indexOf(textfromsystemlowercase);
+                if(index>=0){
+                     if( Character.isUpperCase(textfromsystem)) return (""+(whitelist_SelfGUI.charAt(index))).toUpperCase();
+                     return (""+(whitelist_SelfGUI.charAt(index))).toLowerCase();     
+                } 
+
+                index = pBWhitelist.indexOf(textfromsystemlowercase);
+                if(index>=0){
+                     if( Character.isUpperCase(textfromsystem)) return (""+(whitelist_OtherGUI.charAt(index))).toUpperCase();
+                     return (""+(whitelist_OtherGUI.charAt(index))).toLowerCase();     
+                } 
+           }
+          
+           if(recipient==pB ){
+                index = pBWhitelist.indexOf(textfromsystemlowercase);
+                if(index>=0){
+                     if( Character.isUpperCase(textfromsystem)) return (""+(whitelist_SelfGUI.charAt(index))).toUpperCase();
+                     return (""+(whitelist_SelfGUI.charAt(index))).toLowerCase();     
+                } 
+
+                index = pAWhitelist.indexOf(textfromsystemlowercase);
+                if(index>=0){
+                     if( Character.isUpperCase(textfromsystem)) return (""+(whitelist_OtherGUI.charAt(index))).toUpperCase();
+                     return (""+(whitelist_OtherGUI.charAt(index))).toLowerCase();     
+                } 
+           }
+           
+           return ""+textfromsystemlowercase;
+      
+      
+    }    
+            
+            
+            
+            
+            
+            
+            
+      
+       public String translateCharFromGUIToSystem(Participant sender, String textSentByP){
+           String textSentByParticipant = textSentByP.toLowerCase();
+           int index = sharedWhitelist_GUI.indexOf(textSentByParticipant);
+           if(index>=0) return ""+sharedWhitelist.charAt(index);    
+           
+           if(sender==pA){
+              index = whitelist_SelfGUI.indexOf(textSentByParticipant);
+              if(index>=0) return ""+pAWhitelist.charAt(index);
+           }
+           if(sender==pB){
+              index = whitelist_SelfGUI.indexOf(textSentByParticipant);
+              if(index>=0) return ""+pBWhitelist.charAt(index);
+           }
+           
+           return textSentByParticipant;
+
+      }
+     
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      public String translateFromGUIToSystem(Participant sender, String textSentByParticipant){
+          String output ="";
+          for(int i=0;i<textSentByParticipant.length();i++){
+              output = output + this.translateCharFromGUIToSystem(sender, ""+textSentByParticipant.charAt(i));
+          }
+          return output;
+      }
+      public String translateFromSystemToGUI(Participant recipient, String textSentToParticipant){
+          System.err.println("TRANSLATETEXTSENTTOPARTICIPANT:"+textSentToParticipant+"----");
+          String output ="";
+          for(int i=0;i<textSentToParticipant.length();i++){
+              output = output + this.translateCharFromSystemToGUI(recipient,textSentToParticipant.charAt(i));
+          }
+          return output;
+      }
+      
+      
+      
+      
       public synchronized void evaluate(TelegramParticipant p,TelegramMessageFromClient tmfc){         
           synchronized(this.jt){
               
@@ -158,16 +280,20 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
               
               
               String textanycase=tmfc.u.getMessage().getText();
-              String text = textanycase.toUpperCase();
-                 
+             
+              
+              String text = this.translateFromGUIToSystem(p, textanycase).toUpperCase();
                       
                       
              
               
              
               
-              String pAPossibleChars = (this.pAWhitelist+sharedWhitelist).toUpperCase();
-              String pBPossibleChars = (this.pBWhitelist+sharedWhitelist).toUpperCase();
+              String pAPossibleChars = this.translateFromGUIToSystem(pA,this.pAWhitelist+sharedWhitelist).toUpperCase();
+              String pBPossibleChars = this.translateFromGUIToSystem(pB,this.pBWhitelist+sharedWhitelist).toUpperCase();
+              
+              
+              
               
               if(p==pA && !pAPossibleChars.contains(text.toUpperCase())){
                   String permittedchars = "";
@@ -176,7 +302,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                        permittedchars = permittedchars+pAPossibleChars.charAt(i); 
                   }
                                    
-                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+permittedchars.toUpperCase());
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+    this.translateFromSystemToGUI(p,permittedchars)    .toUpperCase());
                   return ; 
               }
               else  if(p==pB && !pBPossibleChars.contains(text.toUpperCase())){
@@ -186,16 +312,23 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                        permittedchars = permittedchars+pBPossibleChars.charAt(i); 
                   }
                                    
-                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+permittedchars.toUpperCase());
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+this.translateFromSystemToGUI(p,permittedchars).toUpperCase());
                   return ; 
               }
               
               
-              cC.c.telegram_relayMessageTextToOtherParticipants(p, tmfc);
-                
+              //cC.c.telegram_relayMessageTextToOtherParticipants(p, tmfc);
+               
+             
               
+              TelegramParticipant recip = pA;
+              if(p==pA)recip = pB;
+              if(p==pB)recip = pA;
               
-              
+               String textToSend = this.translateFromSystemToGUI(recip,text);
+             // cC.c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(p, textanycase+"!!!!"+text+"!!!!"+textToSend);
+             // cC.c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(director, text);
+              cC.c.telegram_sendArtificialTurnFromApparentOriginToParticipant(p,recip, textToSend.toLowerCase());
              
                boolean success = pcset.evaluate(p, text);
                
@@ -375,21 +508,30 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             if(!ispracticestage){
             if(pA==director){
                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: You are the instructor");
-                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: Your partner is the instructor");
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: Follow your partner`s instructions");
+                
+                if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, this.pcset.generateDescription(pA));
+                
             }
             else {
                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: You are the instructor");
-                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: Your partner is the instructor");
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: Follow your partner`s instructions");
+                
+                if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, this.pcset.generateDescription(pB));
             }
             }
             else{
                 if(pA==director){
                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Complete the sequence");
                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Your partner is practising");
+                    
+                    if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, this.pcset.generateDescription(pA));
                 }
                 else{
                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Complete the sequence");
                     cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Your partner is practising");
+                    
+                    if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, this.pcset.generateDescription(pB));
                 }
                 
             }
@@ -407,7 +549,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
      
       
     
- 
+     boolean sendinstructions = false;
       
 
       
@@ -655,126 +797,10 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
        
       
-        public void displayMovesOnClientsTLi(){
-           
-          
-           String pAOutput = "";
-           String pBOutput = "";
-           
-           /*pAOutput = "You can only select these letters: "+this.pAWhitelist+ this.sharedWhitelist+"\n";
-           pAOutput = pAOutput + "Your partner can only select these letters: "+this.pBWhitelist+ this.sharedWhitelist+"\n";
-           
-           
-           pBOutput = "You can only select these letters: "+this.pBWhitelist+ this.sharedWhitelist+"\n";
-           pBOutput = pBOutput + "Your partner can only select these letters: "+this.pAWhitelist+ this.sharedWhitelist+"\n";
-           
-           
-           if(this.allowedMetaChars.length()>0){
-                pAOutput = pAOutput +"You can also press these keys: "+this.allowedMetaChars;  
-                pBOutput = pBOutput + "You can also press these keys: ";       
-           }
-           
-           if(director==pA){
-                 pAOutput = pAOutput + "This is the sequence you need to perform:\n\n";
-                 pBOutput = pBOutput + "Your partner is giving you instructions:\n";
-           }
-           else{
-                 pBOutput = pBOutput + "This is the sequence you need to perform:\n\n";
-                 pAOutput = pAOutput + "Your partner is giving you instructions:\n";
-           }
-           
-           */
-           
-           String output = "";// PARTNER "+"   YOU   "+"\n";
-           for(int i=0;i<this.pcset.moves.size();i++){
-               Move mve = (Move)this.pcset.moves.elementAt(i);
-               if(mve instanceof MoveONLY){
-                    MoveONLY mo = (MoveONLY)mve;
-                    if(mo.getPerformer()==matcher){
-                         if(mo.isSolved())   output = output +    renderMove("&#8594"+mo.getText().toUpperCase(), "&#9633");
-                         else                output = output +    renderMove("&#8674"+mo.getText().toLowerCase(), "&#9633");
-                         //if(mo.isSolved())   output = output +    renderMove("=", "=");
-                         //else                output = output +    renderMove(mo.getText(), "&#9633");
-                    }
-                    else{
-                       if(mo.isSolved()) output = output + renderMove("&#8594"+"[",mo.getText().toUpperCase()+"]");
-                       else              output = output + renderMove("&#8674"+"[",mo.getText().toLowerCase()+"]");
-                       //if(mo.isSolved()) output = output + renderMove("=","=");
-                       //else              output = output + renderMove("&#9633",mo.getText());
-                    }
-                         
-               }
-               else if(mve instanceof MoveANDSAME){
-                    MoveANDSAME mas = (MoveANDSAME)mve;     
-                    
-                    
-                    if(mas.isPartiallySolved(matcher) && mas.isPartiallySolved(director) ){
-              
-                        
-                        output = output +   renderMove("&#8658"+mas.getText().toUpperCase(), mas.getText().toUpperCase());
-                        //output = output +   renderMove("=", "=");
-                        
-                        
-                    }
-                    else if(mas.isPartiallySolved(matcher) & !mas.isPartiallySolved(director) ){
-                         output = output +   renderMove("&#8594"+mas.getText().toUpperCase(), mas.getText().toLowerCase());
-                         //output = output +   renderMove("=", mas.getText());
-                    }
-                    else if(!mas.isPartiallySolved(matcher) && mas.isPartiallySolved(director) ){
-                       output = output +   renderMove("&#8594"+mas.getText().toLowerCase(), mas.getText().toUpperCase());
-                       //output = output +   renderMove(mas.getText(), "=");
-                    }
-                    else{
-                        output = output +   renderMove("&#8594"+mas.getText().toLowerCase(), mas.getText().toLowerCase());
-                        //output = output +   renderMove(mas.getText(), mas.getText());
-                    }
-                    
-                    
-               }
-               else if(mve instanceof MoveANDDIFFERENT){
-                    MoveANDDIFFERENT mad = (MoveANDDIFFERENT)mve;     
-                    if(mad.isPartiallySolved(matcher) && mad.isPartiallySolved(director) ){
-                        
-                        output = output +   renderMove("&#8658"+mad.getText(matcher).toUpperCase(), mad.getText(director).toUpperCase());
-                        //output = output +   renderMove("=", "=");
-                    }
-                    else if(mad.isPartiallySolved(matcher) & !mad.isPartiallySolved(director) ){
-                        output = output +   renderMove("&#8594"+mad.getText(matcher).toUpperCase(), mad.getText(director).toLowerCase());
-                    //output = output +   renderMove("=", mad.getText(director));
-                    }
-                    else if(!mad.isPartiallySolved(matcher) && mad.isPartiallySolved(director) ){
-                       output = output +   renderMove("&#8594"+mad.getText(matcher).toLowerCase(), mad.getText(director).toUpperCase());
-                    //output = output +   renderMove(mad.getText(matcher), "=");
-                    }
-                    else{
-                        //output = output +   renderMove(mad.getText(matcher).toUpperCase(), mad.getText(director).toUpperCase());
-                        output = output +   renderMove("&#8594"+mad.getText(matcher).toLowerCase(), mad.getText(director).toLowerCase());
-                   //output = output +   renderMove(mad.getText(matcher), mad.getText(director));
-                    }
-               }
-               
-           }
-           
-           if(pA==director){
-               cC.changePinnedMessage(pA,pAOutput+output);
-               cC.changePinnedMessage(pB,"Follow your partner`s instructions"+pBOutput);
-           }
-           else{
-               cC.changePinnedMessage(pB,pBOutput+output);
-               cC.changePinnedMessage(pA,"Follow your partner`s instructions"+pAOutput);
-           }   
-      }
+      
       
         
-       public String renderMove(String firstText, String secondText){
-           
-           //return "    "+    "["+ firstText+", "+ secondText+"]";
-           
-           return ""+firstText + secondText; 
-           
-       }
-    
-        
+   
         
         
         
@@ -870,10 +896,12 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
            
            
             if(pA==director){
-               cC.changePinnedMessage(pA,pAOutput+output);
+               String outputTransformed = this.translateFromSystemToGUI(pA,output);
+               cC.changePinnedMessage(pA,pAOutput+outputTransformed);
             }
              else{
-               cC.changePinnedMessage(pB,pBOutput+output);
+               String outputTransformed = this.translateFromSystemToGUI(pB,output);
+               cC.changePinnedMessage(pB,pBOutput+outputTransformed);
             }
                    
            
@@ -914,113 +942,15 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
         
     
       
-      // boolean showSolved;
-       
-      public void displayMovesOnClientsOLD(Participant director, Participant matcher){
-           
-          
-           String pAOutput = "";
-           String pBOutput = "";
-           
-           pAOutput = "You can only select these letters: "+this.pAWhitelist+ this.sharedWhitelist+"\n";
-           pAOutput = pAOutput + "Your partner can only select these letters: "+this.pBWhitelist+ this.sharedWhitelist+"\n";
-           
-           
-           pBOutput = "You can only select these letters: "+this.pBWhitelist+ this.sharedWhitelist+"\n";
-           pBOutput = pBOutput + "Your partner can only select these letters: "+this.pAWhitelist+ this.sharedWhitelist+"\n";
-           
-           
-           if(this.allowedMetaChars.length()>0){
-                pAOutput = pAOutput +"You can also press these keys: "+this.allowedMetaChars;  
-                pBOutput = pBOutput + "You can also press these keys: ";       
-           }
-           
-           if(director==pA){
-                 pAOutput = pAOutput + "This is the sequence you need to perform:\n\n";
-                 pBOutput = pBOutput + "Your partner is giving you instructions:\n";
-           }
-           else{
-                 pBOutput = pBOutput + "This is the sequence you need to perform:\n\n";
-                 pAOutput = pAOutput + "Your partner is giving you instructions:\n";
-           }
-           
-           
-           
-           String output = " PARTNER "+"   YOU   "+"\n";
-           for(int i=0;i<this.pcset.moves.size();i++){
-               Move mve = (Move)this.pcset.moves.elementAt(i);
-               if(mve instanceof MoveONLY){
-                    MoveONLY mo = (MoveONLY)mve;
-                    if(mo.getPerformer()==matcher){
-                         if(mo.isSolved())   output = output +  "   ("+mo.getText()+")   "  +"\n";
-                         else                output = output +  "    "+mo.getText()+"    "  +"\n";
-                    }
-                    else{
-                       if(mo.isSolved()) output = output + "         "   + "   ("+mo.getText()+")   "  +"\n";
-                       else              output = output + "         "   + "    "+mo.getText()+"    "  +"\n";
-                    }
-                         
-               }
-               else if(mve instanceof MoveANDSAME){
-                    MoveANDSAME mas = (MoveANDSAME)mve;     
-                    
-                    
-                    if(mas.isPartiallySolved(matcher) && mas.isPartiallySolved(director) ){
-                        output = output +  "   ("+mas.getText()+")   " +  "   ("+mas.getText()  +")\n";
-                    }
-                    else if(mas.isPartiallySolved(matcher) &! mas.isPartiallySolved(director) ){
-                        output = output +  "   ("+mas.getText()+")   " +  "    "+mas.getText()  +"\n";
-                    }
-                    else if(!mas.isPartiallySolved(matcher) && mas.isPartiallySolved(director) ){
-                        output = output +  "    "+mas.getText()+"    " +  "   ("+mas.getText()  +")\n";
-                    }
-                    else{
-                        output = output +  "    "+mas.getText()+"    " +  "    "+mas.getText()  +"\n";
-                    }
-                    
-                    
-               }
-               else if(mve instanceof MoveANDDIFFERENT){
-                    MoveANDDIFFERENT mad = (MoveANDDIFFERENT)mve;     
-                    if(mad.isPartiallySolved(matcher) && mad.isPartiallySolved(director) ){
-                        output = output +  "   ("+mad.getText(matcher)+")   " +  "   ("+mad.getText(director)  +")\n";
-                    }
-                    else if(mad.isPartiallySolved(matcher) &! mad.isPartiallySolved(director) ){
-                        output = output +  "   ("+mad.getText(matcher)+")   " +  "    "+mad.getText(director)  +"\n";
-                    }
-                    else if(!mad.isPartiallySolved(matcher) && mad.isPartiallySolved(director) ){
-                        output = output +  "    "+mad.getText(matcher)+"    " +  "   ("+mad.getText(director)  +")\n";
-                    }
-                    else{
-                        output = output +  "    "+mad.getText(matcher)+"    " +  "    "+mad.getText(director)  +"\n";
-                    }
-               }
-               
-           }
-           
-           if(pA==director){
-               cC.changePinnedMessage(pA,pAOutput+output);
-               cC.changePinnedMessage(pB,pBOutput);
-           }
-           else{
-               cC.changePinnedMessage(pB,pBOutput+output);
-               cC.changePinnedMessage(pA,pAOutput);
-           }
-           
-           
-           
-                   
-           
-           
-      }
       
        public void displayMovesOnServer(){
            
            //cC.c.textOutputWindow_ChangeText("instructions", "Your partner is giving you instructions:" ,true, matcher );  
            //cC.c.textOutputWindow_ChangeText("instructions", "This is the sequence you need to perform:\n\n" ,true, director );  
-          String output =  matcher.getParticipantID()+"_"+matcher.getUsername() +"____________"+ director.getParticipantID()+"_"+director.getUsername()+"\n";
-          output = output + "matcher:"+ (long)PCTaskTG.htwdcCORRECTMINUSINCORRECT.getObject(matcher)+ "_________"+ "director:"+ (long)PCTaskTG.htwdcCORRECTMINUSINCORRECT.getObject(director)+"\n"  ;
-          output = output+" PARTNER "+"   YOU   "+"\n";
+          String outputheader =  matcher.getParticipantID()+"_"+matcher.getUsername() +"____________"+ director.getParticipantID()+"_"+director.getUsername()+"\n";
+          outputheader = outputheader + "matcher:"+ (long)PCTaskTG.htwdcCORRECTMINUSINCORRECT.getObject(matcher)+ "_________"+ "director:"+ (long)PCTaskTG.htwdcCORRECTMINUSINCORRECT.getObject(director)+"\n"  ;
+          outputheader = outputheader+" PARTNER "+"   YOU   "+"\n";
+          String output="";
            for(int i=0;i<this.pcset.moves.size();i++){
                Move mve = (Move)this.pcset.moves.elementAt(i);
                if(mve instanceof MoveONLY){
@@ -1072,7 +1002,11 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                
            }
            //cC.c.textOutputWindow_ChangeText("instructions", output ,true, director );
-           this.jpct.displayText(output);
+           
+           //String outputTranslated = this.translateFromSystemToGUI(this.director, output);
+           ;
+           
+           this.jpct.displayText(outputheader +output);
       }
       
      

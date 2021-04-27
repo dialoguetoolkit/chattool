@@ -6,6 +6,16 @@
 package diet.textmanipulationmodules.haha;
 
 import diet.server.Conversation;
+import diet.server.ConversationController.ui.CustomDialog;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Vector;
 
@@ -204,14 +214,101 @@ public class HahaVariantGenerator {
       
       
       
+      public  void processTurnsToSeeIfTheyContainHaha(){
+          File f = CustomDialog.loadFile(System.getProperty("user.dir"));     
+          Vector<String> v = loadFile(f);
+          Vector<String> vOut = new Vector();
+          for(int i =0; i<v.size();i++){
+              String s = v.elementAt(i);
+              String sFiltered = this.filterOutHaha(s);
+              if(sFiltered==null){
+                  vOut.addElement("NON");
+              }
+              else if(sFiltered.length()<s.length()){
+                  System.out.println("FOUND HAHA"+ s);
+                  vOut.addElement("HAHA");
+              }
+              else if(sFiltered.length()==s.length()){
+                  
+              }
+              else{
+                  System.err.println("CRASHED ON:"+v.elementAt(i));
+                  System.exit(-56);
+              }
+              
+          }
+          
+          if(v.size()!=vOut.size()){
+              CustomDialog.showDialog("Input and Output are NOT the same size: "+v.size()+" vs."+vOut.size());
+          }
+          else{
+              this.saveFile(f, vOut);
+          }
+          
+      }
+      
+    public void   saveFile(File originalfile, Vector<String> data){
+                File nf = new File(originalfile.getAbsoluteFile()+"OUTPUT");
+                System.out.println("writing to: "+nf.getAbsolutePath());
+                System.out.println("writing to: "+nf.getName());
+
+       
+            try {
+                OutputStreamWriter osw=
+             new OutputStreamWriter(new FileOutputStream(nf), StandardCharsets.UTF_8);
+  
+                for(int i=0;i<data.size();i++){
+                    System.out.println("WRITING:"+data.elementAt(i));
+                    String s = data.elementAt(i);
+                    osw.write(s+"\n");
+                }
+                
+                osw.close();
+            }catch(Exception e){
+                  e.printStackTrace();
+            }
+    }
       
       
       
+      
+     public Vector<String> loadFile(File f){
+           Vector<String> v= new Vector();
+           InputStream ins = null; // raw byte-stream
+           Reader r = null; // cooked reader
+           BufferedReader br = null; // buffered for readLine()
+           try {
+               String s;
+               ins = new FileInputStream(f);
+               r = new InputStreamReader(ins, "UTF-8"); // leave charset out for default
+               br = new BufferedReader(r);
+               while ((s = br.readLine()) != null) {
+                   System.out.println(s);
+                   v.addElement(s);
+               }
+           }
+           catch (Exception e)
+           {
+               System.err.println(e.getMessage()); // handle exception
+           }
+           finally {
+               if (br != null) { try { br.close(); } catch(Throwable t) { /* ensure close happens */ } }
+               if (r != null) { try { r.close(); } catch(Throwable t) { /* ensure close happens */ } }
+               if (ins != null) { try { ins.close(); } catch(Throwable t) { /* ensure close happens */ } }
+               
+        }
+        return v;
+   }
+
     
       public static void main (String[] args){
            
-           HahaVariantGenerator hvg = new HahaVariantGenerator();
+           
           
+          
+           HahaVariantGenerator hvg = new HahaVariantGenerator();
+           hvg.processTurnsToSeeIfTheyContainHaha();
+           System.exit(-568);
            
            //if end index is too big..shorten it
            

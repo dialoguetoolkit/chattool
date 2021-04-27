@@ -179,4 +179,78 @@ public class PCSetOfMoves {
     
     
     
+    public String generateDescription(Participant pDirector){
+        if(this.moves.size()==0) return "";
+        String desc =  this.generateDescriptionForMove(pDirector, this.moves.elementAt(0), true);
+        if(this.moves.size()==1)return desc;
+                
+         if(this.moves.size()>1){
+              String description = "First "+ generateDescriptionForMove(pDirector,moves.elementAt(0), false)+".";
+              for(int i=1;i<this.moves.size();i++){
+                   description = description + " Then "+ generateDescriptionForMove(pDirector,moves.elementAt(1), false)+".";
+              }
+              
+              
+             
+         }
+        
+        return desc;
+        
+    }
+    
+   
+    
+    public String generateDescriptionForMove(Participant pDirector, Move m, boolean isstandalone ){
+        String description ="";
+        
+       
+            
+             if(m instanceof MoveONLY){
+                 MoveONLY mo = (MoveONLY)m;
+                 if(mo.pPerformer==pDirector){
+                     if(isstandalone){
+                         description = "You need to press "+ this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                     else{
+                         description = "you need to press "+this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                         
+                 }
+                 else{
+                     if(isstandalone){
+                        description= "Your partner needs to press "+this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                     else{
+                        description= "your partner needs to press "+this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                 }
+             }
+             else if(m instanceof MoveANDSAME){
+                 MoveANDSAME mas = (MoveANDSAME)m;
+                 if(isstandalone){
+                    description = "You and your partner have to press "+this.pctg.translateFromSystemToGUI(pDirector, mas.getText())+ " simultaneously";
+                 }
+                 else{
+                    description = "you and your partner have to press "+this.pctg.translateFromSystemToGUI(pDirector, mas.getText())+ " simultaneously";
+                 }
+             }    
+             else if (m instanceof MoveANDDIFFERENT){
+                 MoveANDDIFFERENT mad = (MoveANDDIFFERENT)m;
+                 if(isstandalone){
+                    description = "You have to press "+this.pctg.translateFromSystemToGUI(pDirector, mad.getText(pDirector)) + " at the same time as your partner presses "+mad.getTextOTHER(pDirector);
+                 }
+                 else{
+                    description = "you have to press "+this.pctg.translateFromSystemToGUI(pDirector, mad.getText(pDirector)) + " at the same time as your partner presses "+mad.getTextOTHER(pDirector);
+                 }
+             }   
+                
+             
+       
+        
+        return description;
+    }
+    
+    
+    
+    
 }

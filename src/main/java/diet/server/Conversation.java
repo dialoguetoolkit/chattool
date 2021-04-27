@@ -3153,6 +3153,15 @@ public class Conversation extends Thread{
             telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vID,  text);
       }
      
+      
+       public void telegram_sendArtificialTurnFromApparentOriginToParticipant(TelegramParticipant apparentSender, TelegramParticipant recip, String text){
+             Vector<String>  vID = new Vector();
+             vID.add(recip.getParticipantID());
+             
+            telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vID,  text, 0);
+       }
+      
+      
        public void telegram_sendArtificialTurnFromApparentOriginToParticipantID(TelegramParticipant apparentSender, Vector<String> vid, String text){
             telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vid,  text, 0);
        }

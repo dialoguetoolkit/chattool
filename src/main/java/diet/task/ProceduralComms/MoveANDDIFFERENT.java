@@ -143,6 +143,12 @@ public class MoveANDDIFFERENT extends Move{
         if(p==this.pB) return this.name_pB;
         return "ERRRORERRORSHOULDNTHAPPEN";
     }
+    
+    public String getTextOTHER(Participant p) {
+        if(p==this.pA) return this.name_pB;
+        if(p==this.pB) return this.name_pA;
+        return "ERRRORERRORSHOULDNTHAPPEN";
+    }
          
      public boolean isPartiallySolved(Participant p){
         if(p==pA){

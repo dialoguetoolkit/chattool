@@ -62,7 +62,7 @@ public class DifficultySettings {
      
      
      public void generateAllVariants(Vector<String> vs, String appendText){
-        if(vs.size()==5)return;
+        if(vs.size()==8)return;
        
         Vector<String> vsclone=      (Vector<String>)vs.clone();
         if(!appendText.equalsIgnoreCase(""))vsclone.add(appendText);
