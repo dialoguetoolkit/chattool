@@ -70,7 +70,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
        static int streakofsuccessesbeforegoinguplevel = 3;
        static int currentstreak=0;
       
-      static  int difficultysettings_maxSwitchCost =  3;
+      static  int difficultysettings_maxSwitchCost =  2;
       static int difficulty_settings_singleNotesCoef = 1;
       static int difficultysettings_simulNotesCoef = 4; 
        
@@ -145,9 +145,22 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       //boolean displayDebug = false;//CustomDialog.getBoolean("Display debug info");
       
+      //"abcdefghijklmnopqrstuvwxyz"
+      
+      public String sharedWhitelist     = "pq";
+      public String sharedWhitelist_GUI = "io";
+      
+      public String pAWhitelist          = "rs";
+         
+      public String pBWhitelist         = "tu";
+     
+      public String whitelist_SelfGUI  = "fd";
+      public String whitelist_OtherGUI = "xv";
+      
+      static public String allowedMetaChars =  "";
       
       
-      
+      /*
       public String sharedWhitelist     = "wx";
       public String sharedWhitelist_GUI = "cd";
       
@@ -159,7 +172,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       public String whitelist_OtherGUI = "ef";
      
       
-      static public String allowedMetaChars =  "";
+      
       
       //        System        PB
       // PA a   -> u    ->    e
@@ -170,7 +183,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       // PB a   -> y    ->         e
       // PB b   -> z    ->         f
       //
-      
+      */
       
       
     public String translateCharFromSystemToGUI(Participant recipient, char textfromsystem) {
@@ -549,7 +562,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
      
       
     
-     boolean sendinstructions = false;
+     boolean sendinstructions = CustomDialog.getBoolean("Do you want to send instructions?");
       
 
       
