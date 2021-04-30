@@ -12,8 +12,10 @@ Without this configuration present, some functionality in the IDE may be limited
             <configuration id="NOGUI Referential Task" profiles=""/>
             <configuration id="NOGUI Telegram Referential Task" profiles=""/>
             <configuration id="WIDTHHEIGHT" profiles=""/>
+            <configuration id="debugregex" profiles=""/>
             <configuration id="excelo" profiles=""/>
             <configuration id="haha" profiles=""/>
+            <configuration id="debugrex2" profiles=""/>
         </configurations>
     </config-data>
 </project-shared-configuration>

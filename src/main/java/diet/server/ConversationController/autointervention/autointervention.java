@@ -68,7 +68,7 @@ public class autointervention {
             CustomDialog.showDialog("The file you have just selected is still open in another application. Perhaps it is open in Excel or LibreOffice? Please close that application and try again.");
             return;
         }
-        Conversation.printWSln("Main", "Loading intervention rules from the spreadsheet. This might take a few seconds.");
+        Conversation.printWSln("Main", "Loading intervention rules from the spreadsheet. This might take a few seconds....please wait for confirmation that it has loaded!");
         
         this.vib =new Vector();
         this.vim=new Vector();
@@ -357,6 +357,11 @@ public class autointervention {
     public static void main(String[] args){
          autointervention au = new autointervention(null);
          au.loadFromFile();
+         
+         
+         boolean process = au.processText_doModify(new Participant(null,"a","b"), "This is text OK");
+         //System.out.println(process);
+         
     }
     
     

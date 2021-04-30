@@ -562,7 +562,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
      
       
     
-     boolean sendinstructions = CustomDialog.getBoolean("Do you want to send instructions?");
+     boolean sendinstructions = CustomDialog.getBoolean("Do you want to send instructions?", "INSTRUCTIONS", "NO INSTRUCTIONS");
       
 
       
