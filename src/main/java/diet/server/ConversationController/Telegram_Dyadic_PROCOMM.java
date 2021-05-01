@@ -49,6 +49,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
    
      public void telegram_participantJoinedConversation(TelegramParticipant p) {
          
+         if(2<5)System.exit(-5);
+         
          this.generatePinnedMessage(p);
          
         if(c.getParticipants().getAllParticipants().size()==2) {
@@ -204,7 +206,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
    public static boolean showcCONGUI() {
-        return true;
+        return false;
     }
     
    
