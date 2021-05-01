@@ -108,7 +108,7 @@ public class JGroupsConversationHistoriesPanel extends javax.swing.JPanel {
         if(this.jgch.telegram){
             for(int i =0;i<recipients.size();i++){
                 TelegramParticipant tp = (TelegramParticipant)recipients.elementAt(i);
-                this.jgch.cH.getConversation().telegram_sendInstructionToParticipant(tp, textToSend);
+                this.jgch.cH.getConversation().telegram_sendInstructionToParticipant_MonospaceFont(tp, textToSend);
             }  
         }
         else{

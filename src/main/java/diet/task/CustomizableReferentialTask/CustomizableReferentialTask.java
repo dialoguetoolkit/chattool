@@ -111,6 +111,9 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
     
     */
     
+   boolean showScoreOnEachGame = false;
+   boolean showIfSelectionWasCorrrectOrIncorrect = false;
+   boolean advanceToNextManually = false;
     
     
     
@@ -134,6 +137,12 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.telegram=crts.telegram;
          this.vstimuli=crts.vstimuli;
          this.vstimuliFULL=crts.vstimuliFULL;
+         
+         
+         this. showScoreOnEachGame = crts.showScoreOnEachGame;
+        this.showIfSelectionWasCorrrectOrIncorrect = crts.showIfSelectionWasCorrrectOrIncorrect;
+
+        this.advanceToNextManually = crts.advanceToNextManually;
          
         
          
@@ -284,6 +293,17 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 }             
             }
         try{
+            while(jcrt==null){
+                try{
+                   Thread.sleep(50);
+                   System.err.println("Waiting for Java component to initialize");
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+            
+            
+            
             this.jcrt.setLeftParticipantName(this.pA.getParticipantID(),this.pA.getUsername());
             this.jcrt.setRightParticipantName(this.pB.getParticipantID(),this.pB.getUsername());
         }catch(Exception e){
@@ -458,8 +478,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                      //this.jjp.addTextln("TIMEOUT");
                      
                      if(telegram){
-                        cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "You ran out of time!");
-                        cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "You ran out of time!");
+                        cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "You ran out of time!");
+                        cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "You ran out of time!");
                      }
                      else{
                          cC.c.sendInstructionToParticipant(pA, "You ran out of time!" );
@@ -577,16 +597,28 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                      telegrambuttonoptions tbo = getButtons();
                  
                      if(participantCanMakeChoice(pA)){
-                         if(showButtons) this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, tbo.buttons, tbo.actions);
+                         if(showButtons) {
+                             this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, tbo.buttons, tbo.actions);
+                         }
+                         else{
+                             this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, null, null);
+                         }
+                             
                      }
                      else{
-                         if(showButtons) this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, null, null);
+                          this.p1PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pA, fA, durationOfStimulus, null, null);
                      }
                      if(participantCanMakeChoice(pB)){
-                         if(showButtons) this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, tbo.buttons, tbo.actions);
+                         if(showButtons) {
+                             this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, tbo.buttons, tbo.actions);
+                         }
+                         else{
+                             this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, null, null);
+                         }
+                             
                      }
                      else{
-                         if(showButtons) this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, null, null);
+                          this.p2PM=cC.c.telegram_sendPhoto_By_File_DeleteAfter((TelegramParticipant)pB, fB, durationOfStimulus, null, null);
                      }
                      Conversation.printWSln("Main", "THE STIMULI ARE:"  + this.currentTrial[0]+"----"+this.currentTrial[1]);
             }
@@ -820,16 +852,16 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                                
                             }
                             else{
-                                cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "Your score is: "+ outputPA );
-                                cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "Your score is: "+ outputPB );
+                                if(this.showScoreOnEachGame)  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "Your score is: "+ outputPA );
+                                if(this.showScoreOnEachGame)  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Your score is: "+ outputPB );
                                 
                                 if(this.currentTrial.length>6){
                                    String msgToP1 = currentTrial[5];
                                    msgToP1 = msgToP1.trim();
                                    String msgToP2 = currentTrial[6];
                                    msgToP2 = msgToP2.trim();
-                                   cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, msgToP1 );
-                                   cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, msgToP2 );
+                                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, msgToP1 );
+                                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, msgToP2 );
                                    System.err.println("CRTTELEGRAM MSGTOP1B: "+msgToP1);
                                    System.err.println("CRTTELEGRAM MSGTOP2B: "+msgToP2);
                                }
@@ -891,7 +923,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
            int gameNumberOfButtonPress = Integer.parseInt(leftIDGameNumber);
            
            if(gameNumberOfButtonPress!=this.gamenumber){
-                 cC.c.telegram_sendInstructionToParticipant(p, "You selected an old option. Please select an option from the most recent image!");
+                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "You selected an old option. Please select an option from the most recent image!");
                  cC.c.telegram_sendEditMessageReplyMarkup(p, updateWithCallback, null,null);
                  return;
            }
@@ -900,7 +932,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  String rightID = callbackData.substring( 5);
                  System.err.println("RIGHTID:"+rightID+" "+rightID);
                  this.processChatText(p, "/"  + rightID);
-                 cC.c.telegram_sendInstructionToParticipant(p, "You selected "+rightID);
+                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "You selected "+rightID);
                  
                  cC.c.saveAdditionalRowOfDataToSpreadsheetOfTurns("buttonpress", p, rightID);
            }
@@ -925,8 +957,24 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         this.jcrt.processChatText(sender.getUsername(),txt);
         
         if(!txt.startsWith("/"))return;     
+        
+        System.err.println("Manual or automatic advancing to next set0");
+        if(this.advanceToNextManually){
+            System.err.println("Manual advancing to next set1");
+            if(   txt.startsWith("/NEXT" )|| txt.startsWith("/Next") || txt.startsWith("/next") ){
+                System.err.println("Manual advancing to next set2");
+                this.currentsethasbeensolved = true;
+                return;
+            }
+            
+        }
+                
+                
+       
+        
+        
         if(this.currentsethasbeensolved){
-            cC.c.sendInstructionToParticipant(sender,"The current set has already been solved");
+            if(!this.telegram)cC.c.sendInstructionToParticipant(sender,"The current set has already been solved");
             return;
             
         }
@@ -949,7 +997,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 cC.c.sendInstructionToParticipant(sender,"The other participant needs to make the selection!");
             }
             else{
-                cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)sender, "The other participant needs to make the selection!");
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "The other participant needs to make the selection!");
             }
             return;
         }
@@ -958,7 +1006,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 cC.c.sendInstructionToParticipant(sender,"The other participant needs to make the selection!");
             }
             else{
-                 cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)sender, "The other participant needs to make the selection!");
+                 cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "The other participant needs to make the selection!");
             }
             
             return;
@@ -969,10 +1017,18 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         //Next check if the command is permitted
         
         String validTokens = currentTrial[3];
+        System.err.println("Validtokens1:"+validTokens);
         validTokens=validTokens.replace(" ", "");
-        String[] validTokensArray = validTokens.split(",");
+        
+        String sepChar = ",";
+        if(currentTrial[3].contains(";"))sepChar = ";";
+        
+        
+        
+        String[] validTokensArray = validTokens.split(sepChar);
         boolean isValidToken = false;
         for(int i=0;i<validTokensArray.length;i++){
+             System.err.println("Validtokens2:"+validTokensArray[i]);
             if(validTokensArray[i].equalsIgnoreCase(command))isValidToken = true;
             this.dbg(sender, "validtokens: "+validTokensArray[i]);
         }  
@@ -983,7 +1039,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
             
             String correctoptions = currentTrial[4];
             correctoptions = correctoptions.replace(" ", "");
-            String[] correctoptionsArray = correctoptions.split(",");
+            String[] correctoptionsArray = correctoptions.split("sepChar");
             for(int i=0;i<correctoptionsArray.length;i++){
                 if(correctoptionsArray[i].equalsIgnoreCase(command )) {
                     selectionCorrect = true;
@@ -1000,16 +1056,16 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                   String scoreB = " Score: "+(Double)this.htPOINTS.getObject(pB);
                  
                       if(telegram){
-                         cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "CORRECT! " + scoreA);
-                         cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "CORRECT! " + scoreB);
+                         if(this.showIfSelectionWasCorrrectOrIncorrect)cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "CORRECT! " + scoreA);
+                         if(this.showIfSelectionWasCorrrectOrIncorrect)cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "CORRECT! " + scoreB);
                       }
                       else{
-                         cC.c.sendInstructionToParticipant(pA, "CORRECT! " + scoreA);
-                         cC.c.sendInstructionToParticipant(pB, "CORRECT! " + scoreB);
+                        if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pA, "CORRECT! " + scoreA);
+                        if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pB, "CORRECT! " + scoreB);
                       }   
                   
                   
-                 this.currentsethasbeensolved=true;
+                if(!this.advanceToNextManually) this.currentsethasbeensolved=true;
                  //doCountdowntoNextSet_DEPRECATED("CORRECT! They are the SAME", "Next face in "  );
                  
                  
@@ -1021,17 +1077,17 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                  String scoreA = " Score: "+(Double)this.htPOINTS.getObject(pA);
                  String scoreB = " Score: "+(Double)this.htPOINTS.getObject(pB);
                  if(telegram){
-                     cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pA, "INCORRECT! " + scoreA);
-                     cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "INCORRECT! " + scoreB);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pA, "INCORRECT! " + scoreA);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "INCORRECT! " + scoreB);
                  }
                  else{
-                     cC.c.sendInstructionToParticipant(pA, "INCORRECT! " + scoreA);
-                     cC.c.sendInstructionToParticipant(pB, "INCORRECT! " + scoreB);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pA, "INCORRECT! " + scoreA);
+                    if(this.showIfSelectionWasCorrrectOrIncorrect) cC.c.sendInstructionToParticipant(pB, "INCORRECT! " + scoreB);
                  }
                  
                  
                 
-                this.currentsethasbeensolved=true;
+                if(!this.advanceToNextManually) this.currentsethasbeensolved=true;
                 //doCountdowntoNextSet_DEPRECATED("INCORRECT! They are  DIFFERENT","Next face in " );
                 
             }
@@ -1039,8 +1095,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
         }
         else{
             if(telegram){
-                  cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)sender, "Invalid command.");
-                  cC.c.telegram_sendInstructionToParticipant((TelegramParticipant)pB, "Please reread the experiment istructions");
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)sender, "Invalid command.");
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)pB, "Please reread the experiment instructions");
             }
             else{
                 cC.c.sendInstructionToParticipant(sender,"Invalid command.");

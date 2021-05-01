@@ -148,7 +148,7 @@ public class Configuration implements Cloneable{
     
     
     //Below is versioning information
-    static public double about_softwareversion = 5.1;
+    static public double about_softwareversion = 5.2;
     static final public String about_info = 
     "This is the 5th incarnation of the chat tool. It grew out of the ROSSINI project (P.G.T. Healey, Queen Mary University)\n"
     + "It was used by Matt Purver for his thesis, was rebuilt for G. Mills's thesis, and then programmed as a stand-alone toolkit\n"
@@ -162,10 +162,11 @@ public class Configuration implements Cloneable{
     
     
     
-    
+   
     static public String telegram_generic_login = "login";
     
-    
+    static final public String outputfile_newline_replacement_character = "↲";
+    static final public String outputfile_unsupported_character = "█";
     
     
     

@@ -33,6 +33,7 @@ import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import diet.tg.tgSTARTER;
 import java.awt.Color;
+import static java.awt.SystemColor.text;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.text.MutableAttributeSet;
+import org.telegram.telegrambots.meta.api.methods.pinnedmessages.PinChatMessage;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -50,10 +52,10 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
 
@@ -177,18 +179,22 @@ public class Conversation extends Thread{
             
            }catch(Exception e){
                   System.err.println("COULD NOT FIND AND DYNAMICALLY LOAD CONVERSATION CONTROLLER...trying to load"+nameOfConversationController);
+                  System.err.println("THIS ERROR MESSAGE USUALLY MEANS THAT THERE WAS AN ERROR IN THE CONVERSATIONCONTROLLER OBJECT WHEN IT WAS BEING INITIALIZED");
+                    
+                    
                   e.printStackTrace();
                   InvocationTargetException ite = (InvocationTargetException)e;
                   ite.getTargetException().printStackTrace();
                   if(this.expManager.emui!=null){
                     this.expManager.emui.print("Main","Could not dynamically load "+nameOfConversationController);
+                    this.expManager.emui.print("Main", "THIS ERROR MESSAGE USUALLY MEANS THAT THERE WAS AN ERROR IN THE CONVERSATIONCONTROLLER OBJECT WHEN IT WAS BEING INITIALIZED");
                     e.printStackTrace();
                       
                     e.getCause();
                     e.getCause().printStackTrace();
 
                   }else{
-                      System.err.println("Could not dynamically load "+nameOfConversationController);
+                      //System.err.println("Could not dynamically load "+nameOfConversationController);
                       e.printStackTrace();
                   }
            }
@@ -559,6 +565,8 @@ public class Conversation extends Thread{
                        
                        String timeOnClientOfShowing = "(TimeOnClientOfShowing:"+mpr.timeOnClientOfDisplay+")";
                        String timeOnClientOfChoice = "(TimeOnClientOfSelecting:"+mpr.timeOfChoice+")";
+                       
+                     
                        
                        
                        String textToSave = (title+"/"+question+"/"+optionsFLATTENED).replaceAll("\n","(NEWLINE)")+ timeOnClientOfShowing+timeOnClientOfChoice+"_"+mpr.getSelection()+"__"+mpr.getSelectedValue();
@@ -2697,7 +2705,119 @@ public class Conversation extends Thread{
      }
      
      
-     public void telegram_sendInstructionToParticipant(TelegramParticipant recipient, String text){
+     
+      public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_(TelegramParticipant recipient, String markdown){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+             try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText(markdown);
+                 message = message.disableNotification();
+                 message.enableMarkdown(true);
+                 
+                 message.setText(markdown);  
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipant");
+             additionalValues.add(av1);
+             AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+             additionalValues.add(av2);     
+              AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+                   additionalValues.add(av3);
+             
+              cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",markdown, recipientsNames, additionalValues, false);
+               
+               
+               
+               
+                 System.err.println("HEREINCOMING102");
+                 retMessage=m;
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+             if(retMessage!=null) return retMessage;
+             return null;
+        //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
+     }
+     
+     
+      
+     
+     
+     
+     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_HTML(TelegramParticipant recipient, String html){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+             try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText(html);
+                 message = message.disableNotification();
+                 message.enableHtml(true);
+                 
+                 message.setText(html);  
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipant");
+             additionalValues.add(av1);
+             AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+             additionalValues.add(av2);     
+              AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+                   additionalValues.add(av3);
+             
+              cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",html, recipientsNames, additionalValues, false);
+               
+               
+               
+               
+                 System.err.println("HEREINCOMING102");
+                 retMessage=m;
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+             if(retMessage!=null) return retMessage;
+             return null;
+        //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
+     }
+     
+     
+     
+     
+     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_MonospaceFont(TelegramParticipant recipient, String text){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
         String subdialogueID = cC.pp.getSubdialogueID(recipient);
         
         long recipientID = recipient.getConnection().telegramID;
@@ -2708,8 +2828,9 @@ public class Conversation extends Thread{
                        .setText(text);
                  message = message.disableNotification();
                  message.enableHtml(true);
+                 
                  message.setText("<code>"+text+"</code>");  
-                recipient.sendMessage(message);
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
                 
                 String group =cC.pp.getSubdialogueID(recipient);
                if(group==null)group="";
@@ -2732,21 +2853,77 @@ public class Conversation extends Thread{
                
                
                  System.err.println("HEREINCOMING102");
+                 retMessage=m;
               } catch (Exception e){
                   e.printStackTrace();
                   Conversation.saveErr(e);
                   
               }    
+             if(retMessage!=null) return retMessage;
+             return null;
         //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
      }
      
-      public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, String text, String[] buttons, int columns){
+     
+     
+     
+     
+     public org.telegram.telegrambots.meta.api.objects.Message telegram_sendInstructionToParticipant_Markdownv2(TelegramParticipant recipient, String markdownv2){
+         
+         org.telegram.telegrambots.meta.api.objects.Message retMessage = null;
+         
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+             try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText(markdownv2);
+                 message = message.disableNotification();
+                 message.enableMarkdownV2(conversationIsActive);
+                 message.setText("<code>"+markdownv2+"</code>");  
+                 org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipant");
+             additionalValues.add(av1);
+             AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+             additionalValues.add(av2);     
+              AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+                   additionalValues.add(av3);
+             
+              cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",markdownv2, recipientsNames, additionalValues, false);
+               
+               
+               
+               
+                 System.err.println("HEREINCOMING102");
+                 retMessage=m;
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+             if(retMessage!=null) return retMessage;
+             return null;
+        //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), "server",text, recipientNames, new Vector(), false);
+     }
+     
+      public void telegram_sendInstructionToParticipantWithForcedKeyboardButtonsDEPRECATED(TelegramParticipant recipient, String text, String[] buttons, int columns){
         try{  
           Vector<Vector<String>> rows=new Vector();
           Vector<String> currentRow = new Vector();
           
           for(int i=0;i<buttons.length;i++){
-               currentRow.add(buttons[i]);
+               //currentRow.add(new KeyboardButton(buttons[i]));
                if(currentRow.size()>columns){
                    rows.add(currentRow);
                    currentRow=new Vector<String>();
@@ -2769,10 +2946,7 @@ public class Conversation extends Thread{
           }
           telegram_sendInstructionToParticipantWithForcedKeyboardButtons(recipient,  text, rowA);
           
-        
-          
-          
-          
+     
         }catch(Exception e){
             e.printStackTrace();
             Conversation.saveErr(e);
@@ -2782,6 +2956,76 @@ public class Conversation extends Thread{
           
       }
      
+  
+      
+      
+       public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, Vector<String> buttonnames){
+            String subdialogueID = cC.pp.getSubdialogueID(recipient);
+        
+        long recipientID = recipient.getConnection().telegramID;
+            
+        try{
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID)
+                       .setText("Setting up");
+                 message = message.disableNotification();
+                 message.enableHtml(false);
+                 //message.setText("<code>"+text+"</code>");  
+                 
+                
+                 
+               ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+               // Create the keyboard (list of keyboard rows)
+               List<KeyboardRow> keyboard = new ArrayList<>();
+                KeyboardRow row = new KeyboardRow();
+                for(int i=0;i<buttonnames.size();i++){
+                    row.add(new KeyboardButton(buttonnames.elementAt(i)));
+                    System.err.println("ADDINGKEYBOARD:"+buttonnames.elementAt(i));
+                }
+                
+                
+                
+               
+                keyboard.add(row);
+                  
+               keyboardMarkup.setKeyboard(keyboard);
+                keyboardMarkup.setOneTimeKeyboard(false);
+
+                message.setReplyMarkup(keyboardMarkup);
+          
+                keyboardMarkup.setResizeKeyboard(true);
+               
+                 
+               recipient.sendMessage(message);
+               
+               String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , message.toString());
+               
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+               Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+               AttribVal av1 = new AttribVal("telegramtype","instructiontoparticipantwithforcedkeyboard");
+               additionalValues.add(av1);
+               AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+               additionalValues.add(av2);     
+               AttribVal av3 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+               additionalValues.add(av3);
+             
+              // cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server","", recipientsNames, additionalValues, false);
+               
+               
+               
+               System.err.println("HEREINCOMING102SENT + text");
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+       
+       }
+      
      
      
      public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, String text, String[][] buttongrid){
@@ -2810,10 +3054,11 @@ public class Conversation extends Thread{
                    keyboard.add(row);
                }      
                keyboardMarkup.setKeyboard(keyboard);
-        
+                keyboardMarkup.setOneTimeKeyboard(false);
+
                 message.setReplyMarkup(keyboardMarkup);
           
-                keyboardMarkup.setOneTimeKeyboard(true);
+               
                  
                recipient.sendMessage(message);
                
@@ -2908,6 +3153,15 @@ public class Conversation extends Thread{
             telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vID,  text);
       }
      
+      
+       public void telegram_sendArtificialTurnFromApparentOriginToParticipant(TelegramParticipant apparentSender, TelegramParticipant recip, String text){
+             Vector<String>  vID = new Vector();
+             vID.add(recip.getParticipantID());
+             
+            telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vID,  text, 0);
+       }
+      
+      
        public void telegram_sendArtificialTurnFromApparentOriginToParticipantID(TelegramParticipant apparentSender, Vector<String> vid, String text){
             telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vid,  text, 0);
        }
@@ -3232,6 +3486,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
      
      public org.telegram.telegrambots.meta.api.objects.Message telegram_sendPhoto_By_File(TelegramParticipant recipient, File f, String[][] buttons, String[][] actions){
         String subdialogueID = cC.pp.getSubdialogueID(recipient);
+      //  CustomDialog.showDialog("142:SENDING STIMULU0");
         
         long recipientID = recipient.getConnection().telegramID;
             
@@ -3294,7 +3549,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
                      e.printStackTrace();
                  }
                 
-                  
+               // CustomDialog.showDialog("142:SENDING STIMULUA");
                 return recipient.sendPhoto(msg);
                  //System.err.println("HEREINCOMING102");
               } catch (Exception e){
@@ -3358,84 +3613,142 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
      }
      
      
-     public void deprecated_telegram_respondToCallback(Participant recipient, Update updat, String text){
+     
          
-            
-            System.err.println("HAS RECEIVED CALLBACK QUESRY");
-            CallbackQuery cbq = updat.getCallbackQuery();
-            String chatInstance = cbq.getChatInstance();
-            User u = cbq.getFrom();
-            String id = cbq.getId();
-            String data = cbq.getData();
-           
-            org.telegram.telegrambots.meta.api.objects.Message m = cbq.getMessage();
-            String messagetext = m.getText();
-            Long messagechatid = m.getChatId();
-            Integer mId = m.getMessageId();
-            String caption = m.getCaption();
-            
-            System.err.println("CB1"+u.getId());   ///get the userID
-            System.err.println("CB2"+id);
-            System.err.println("CB3"+chatInstance);
-            System.err.println("CB4"+data);
-            System.err.println("CB5"+messagetext);
-            System.err.println("CB6"+messagechatid);
-            System.err.println("CB7"+caption);
-            System.err.println("CB8"+mId);
-           
-           
-            
-            
-            EditMessageText emt = new EditMessageText();
-            //emt.enableHtml(true);
-            emt.setText("EDIT");
-            emt.setChatId(messagechatid);
-            emt.setMessageId(mId);
-            
-            List<List<InlineKeyboardButton>> keybb = new ArrayList<>();
-                 List<InlineKeyboardButton> keyb = new ArrayList<>();
+    public void telegram_sendEditMessageToParticipant(TelegramParticipant recipient, org.telegram.telegrambots.meta.api.objects.Message mOriginalMessage, String replacementText){
+              
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);  
+        long recipientID = recipient.getConnection().telegramID;
+        
+        String originalText ="";
+        if(replacementText==null) replacementText ="";
+        
+        
+        try{
+            originalText = mOriginalMessage.getText();
+            if(originalText==null)originalText="";
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        
+             try{
                  
-                 InlineKeyboardButton ikb = new InlineKeyboardButton();
-                // ikb.setText("H");
-                 ikb.setCallbackData("EDITH1");
-                 ikb.setText("EDITH1T");
-                 keyb.add(ikb);
-                 InlineKeyboardButton ikb2 = new InlineKeyboardButton();
-                 //ikb2.setText("H2");
-                 ikb2.setCallbackData("EDITH2");
-                 ikb2.setText("EDITH2T");
-                 keyb.add(ikb2);
-                 
-                 
-                 keybb.add(keyb);
-                     InlineKeyboardMarkup im = new InlineKeyboardMarkup(); 
-                     im.setKeyboard(keybb);
+                Integer messageID = mOriginalMessage.getMessageId() ;
+                Long messagechatid = mOriginalMessage.getChatId();
+                EditMessageText emt = new EditMessageText();
             
-                 emt = emt.setReplyMarkup(im);
+           
+                emt.enableHtml(true);
+                emt.setText("<code>"+replacementText+"</code>");
+                emt.setChatId(messagechatid);
+                emt.setMessageId(messageID);  
+                              
+                recipient.sendEditMessage(mOriginalMessage, emt);
+                
+                String group =cC.pp.getSubdialogueID(recipient);
+                
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , emt.toString());
+                
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+             Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","editmessage");
+             additionalValues.add(av1);
+              AttribVal av2 = new AttribVal("telegramrawdata_original",mOriginalMessage.toString());    
+             additionalValues.add(av2);   
+             AttribVal av3 = new AttribVal("telegramrawdata_replacement",emt.toString());    
+             additionalValues.add(av3);     
+             AttribVal av4 = new AttribVal("originaltext", mOriginalMessage.getText());
+             additionalValues.add(av4);
+         
+             AttribVal av5 = new AttribVal("replacementtext", mOriginalMessage.getText());
+             additionalValues.add(av5);
+             
+             AttribVal av6 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+             additionalValues.add(av6);
             
             
-            
-            
-            //emt.setInlineMessageId(messagetext)
-            
-    
-              try{
-                  ((TelegramParticipant)recipient).sendEditMessage(emt);
-                  
-                  
-                  
-              }catch (Exception e){
+ 
+             cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",  "REPLACED: "+originalText+" WITH: "    +replacementText, recipientsNames, additionalValues, false);
+               
+             System.err.println("HEREINCOMING102");
+                
+              } catch (Exception e){
                   e.printStackTrace();
-              }
+                  Conversation.saveErr(e);
+                  
+              }    
+           
+     }
+    
+    
+     public void telegram_sendPinChatMessageToParticipant(TelegramParticipant recipient, org.telegram.telegrambots.meta.api.objects.Message messageToBePinned){
+              
+        String subdialogueID = cC.pp.getSubdialogueID(recipient);  
+        long recipientID = recipient.getConnection().telegramID;
+        String messageToBePinnedText ="";
+            
+             try{
+                 
+                PinChatMessage pcm = new PinChatMessage() ;
+                pcm = pcm.setMessageId(messageToBePinned.getMessageId());
+                pcm = pcm.setChatId(messageToBePinned.getChatId());
+                
+                String group =cC.pp.getSubdialogueID(recipient);
                 
                 
+                recipient.sendPinChatMessage(pcm);
+                
+                if(group==null)group="";
+                convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"to",new Date().getTime() , pcm.toString());
+                
+                Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+                Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+              
+                   
+             AttribVal av1 = new AttribVal("telegramtype","pinchatmessage");
+             additionalValues.add(av1);
+              AttribVal av2 = new AttribVal("telegramrawdata",pcm.toString());    
+             additionalValues.add(av2);   
+             
+             try{
+                 messageToBePinnedText = messageToBePinned.getText();
+                 if(messageToBePinnedText==null)messageToBePinnedText ="";
+             }catch (Exception e){
+                 e.printStackTrace();
+             }
+             
+             
+              AttribVal av3 = new AttribVal("telegrammessagetobepinnedtext",  messageToBePinnedText);
+             additionalValues.add(av3);
+             
+             AttribVal av4 = new AttribVal("telegramid",recipient.getConnection().telegramID );
+             additionalValues.add(av4);
             
-            
-            
-            
-          
-    }
-         
+             
+ 
+             cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(),  "server",  "Pinned: "+messageToBePinnedText, recipientsNames, additionalValues, false);
+               
+             System.err.println("HEREINCOMING102");
+                
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }    
+           
+     }
+    
+    
+    
+    
+    
+     
+     
+     
          
     public void telegram_sendEditMessageReplyMarkup(TelegramParticipant recipient, Update u, String[][] buttons, String[][] actions){
          CallbackQuery cbq = u.getCallbackQuery();
@@ -3535,53 +3848,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
      
      
      
-     public void deprecated_telegram_sendEditMessage(TelegramParticipant recipient, org.telegram.telegrambots.meta.api.objects.Message mNEW, String textToSend){
-         try{
-            Integer messageID = mNEW.getMessageId() ;
-            Long messagechatid = mNEW.getChatId();
-            EditMessageText emt = new EditMessageText();
-            
-           
-            emt =emt.enableHtml(true);
-            emt = emt.setText("<code>"+textToSend+"</code>");
-            emt = emt.setChatId(messagechatid);
-            emt = emt.setMessageId(messageID); 
-            
-            
      
-             List<KeyboardRow> keyboard = new ArrayList<>();
-                // Create a keyboard row
-            
-                 // Set the keyboard to the markup
-         
-                 List<List<InlineKeyboardButton>> keybb = new ArrayList<>();
-                 List<InlineKeyboardButton> keyb = new ArrayList<>();
-                 
-                 InlineKeyboardButton ikb = new InlineKeyboardButton();
-                // ikb.setText("H");
-                 ikb.setCallbackData("EDITH1");
-                 ikb.setText("EDITH1T");
-                 keyb.add(ikb);
-                 InlineKeyboardButton ikb2 = new InlineKeyboardButton();
-                 //ikb2.setText("H2");
-                 ikb2.setCallbackData("EDITH2");
-                 ikb2.setText("EDITH2T");
-                 keyb.add(ikb2);
-                 
-                 
-                 keybb.add(keyb);
-                     InlineKeyboardMarkup im = new InlineKeyboardMarkup(); 
-                     im.setKeyboard(keybb);
-            
-                 emt = emt.setReplyMarkup(im);
-                 
-            recipient.sendEditMessage(emt);
-           
-                  
-              }catch (Exception e){
-                  e.printStackTrace();
-              }
-    }
      
      
      

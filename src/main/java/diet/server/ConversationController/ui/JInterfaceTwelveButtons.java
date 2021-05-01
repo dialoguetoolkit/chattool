@@ -22,7 +22,7 @@ public class JInterfaceTwelveButtons extends javax.swing.JFrame {
          initComponents();
      }
      
-     public boolean pressOnce = true;
+     public boolean pressOnce = false;
      
      
     

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -112,7 +113,7 @@ public class JClassBrowser extends javax.swing.JPanel  {
     
     
     
-    
+   
     
     
     public static Vector  getConversationControllers(){
@@ -128,6 +129,7 @@ public class JClassBrowser extends javax.swing.JPanel  {
          for (BeanDefinition bean: classes) {
               try{
                Class<?> clazz = Class.forName(bean.getBeanClassName());
+               
                 Method[] ms = clazz.getMethods();
                 for(int j=0;j<ms.length;j++){
                      if(ms[j].getName().equalsIgnoreCase("showcCONGUI")){
@@ -226,6 +228,8 @@ public class JClassBrowser extends javax.swing.JPanel  {
         System.err.println("(AA) loading conversation controllers");
         Vector v = this.getConversationControllers();
        // Vector v =useNEWMETHOD();
+       
+       Collections.sort(v);
         
         System.err.println("(AAA) size"+v.size());
         

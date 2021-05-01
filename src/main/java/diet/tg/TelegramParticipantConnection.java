@@ -6,11 +6,11 @@
 package diet.tg;
 
 import diet.message.Message;
-import diet.server.Conversation;
 import diet.server.Participant;
 import diet.server.ParticipantConnection;
 import java.util.Date;
 import java.util.Vector;
+import org.telegram.telegrambots.meta.api.methods.pinnedmessages.PinChatMessage;
 import org.telegram.telegrambots.meta.api.methods.polls.SendPoll;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -220,6 +220,46 @@ public class TelegramParticipantConnection extends ParticipantConnection{
         }
         return null;
     }
+    
+    
+    public  void sendEditMessage(org.telegram.telegrambots.meta.api.objects.Message mOriginalMessage, EditMessageText emt) {
+        System.err.println("HEREINCOMING104");
+        //super.send(m); //To change body of generated methods, choose Tools | Templates.
+        try{
+          this.telegramidlogfile.appendText("TOCLIENT: "+emt.toString()+"\n");
+        } catch(Exception e){
+            e.printStackTrace();
+        }  
+        try{
+            this.tgb.sendEditMessage(mOriginalMessage, emt);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return;
+    }
+    
+    
+    
+    public  void sendPinChatMessage(PinChatMessage messageToBePinned) {
+        System.err.println("HEREINCOMING104");
+        //super.send(m); //To change body of generated methods, choose Tools | Templates.
+        try{
+          this.telegramidlogfile.appendText("TOCLIENT: "+messageToBePinned.toString()+"\n");
+        } catch(Exception e){
+            e.printStackTrace();
+        }  
+        try{
+            this.tgb.sendPinChatMessage(messageToBePinned);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return;
+    }
+    
+    
+    
     
     public  org.telegram.telegrambots.meta.api.objects.Message sendPhoto(SendPhoto sp) {
         System.err.println("HEREINCOMING104");

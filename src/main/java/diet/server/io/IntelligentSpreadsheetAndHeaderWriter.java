@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 import java.util.Vector;
 
@@ -40,10 +39,16 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
     public IntelligentSpreadsheetAndHeaderWriter(File f){
         try{
             this.fSPREADSHEET=f; 
-            CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
-            encoder.onMalformedInput(CodingErrorAction.REPORT);
-            encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
-            textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.fSPREADSHEET),encoder));   
+            //CharsetEncoder encoder = Charset.forName("UTF-8").newEncoder();
+            //encoder.onMalformedInput(CodingErrorAction.REPORT);
+            //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
+            //textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.fSPREADSHEET),encoder));   
+            
+            byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+            this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
+            
+            
+            
             
           }catch (Exception e){
               e.printStackTrace();
@@ -103,7 +108,7 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
               try{
                  
                   
-                  String spreadsheetROW = processAttribVals(v).replaceAll("\n", "")+"\n";
+                  String spreadsheetROW = processAttribVals(v).replaceAll("\n", diet.server.Configuration.outputfile_newline_replacement_character)+"\n";
                   
                   textOut.append(spreadsheetROW);
                   textOut.flush();
@@ -126,7 +131,9 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET),Charset.forName("UTF-8").newEncoder()));
+                 byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+                 this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
+           
                 if(fSPREADSHEET.canWrite()) wasSuccessfulReestablishing = true;
              }catch(Exception e){
                  System.err.println("Trying to re-establish file "+fSPREADSHEET.getName());

@@ -31,7 +31,7 @@ public class CollatingData {
         
         
         public CollatingData(){
-            
+             /*
              boolean doPrefixBasedSearch = CustomDialog.getBoolean("Do you want to do prefix-based search?","PREFIX","turns.txt");
              if(doPrefixBasedSearch){
                   String directory = System.getProperty("user.dir");
@@ -57,10 +57,10 @@ public class CollatingData {
               return;
              }
             
-            
-             boolean doOLDCollation =CustomDialog.getBoolean("Do you want to use the old format or the new format ", "OLD", "NEW");
-             String prefixOfTurnsFile = "";
-             prefixOfTurnsFile = CustomDialog.getString("What is the prefix", "");
+            */
+             boolean doOLDCollation =CustomDialog.getBoolean("Do you want to use the old format (turns.txt) or the new format (turnsasattribvals.txt)", "OLD", "NEW");
+             //String prefixOfTurnsFile = "";
+             //prefixOfTurnsFile = CustomDialog.getString("What is the prefix", "");
              
              separator = CustomDialog.show2OptionDialog(new String[]{"|","¦"},"What do you want to use as the CSV separator?", "What do you want to use as the CSV separator?");
              

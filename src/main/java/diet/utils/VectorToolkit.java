@@ -250,7 +250,14 @@ public class VectorToolkit {
     
     
     
-    
+    public static Vector getVectorOfCharactersFromString(String s){
+        Vector v = new Vector();
+        for(int i=0;i<s.length();i++){
+            String c = s.charAt(i)+"";
+            v.addElement(c);
+        }
+        return v;
+    }
         
         
    

@@ -212,7 +212,7 @@ public retval loadRecord(File f){
         String str;
 
         while ((str = in.readLine()) != null) {
-            System.out.println(str);
+            System.out.println("Loading log of "+f.getName()+": "+str);
             log.addElement(str);
         }
                 in.close();
@@ -220,14 +220,17 @@ public retval loadRecord(File f){
         catch (UnsupportedEncodingException e) 
         {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         } 
         catch (IOException e) 
         {
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
      catch (Exception e)
         {
             System.out.println(e.getMessage());
+            e.printStackTrace();
      }
      
      String logincode = "";

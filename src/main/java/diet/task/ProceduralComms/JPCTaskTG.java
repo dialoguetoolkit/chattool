@@ -12,18 +12,19 @@ import javax.swing.SwingUtilities;
  *
  * @author gj
  */
-public class JPCTask extends javax.swing.JFrame {
+public class JPCTaskTG extends javax.swing.JFrame {
 
     /**
      * Creates new form JPCTask
      */
-    public JPCTask() {
+    public JPCTaskTG() {
         initComponents();
     }
     
-    PCTask pct;
+    PCTaskTG pct;
     
-    public JPCTask(PCTask pct) {
+    public JPCTaskTG(PCTaskTG pct) {
+        
         super("PCTask:"+pct.pA.getParticipantID()+","+pct.pA.getUsername()+"--"+pct.pB.getParticipantID()+","+pct.pB.getUsername());
                
         initComponents();
@@ -316,7 +317,7 @@ public class JPCTask extends javax.swing.JFrame {
         int val = Integer.parseInt(jLabel7.getText())+1;
         if(val<0) val=0;
         jLabel7.setText(""+(val));
-        //this.pct.numberONLYOtherBothShared=val;
+        this.pct.numberONLYOtherBothShared=val;
        
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -326,7 +327,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel8.getText())+1;
          if(val<0) val=0;
         jLabel8.setText(""+(val));
-       //this.pct.numberONLYOtherNotShared=val;
+        this.pct.numberONLYOtherNotShared=val;
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -334,7 +335,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel9.getText())+1;
          if(val<0) val=0;
         jLabel9.setText(""+(val));
-        //this.pct.numberONLYSelf=val;
+         this.pct.numberONLYSelf=val;
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -342,7 +343,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel10.getText())+1;
          if(val<0) val=0;
         jLabel10.setText(""+(val));
-        //this.pct.numberANDSame=val;
+         this.pct.numberANDSame=val;
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -350,7 +351,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel11.getText())+1;
          if(val<0) val=0;
         jLabel11.setText(""+(val));
-        //this.pct.numberANDDifferent=val;
+        this.pct.numberANDDifferent=val;
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -358,7 +359,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel7.getText())-1;
          if(val<0) val=0;
          jLabel7.setText(""+(val));
-        // this.pct.numberONLYOtherBothShared=val;
+         this.pct.numberONLYOtherBothShared=val;
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -366,7 +367,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel8.getText())-1;
          if(val<0) val=0;
          jLabel8.setText(""+(val));
-         //this.pct.numberONLYOtherNotShared=val;
+         this.pct.numberONLYOtherNotShared=val;
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -374,7 +375,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel9.getText())-1;
          if(val<0) val=0;
          jLabel9.setText(""+(val));
-         //this.pct.numberONLYSelf=val;
+         this.pct.numberONLYSelf=val;
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -382,7 +383,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel10.getText())-1;
          if(val<0) val=0;
          jLabel10.setText(""+(val));
-        // this.pct.numberANDSame=val;
+        this.pct.numberANDSame=val;
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -390,7 +391,7 @@ public class JPCTask extends javax.swing.JFrame {
          int val = Integer.parseInt(jLabel11.getText())-1;
          if(val<0) val=0;
          jLabel11.setText(""+(val));
-        //  this.pct.numberANDDifferent=val;
+         this.pct.numberANDDifferent=val;
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -438,20 +439,21 @@ public class JPCTask extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JPCTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPCTaskTG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JPCTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPCTaskTG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JPCTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPCTaskTG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JPCTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JPCTaskTG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JPCTask().setVisible(true);
+                new JPCTaskTG().setVisible(true);
             }
         });
     }

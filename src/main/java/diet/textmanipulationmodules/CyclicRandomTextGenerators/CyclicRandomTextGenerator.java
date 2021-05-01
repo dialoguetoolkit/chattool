@@ -24,6 +24,8 @@ public class CyclicRandomTextGenerator {
     }
     public CyclicRandomTextGenerator(Vector v){
         allPossibleWords =v;
+        
+        
     }
     public void setPossibleWords(Vector v){
         allPossibleWords = v;

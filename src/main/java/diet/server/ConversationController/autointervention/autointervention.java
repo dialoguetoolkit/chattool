@@ -59,13 +59,24 @@ public class autointervention {
        // File f = new File(path,"makehappy.xlsx");
         
         File f = CustomDialog.loadFileWithExtension(path, "Select excel file containing interventions", ".xlsx", "excel file");
-        if(f==null)return;
+        if(f==null){
+            CustomDialog.showDialog("The file you selected doesn`t exist! Please try again");
+            return;
+        }
+        
+        if(!f.canRead()||!f.canWrite()){
+            CustomDialog.showDialog("The file you have just selected is still open in another application. Perhaps it is open in Excel or LibreOffice? Please close that application and try again.");
+            return;
+        }
+        Conversation.printWSln("Main", "Loading intervention rules from the spreadsheet. This might take a few seconds....please wait for confirmation that it has loaded!");
         
         this.vib =new Vector();
         this.vim=new Vector();
         this.vid=new Vector();
         try{
-          Workbook workbook = WorkbookFactory.create(f);
+            
+            
+          Workbook workbook = WorkbookFactory.create(f,"",true);
           System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
           
          System.out.println("Retrieving Sheets using for-each loop");
@@ -89,7 +100,7 @@ public class autointervention {
         }catch(Exception e){
             e.printStackTrace();
         }
-       
+         Conversation.printWSln("Main", "Finished loading the intervention rules from the spreadsheet");
     }    
     
     
@@ -222,7 +233,7 @@ public class autointervention {
                  String response = ib.getResponse();
                  if(!response.equalsIgnoreCase("")){
                       if(c.isInTelegramMode()){
-                           c.telegram_sendInstructionToParticipant((TelegramParticipant)p, response);
+                           c.telegram_sendInstructionToParticipant_MonospaceFont((TelegramParticipant)p, response);
                       }
                       else{
                           c.sendInstructionToParticipant(p, textOfTurn);
@@ -346,6 +357,11 @@ public class autointervention {
     public static void main(String[] args){
          autointervention au = new autointervention(null);
          au.loadFromFile();
+         
+         
+         boolean process = au.processText_doModify(new Participant(null,"a","b"), "This is text OK");
+         //System.out.println(process);
+         
     }
     
     

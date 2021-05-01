@@ -18,11 +18,12 @@ import java.util.Vector;
 public class PCSetOfMoves {
   
     
-    DefaultConversationController cC;
+    //DefaultConversationController cC;
     Vector<Move> moves = new Vector<Move>();
+    PCTaskTG pctg;
     
-    public PCSetOfMoves(DefaultConversationController cC) {
-        this.cC = cC;
+    public PCSetOfMoves(PCTaskTG pctg) {
+        this.pctg=pctg;
     }
     
     
@@ -32,6 +33,9 @@ public class PCSetOfMoves {
     
     
     public boolean evaluate(Participant p, String text){
+        
+        text = text.toLowerCase();
+        
         Move crnt = null;
         for(int i=0;i<moves.size();i++){
             if(!moves.elementAt(i).isSolved()){
@@ -43,6 +47,7 @@ public class PCSetOfMoves {
         
         if(crnt == null){
             Conversation.printWSln("Main", "This really shouldn't happen!");
+            Conversation.saveErr("The set of moves had no elements in it...");
             return false; //this shouldn't happen
         
             
@@ -132,6 +137,119 @@ public class PCSetOfMoves {
         }
         return sequencedesc;
     }
+    
+    
+    public void checkForTimeouts(){
+        Move crnt = null;
+        for(int i=0;i<moves.size();i++){
+            if(!moves.elementAt(i).isSolved()){
+                crnt=moves.elementAt(i);
+                break;
+            }
+        }
+       
+        
+        if(crnt == null){
+            Conversation.printWSln("Main", "This really shouldn't happen!");
+            Conversation.saveErr("This really shouldn`t happen The set of moves had no elements in it...while checking for timeouts");
+            return;
+        
+            
+        } 
+        if(crnt instanceof MoveANDSAME){
+            MoveANDSAME crntMVEANDSAME = (MoveANDSAME)crnt;
+            boolean hastimedout= crntMVEANDSAME.isTimedOut();
+            if(hastimedout){
+                crntMVEANDSAME.setSolved(false);
+                this.pctg.displayMovesOnClients_DIRECTOR();
+                this.pctg.displayMovesOnServer();
+            }    
+            
+        }
+        if(crnt instanceof MoveANDDIFFERENT){
+            MoveANDDIFFERENT crntMVEANDDIFFERENT = (MoveANDDIFFERENT)crnt;
+            boolean hastimedout= crntMVEANDDIFFERENT.isTimedOut();
+            if(hastimedout){
+                crntMVEANDDIFFERENT.setSolved(false);
+                this.pctg.displayMovesOnClients_DIRECTOR();
+                this.pctg.displayMovesOnServer();
+            }          
+        }
+    }
+    
+    
+    
+    public String generateDescription(Participant pDirector){
+        if(this.moves.size()==0) return "";
+        String desc =  this.generateDescriptionForMove(pDirector, this.moves.elementAt(0), true);
+        if(this.moves.size()==1)return desc;
+                
+         if(this.moves.size()>1){
+              String description = "First "+ generateDescriptionForMove(pDirector,moves.elementAt(0), false)+".";
+              for(int i=1;i<this.moves.size();i++){
+                   description = description + " Then "+ generateDescriptionForMove(pDirector,moves.elementAt(1), false)+".";
+              }
+              
+              
+             
+         }
+        
+        return desc;
+        
+    }
+    
+   
+    
+    public String generateDescriptionForMove(Participant pDirector, Move m, boolean isstandalone ){
+        String description ="";
+        
+       
+            
+             if(m instanceof MoveONLY){
+                 MoveONLY mo = (MoveONLY)m;
+                 if(mo.pPerformer==pDirector){
+                     if(isstandalone){
+                         description = "You need to press "+ this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                     else{
+                         description = "you need to press "+this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                         
+                 }
+                 else{
+                     if(isstandalone){
+                        description= "Your partner needs to press "+this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                     else{
+                        description= "your partner needs to press "+this.pctg.translateFromSystemToGUI(pDirector, mo.name);
+                     }
+                 }
+             }
+             else if(m instanceof MoveANDSAME){
+                 MoveANDSAME mas = (MoveANDSAME)m;
+                 if(isstandalone){
+                    description = "You and your partner have to press "+this.pctg.translateFromSystemToGUI(pDirector, mas.getText())+ " simultaneously";
+                 }
+                 else{
+                    description = "you and your partner have to press "+this.pctg.translateFromSystemToGUI(pDirector, mas.getText())+ " simultaneously";
+                 }
+             }    
+             else if (m instanceof MoveANDDIFFERENT){
+                 MoveANDDIFFERENT mad = (MoveANDDIFFERENT)m;
+                 if(isstandalone){
+                    description = "You have to press "+this.pctg.translateFromSystemToGUI(pDirector, mad.getText(pDirector)) + " at the same time as your partner presses "+mad.getTextOTHER(pDirector);
+                 }
+                 else{
+                    description = "you have to press "+this.pctg.translateFromSystemToGUI(pDirector, mad.getText(pDirector)) + " at the same time as your partner presses "+mad.getTextOTHER(pDirector);
+                 }
+             }   
+                
+             
+       
+        
+        return description;
+    }
+    
     
     
     

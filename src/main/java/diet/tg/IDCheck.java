@@ -40,6 +40,7 @@ public class IDCheck {
         System.err.println("userdir is: "+userdir);
         File f = new File(userdir, "blockedusers.txt");
         System.err.println("Loading blocked users");
+        if(!f.exists())return;
         try(BufferedReader br = new BufferedReader(new FileReader(f))) {
            String line="";
             while((line=br.readLine())!=null){

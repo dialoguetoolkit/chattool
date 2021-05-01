@@ -6,6 +6,7 @@
 
 package diet.task.ProceduralComms;
 
+import diet.server.Conversation;
 import diet.server.Participant;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class MoveANDSAME extends Move{
      long timeOfSelectionByPA = -1;
      long timeOfSelectionByPB = -1;
      
-     long windowForJointSelection = 3000;
+     
      
     public MoveANDSAME(PCSetOfMoves pcs, Participant pA, Participant pB, String name) {
         super(pcs);
@@ -51,7 +52,7 @@ public class MoveANDSAME extends Move{
              }
              else if(p==pA && timeOfSelectionByPA== -1 && timeOfSelectionByPB!= -1){
                  timeOfSelectionByPA = new Date().getTime();  
-                 if(timeOfSelectionByPA-timeOfSelectionByPB <=this.windowForJointSelection) {
+                 if(timeOfSelectionByPA-timeOfSelectionByPB <=PCTaskTG.windowForJointSelection) {
                      this.solved=true;
                       System.err.println("EVALUATING ANDSAME__1C"); 
                      return 1;
@@ -80,7 +81,7 @@ public class MoveANDSAME extends Move{
              }
              else if(p==pB && timeOfSelectionByPB== -1 && timeOfSelectionByPA!= -1){
                  timeOfSelectionByPB = new Date().getTime();  
-                 if(timeOfSelectionByPB-timeOfSelectionByPA <=this.windowForJointSelection) {
+                 if(timeOfSelectionByPB-timeOfSelectionByPA <=PCTaskTG.windowForJointSelection) {
                      this.solved=true;
                       System.err.println("EVALUATING ANDSAME__2C"); 
                      return 1;
@@ -132,6 +133,29 @@ public class MoveANDSAME extends Move{
     public String getDesc() {
         return "ANDSAME:"+  this.name+"-"+timeOfSelectionByPA+"-"+timeOfSelectionByPB;
     }
+    
+    public boolean isTimedOut(){
+        long currentTime = new Date().getTime();
+        if((timeOfSelectionByPA >0  & timeOfSelectionByPB >0)){
+            Conversation.saveErr("This really shouldn`t be called. PCSETOFMOVES is checking whether ANDSAME has timed out even though BOTH have already been selected");
+        }
+        
+        
+        
+        if(timeOfSelectionByPA >0){
+              if(currentTime - timeOfSelectionByPA > PCTaskTG.windowForJointSelection){
+                  return true;
+              }
+        }
+        if(timeOfSelectionByPB >0){
+              if(currentTime - timeOfSelectionByPB > PCTaskTG.windowForJointSelection){
+                  return true;
+              }
+        }
+        return false;
+        
+    }
+    
     
     
 }
