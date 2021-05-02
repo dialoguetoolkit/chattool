@@ -7,6 +7,7 @@
 package diet.task.ProceduralComms;
 
 import diet.attribval.AttribVal;
+import diet.server.Configuration;
 import diet.server.Conversation;
 import diet.server.ConversationController.Telegram_Dyadic_PROCOMM;
 import diet.server.ConversationController.ui.CustomDialog;
@@ -154,7 +155,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
          
       public String pBWhitelist         = "tu";
      
-      public String whitelist_SelfGUI  = "fd";
+      public String whitelist_SelfGUI  =  Configuration.outputfile_newline_replacement_character+Configuration.outputfile_unsupported_character;         //"fd";
       public String whitelist_OtherGUI = "xv";
       
       static public String allowedMetaChars =  "";
