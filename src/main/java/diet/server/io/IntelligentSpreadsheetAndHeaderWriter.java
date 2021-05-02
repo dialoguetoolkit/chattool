@@ -7,6 +7,7 @@
 package diet.server.io;
 
 import diet.attribval.AttribVal;
+import diet.server.Configuration;
 import diet.server.ConversationController.DefaultConversationController;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -44,7 +45,7 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
             //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
             //textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.fSPREADSHEET),encoder));   
             
-            byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+            byte[] bytesReplacementForMalformedInput =  Configuration.outputfile_unsupported_character.getBytes();     //("█").getBytes();           
             this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
             
             
@@ -131,7 +132,7 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                 byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+                 byte[] bytesReplacementForMalformedInput = Configuration.outputfile_unsupported_character.getBytes();        
                  this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
            
                 if(fSPREADSHEET.canWrite()) wasSuccessfulReestablishing = true;
