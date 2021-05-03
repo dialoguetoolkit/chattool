@@ -155,7 +155,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
          
       public String pBWhitelist         = "tu";
      
-      public String whitelist_SelfGUI  =  Configuration.outputfile_newline_replacement_character+Configuration.outputfile_unsupported_character;         //"fd";
+      public String whitelist_SelfGUI  = "fd";// Configuration.outputfile_newline_replacement_character+Configuration.outputfile_unsupported_character;         //"fd";
       public String whitelist_OtherGUI = "xv";
       
       static public String allowedMetaChars =  "";
