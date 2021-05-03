@@ -1,6 +1,6 @@
 # About
 
-This is the new (March 2021) version of the chattool.
+This is the new (May 2021) version of the chattool.
 
 Some of the new features are:
 
