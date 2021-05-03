@@ -152,12 +152,25 @@ public class autointervention {
             System.err.print("ROWMODIFY: "+i+ " interventionid:"+interventionid+" targetposcriteria:"+targetposcriteria);
             
             
-            
+            try{
             if(!interventionid.equalsIgnoreCase("") && !targetposcriteria.equalsIgnoreCase("")){
                 interventionmodify im = new interventionmodify(interventionid,participantid,targetposcriteria,targetnegcriteria,stringToBeReplaced, stringReplacement);
                 this.vim.add(im);
                 System.err.println("Adding rule: "+ im.toString());
-            }          
+            }
+            }catch(Exception e){
+                e.printStackTrace();
+                Conversation.saveErr(e);
+                CustomDialog.showDialog("There was an error loading intervention: "+interventionid+ " \n" 
+                        + participantid+ "\n"
+                        + targetposcriteria +"\n"
+                        + targetnegcriteria + "\n"
+                        + stringToBeReplaced + "\n"
+                        + stringReplacement +"\n\n\n"
+                        + "The error is most likely to be a typo in one of the regular expressions\n\n\n"
+                                + "The java system error is:\n\n"
+                                + e.getMessage());
+            }
         }
         
     }
