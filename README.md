@@ -44,11 +44,13 @@ Please follow the instructions in the [usermanual](docs/usermanual/usermanual.pd
 
 ### Non-telegram clients
 
-To start a client from the commandline you need to specify the IP address and port number to connect to
+To start a client from the commandline you need to specify the IP address and port number to connect to, e.g.
 
 ```java -jar "chattool.jar" CLIENT localhost 20000```
 
-It is also possible to start clients (locally) from the GUI by selecting the button "Additional Client" 
+which would connect to localhost (the local machine) on port 20000
+
+It is also possible to start clients (locally) from the server GUI by selecting the button "Additional Client"  (please see the user manual how to do this)
 
 
 
