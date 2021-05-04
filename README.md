@@ -5,7 +5,7 @@ This is the new (May 2021) version of the chattool.
 Some of the new features are:
 
 - **Telegram** Participants can use the Telegram messenger app to connect to the chattool server
-- **Remote admin** Experimenters can monitor experiments relotely, using Telegram messenger
+- **Remote admin** Experimenters can monitor experiments remotely, using Telegram messenger
 - **WYSIWYG** The chattool includes a "What You See Is What You Get, ie. character by character interface which is useful for programming incremental interventions
 
 
