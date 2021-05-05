@@ -178,7 +178,9 @@ public class MoveANDDIFFERENT extends Move{
      
      
      public String getDesc() {
-        return "ANNDDIFFERENT:"+this.name_pA+"-"+this.timeOfSelectionByPA+"-"+this.name_pB+"-"+this.timeOfSelectionByPB;
+         //return "ANNDDIFFERENT:"+this.name_pA+"-"+this.timeOfSelectionByPA+"-"+this.name_pB+"-"+this.timeOfSelectionByPB;
+         String description = "ANDDIFFERENT "+pA.getParticipantID()+" "+pA.getUsername()+" "+this.name_pA+" "+this.timeOfSelectionByPA + " "+pB.getParticipantID()+" "+pB.getUsername() + " "+this.name_pB + " "+this.timeOfSelectionByPB;
+         return description;
     }
     
      

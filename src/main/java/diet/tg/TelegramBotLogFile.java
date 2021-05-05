@@ -7,6 +7,7 @@
 package diet.tg;
 
 import diet.server.Configuration;
+import diet.server.Conversation;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,6 +52,8 @@ public class TelegramBotLogFile extends Thread{
              
           }catch (Exception e){
               e.printStackTrace();
+              Conversation.saveErr(e);
+
           }
           this.start();
     }
@@ -129,6 +132,8 @@ public class TelegramBotLogFile extends Thread{
              }catch(Exception e){
                  System.err.println("Trying to re-establish file "+f.getName());
                  e.printStackTrace();
+                 Conversation.saveErr(e);
+
              }        
         }
         System.err.println("File system was re-established: "+f.getName());

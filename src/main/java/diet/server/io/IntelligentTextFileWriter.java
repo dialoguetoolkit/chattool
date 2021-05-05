@@ -7,6 +7,7 @@
 package diet.server.io;
 
 import diet.server.Configuration;
+import diet.server.Conversation;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,6 +45,8 @@ public class IntelligentTextFileWriter extends Thread{
              
           }catch (Exception e){
               e.printStackTrace();
+              Conversation.saveErr(e);
+
           }
           this.start();
     }

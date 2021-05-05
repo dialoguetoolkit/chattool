@@ -132,7 +132,7 @@ public class PCSetOfMoves {
     public String getSequenceDescription(){
         String sequencedesc ="";
         for(int i=0;i<this.moves.size();i++){
-            if(i>0)sequencedesc=sequencedesc+" ";
+            if(i>0)sequencedesc=sequencedesc+">>>>>>";
             sequencedesc = sequencedesc+moves.elementAt(i).getDesc();
         }
         return sequencedesc;
@@ -251,6 +251,12 @@ public class PCSetOfMoves {
     }
     
     
+    public boolean issolved(){
+        for(int i=0;i<this.moves.size();i++){
+            if(!moves.elementAt(i).solved)return false;
+        }
+        return true;
+    }
     
     
 }

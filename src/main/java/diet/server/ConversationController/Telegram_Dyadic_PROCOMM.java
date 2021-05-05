@@ -5,12 +5,15 @@
  */
 package diet.server.ConversationController;
 
+import diet.attribval.AttribVal;
 import diet.server.Conversation;
 import diet.server.ConversationController.ui.CustomDialog;
+import diet.server.Participant;
 import diet.task.ProceduralComms.PCTaskTG;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import java.util.Hashtable;
+import java.util.Vector;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 /**
@@ -198,7 +201,13 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
                htMostRecentPinnedText.put(p,text);
            }
      }
-    
+
+    @Override
+    public Vector<AttribVal> getAdditionalInformationForParticipant(Participant p) {
+        
+        if(this.pctg!=null) return this.pctg.getAdditionalValues(p);
+        return super.getAdditionalInformationForParticipant(p);
+    }
     
     
     

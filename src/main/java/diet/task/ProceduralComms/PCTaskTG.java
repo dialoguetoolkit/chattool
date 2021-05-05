@@ -187,7 +187,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       */
       
       
-    public String translateCharFromSystemToGUI(Participant recipient, char textfromsystem) {
+    private String translateIndividualCharFromSystemToGUI(Participant recipient, char textfromsystem) {
           
           
            char textfromsystemlowercase =  Character.toLowerCase(textfromsystem);
@@ -238,7 +238,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             
             
       
-       public String translateCharFromGUIToSystem(Participant sender, String textSentByP){
+       private String translateIndividualCharFromGUIToSystem(Participant sender, String textSentByP){
            String textSentByParticipant = textSentByP.toLowerCase();
            int index = sharedWhitelist_GUI.indexOf(textSentByParticipant);
            if(index>=0) return ""+sharedWhitelist.charAt(index);    
@@ -268,7 +268,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       public String translateFromGUIToSystem(Participant sender, String textSentByParticipant){
           String output ="";
           for(int i=0;i<textSentByParticipant.length();i++){
-              output = output + this.translateCharFromGUIToSystem(sender, ""+textSentByParticipant.charAt(i));
+              output = output + this.translateIndividualCharFromGUIToSystem(sender, ""+textSentByParticipant.charAt(i));
           }
           return output;
       }
@@ -276,7 +276,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           System.err.println("TRANSLATETEXTSENTTOPARTICIPANT:"+textSentToParticipant+"----");
           String output ="";
           for(int i=0;i<textSentToParticipant.length();i++){
-              output = output + this.translateCharFromSystemToGUI(recipient,textSentToParticipant.charAt(i));
+              output = output + this.translateIndividualCharFromSystemToGUI(recipient,textSentToParticipant.charAt(i));
           }
           return output;
       }
@@ -298,8 +298,21 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
               
               String text = this.translateFromGUIToSystem(p, textanycase).toUpperCase();
                       
-                      
-             
+               AttribVal avi = new AttribVal("keyinternal",text);
+               tmfc.addAttributeValuePair(avi);
+               if(p==pA){
+                   String s = this.translateFromSystemToGUI(pB, textanycase);
+                   AttribVal avo = new AttribVal("keysenttoother", s);
+                   if(s!=null)tmfc.addAttributeValuePair(avo);
+               }
+               else if(p==pB){
+                   String s = this.translateFromSystemToGUI(pA, textanycase);
+                   AttribVal avo = new AttribVal("keysenttoother", s);
+                   if(s!=null)tmfc.addAttributeValuePair(avo);
+               }
+              
+               
+               AttribVal avo = new AttribVal("keyother",text);
               
              
               
@@ -1136,14 +1149,32 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           else{
               av4 = new AttribVal("currmove",currMove.getDesc() );
           }
-          AttribVal av5 = new AttribVal("sequence",this.pcset.getSequenceDescription());
+          
+          AttribVal av5 = new AttribVal("score",PCTaskTG.htwdcSCORE.getObject(p));
+          
+          AttribVal av6 = new AttribVal("sequence",this.pcset.getSequenceDescription());
           avs.addElement(av0A);
          
+          
+          boolean currSetIsSolved = this.pcset.issolved();
+          if(currSetIsSolved){
+               AttribVal av7 = new AttribVal("currentsequence","solved");
+               avs.addElement(av7);
+          }
+          else{
+               AttribVal av7 = new AttribVal("currentsequence","unsolved");
+               avs.addElement(av7);
+          }
+          
+          
+         
+          
           avs.addElement(av1);
           avs.addElement(av2);
           avs.addElement(av3);
           avs.addElement(av4);
           avs.addElement(av5);
+          avs.addElement(av6);
           System.err.println("---------------------------------------------------------");
           System.err.println("Sequencedescription is: "+av5.getValAsString());
           return avs;

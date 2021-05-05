@@ -632,14 +632,28 @@ public class Conversation extends Thread{
                               String subdialogueID =  cC.pp.getSubdialogueID(origin);
                               if(subdialogueID==null)subdialogueID=""; 
                                
-                              Vector vAdditionalValues = cC.getAdditionalInformationForParticipant(origin);
+                             
                               
-                              Vector addVals = cC.getAdditionalInformationForParticipant(origin);
+                              //Vector vAdditionalValues = cC.getAdditionalInformationForParticipant(origin);
+                              
+                               Vector addVals = cC.getAdditionalInformationForParticipant(origin);
+                              
+                             
+  
+                               
+                               
+                               
+                               
+                              
                               AttribVal av1 = new AttribVal("telegramtype","text");
                               addVals.add(av1);
             
                               AttribVal av2 = new AttribVal("telegramrawdata",tmfc.u.toString());
                               addVals.add(av2);
+                              
+                               Vector vAddValsFromMessage = tmfc.getAttribVals();
+                               addVals.addAll(vAddValsFromMessage);
+                              
                               
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.u.getMessage().getDate(), tmfc.u.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
@@ -671,6 +685,10 @@ public class Conversation extends Thread{
                               AttribVal av3 = new AttribVal("telegramrawdata",tmfc.u.toString());
                               addVals.add(av3);
                               
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
+                              
+                              
                               String text = tmfc.u.getMessage().getText();
                               if(text==null)text="";
                               
@@ -700,6 +718,9 @@ public class Conversation extends Thread{
                               
                               String text = tmfc.u.getMessage().getText();
                               if(text==null)text="";
+                              
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                               addVals.addAll(vAddValsFromMessage);
                               
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.u.getMessage().getDate(), tmfc.u.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
@@ -736,6 +757,9 @@ public class Conversation extends Thread{
                               try{ text=cbq.getMessage().getText();} catch(Exception e){e.printStackTrace(); }
                               if(text==null ) text=""; 
                             
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
+                              
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, cbq.getMessage().getDate(), cbq.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
                                       origin.getParticipantID(),
@@ -766,6 +790,9 @@ public class Conversation extends Thread{
                  
                               long dtlong = new Date().getTime();
                               
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
+                              
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.timeOfCreation, tmfc.timeOfCreation,
                                       tmfc.timeOfCreation, 
                                       origin.getParticipantID(),
@@ -793,7 +820,10 @@ public class Conversation extends Thread{
                               AttribVal av2 = new AttribVal("telegramrawdata",tmfc.u.toString());
                               addVals.add(av2);
                               
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
                               
+                             
                               
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.u.getMessage().getDate(), tmfc.u.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
@@ -3354,7 +3384,8 @@ public class Conversation extends Thread{
              AttribVal av4 = new AttribVal("telegramid",senderTelegramLogin);
              addVals.add(av3);
              
-             
+             Vector vAddValsFromMessage = tmfc.getAttribVals();
+             addVals.addAll(vAddValsFromMessage);
              
             cH.saveMessageRelayedToOthers(group,  tmfc.u.getMessage().getDate() ,  tmfc.u.getMessage().getDate()  , tmfc.timeOfCreation,sender.getParticipantID(), sender.getUsername(),sender.getUsername(),text,vRecipientsUsernames,false,new Vector(),new Vector(), new Vector(), addVals,false);
        
@@ -3434,6 +3465,9 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
              
              AttribVal av3 = new AttribVal("telegramid",senderTelegramLogin);
              addVals.add(av3);
+             
+             Vector vAddValsFromMessage = tmfc.getAttribVals();
+             addVals.addAll(vAddValsFromMessage);
              
              cH.saveMessageRelayedToOthers(sendergroup,  tmfc.u.getMessage().getDate() ,  tmfc.u.getMessage().getDate()  , tmfc.timeOfCreation,sender.getParticipantID(), sender.getUsername(),sender.getUsername(),text,vRecipientsUsernames,false,new Vector(),new Vector(), new Vector(), addVals,false);
        
