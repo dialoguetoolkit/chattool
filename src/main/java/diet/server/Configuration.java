@@ -39,7 +39,7 @@ public class Configuration implements Cloneable{
     
      //Below are some debug parameters - they are not essential.
     public int login_minimumlength_of_participantID = 4; 
-    public int login_numberOfParticipants = 2;
+    public int login_numberOfParticipants = 12;
     public boolean login_autologin = false;
      
     public boolean debug_debugMESSAGEBLOCKAGE = false; //true;//false;//true;//true;//false;//true;

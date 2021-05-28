@@ -218,7 +218,13 @@ public class CustomizableReferentialTaskSettings  {
       
         this.vstimuli=(Vector<String[]>)data.clone();
         this.vstimuliFULL=(Vector<String[]>)data.clone();
-        this.checkStimuliFilesExist();
+        try{
+           this.checkStimuliFilesExist();
+        }catch(Exception e){
+            e.printStackTrace();
+            Conversation.saveErr(e);
+            CustomDialog.showDialog("Error loading the stimuli - it could be that there is empty space at the end of the script containing the stimuli names! Please check and restart!");
+        }
    }
   
     
@@ -246,6 +252,7 @@ public class CustomizableReferentialTaskSettings  {
           } catch (Exception e){
                e.printStackTrace();
                Conversation.saveErr(e);
+               CustomDialog.showDialog("Error loading the file - it could be that there is empty space at the end of the script:");
            }
            
            

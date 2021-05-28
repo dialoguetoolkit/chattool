@@ -22,7 +22,7 @@ public class JInterfaceTenButtons extends javax.swing.JFrame {
          initComponents();
      }
      
-     public boolean pressOnce = true;
+     public boolean pressOnce = false;
      
      
     
@@ -40,7 +40,7 @@ public class JInterfaceTenButtons extends javax.swing.JFrame {
         this.jButton8.setText(button8name);
         this.jButton9.setText(button9name);
         this.jButton10.setText(button10name);
-        this.setAlwaysOnTop(true);
+        this.setAlwaysOnTop(false);
         this.pack();
         this.setVisible(true);
     }
@@ -64,7 +64,7 @@ public class JInterfaceTenButtons extends javax.swing.JFrame {
         this.jButton13.setText(button13name);
         this.jButton14.setText(button14name);
         this.jButton15.setText(button15name);
-        this.setAlwaysOnTop(true);
+        this.setAlwaysOnTop(false);
         this.pack();
         this.setVisible(true);
     }

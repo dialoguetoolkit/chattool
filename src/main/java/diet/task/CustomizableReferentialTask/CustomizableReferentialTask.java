@@ -148,19 +148,37 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          
          
          
-         
-         
-         
-         
-         SwingUtilities.invokeLater(new Runnable(){
-             public void run(){
-                   jcrt = new JCustomizableReferentialTask(crtthis);
+        if(SwingUtilities.isEventDispatchThread()){
+              jcrt = new JCustomizableReferentialTask(crtthis);
                    JFrame jf = new JFrame();
                    jf.getContentPane().add(jcrt);
                    jf.setVisible(true);
                    jf.pack();
-             }
-         });
+                   System.err.println("Created the jcrt");
+            
+        }
+        else{
+            try{
+            SwingUtilities.invokeAndWait(new Runnable(){
+                public void run(){
+                    jcrt = new JCustomizableReferentialTask(crtthis);
+                   JFrame jf = new JFrame();
+                   jf.getContentPane().add(jcrt);
+                   jf.setVisible(true);
+                   jf.pack();
+                   System.err.println("Created the jcrt");
+                }
+            });
+            }catch(Exception e){
+                e.printStackTrace();
+                Conversation.saveErr(e);
+                Conversation.printWSlnLog("Main", "Error creating JCRT");
+            }
+            
+        }
+         
+         
+        
          
          
     }

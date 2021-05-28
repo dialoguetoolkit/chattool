@@ -1458,7 +1458,10 @@ public class Conversation extends Thread{
     public void saveAdditionalRowOfDataToSpreadsheetOfTurns(String datatype,  Participant p, String value, Vector additionalAttribVals){
         try{
            if (value==null)value="";
-           String subDialogueID = cC.pp.getSubdialogueID(p);
+           String subDialogueID = "notset";
+           if(p!=null) subDialogueID =  cC.pp.getSubdialogueID(p);
+           
+          
            long currentTIME = new Date().getTime(); 
            long timeOfSendOnClient = currentTIME;
            long timeOfRELAYONSERVER = currentTIME;

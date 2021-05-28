@@ -29,7 +29,7 @@ public class MazeGameConversationControllerMultipleDyads extends DefaultConversa
     JInterfaceSinglePressButtonFIVE  jispb;
     Vector participantsQueuedLLLL = new Vector();
     Vector participantsQueuedRRRRR = new Vector();
-    Vector conversationControllers = new Vector();
+   // Vector conversationControllers = new Vector();
      
     //MazeGameController2WAY mgc;
     //MazeGameController2WAY mgc;

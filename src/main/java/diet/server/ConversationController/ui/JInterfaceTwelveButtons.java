@@ -40,7 +40,7 @@ public class JInterfaceTwelveButtons extends javax.swing.JFrame {
         this.jButton8.setText(button8name);
         this.jButton9.setText(button9name);
         this.jButton10.setText(button10name);
-        this.setAlwaysOnTop(true);
+        //this.setAlwaysOnTop(true);
         this.pack();
         this.setVisible(true);
     }

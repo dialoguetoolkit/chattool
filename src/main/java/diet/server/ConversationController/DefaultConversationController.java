@@ -18,6 +18,7 @@ import diet.server.ParticipantGroups.ParticipantGroups;
 import diet.server.IsTypingController.IsTypingOrNotTyping;
 import diet.server.Configuration;
 import diet.server.io.IntelligentIO;
+import diet.task.DefaultTaskController;
 import diet.task.TaskControllerInterface;
 import diet.textmanipulationmodules.CyclicRandomTextGenerators.CyclicRandomParticipantIDGeneratorGROOP;
 import diet.tg.TelegramMessageFromClient;
@@ -470,7 +471,7 @@ public abstract class DefaultConversationController  {
     }
     
     
-    public void performActionCalledByTaskController(String s){
+    public void performActionCalledByTaskController(String s, DefaultTaskController tc){
         
     }
     

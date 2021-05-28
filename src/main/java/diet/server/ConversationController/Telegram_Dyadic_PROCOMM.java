@@ -8,27 +8,30 @@ package diet.server.ConversationController;
 import diet.attribval.AttribVal;
 import diet.server.Conversation;
 import diet.server.ConversationController.ui.CustomDialog;
+import diet.server.ConversationController.ui.JInterfaceMenuButtonsReceiverInterface;
+import diet.server.ConversationController.ui.JInterfaceTenButtons;
 import diet.server.Participant;
 import diet.task.ProceduralComms.PCTaskTG;
+import diet.task.ProceduralComms.Quad;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 /**
  *
  * @author LX1C
  */
-public class Telegram_Dyadic_PROCOMM extends TelegramController{
+public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
 
+   //
+   //Needs to sort through IDs numerically and then assign them
     
-    //CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, null, null );
-    //CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
-   // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
-   // Participant pDirector;
-   // Participant pMatcher;
-    
+    JInterfaceTenButtons jitb = new JInterfaceTenButtons (this, "practice", "experiment", "swap","always send explanation","never send explanation","send explanation once","20","","","");
     
     public Telegram_Dyadic_PROCOMM(Conversation c) {
         super(c);
@@ -41,34 +44,58 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
         
     }
 
+    @Override
+    public void performActionTriggeredByUI(String s) {
+      
+        
+        if(s.equalsIgnoreCase("swap")){
+             
+             pctg.kill();
+            try{Thread.sleep(5000);}catch(Exception e){e.printStackTrace();}
+
+            // pctg = new PCTaskTG(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),true,true,false);
+            
+            
+        }
+        else if (s.equalsIgnoreCase("send explanation once")){
+            pctg.sendInstructionsOnce();
+        }
+        
+        
+        
+    }
+
     
     
     
-    
+     Quad q;
     
     
     
 
    
      public void telegram_participantJoinedConversation(TelegramParticipant p) {
+              
+        this.generatePinnedMessage(p);
          
-        
-         
-         this.generatePinnedMessage(p);
-         
-        if(c.getParticipants().getAllParticipants().size()==2) {
+        if(c.getParticipants().getAllParticipants().size()==4) {
             
              pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-             //this.itnt.addGroupWhoAreMutuallyInformedOfTyping(c.getParticipants().getAllParticipants());
-              
+               
              CustomDialog.showDialog("PRESS OK TO START!");
              this.experimentHasStarted=true;
              
-             pctg = new PCTaskTG(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1));
+             q = new Quad(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),
+                     (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(2), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(3));
              
+             JPanel jpui = q.getUI();
+             JFrame jf = new JFrame();
+             jf.getContentPane().add(jpui);
+             jf.pack();
+             jf.setVisible(true);
              
         }
-        //c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is text", new String[]{"A","B","C"}, 3);
+       
     }
     
      
@@ -81,23 +108,26 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
         
         this.generatePinnedMessage(p);
-        
-       // c.telegram_sendPoll(p, "This is a questionnaire","What is it?", new String[]{"option1", "option2", "option3", "option4"});
-        
-       // c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is a question",  new String[]{"option1", "option2", "option3", "option4", "option5", "option6", "option7"},3);
-        
-       if(c.getParticipants().getAllParticipants().size()==2) {
+               
+       
+       if(c.getParticipants().getAllParticipants().size()==4) {
             
-             pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-             //this.itnt.addGroupWhoAreMutuallyInformedOfTyping(c.getParticipants().getAllParticipants());
-              
+           //  pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
+               
              CustomDialog.showDialog("PRESS OK TO START!");
              this.experimentHasStarted=true;
              
-              pctg = new PCTaskTG(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1));
+             q = new Quad(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),
+                     (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(2), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(3));
+             
+             JPanel jpui = q.getUI();
+             JFrame jf = new JFrame();
+             jf.getContentPane().add(jpui);
+             jf.pack();
+             jf.setVisible(true);
              
         }
-        //c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is tnew ext", new String[]{"A","B","C"}, 3);
+       
        
     }
      
@@ -106,12 +136,17 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     public synchronized void telegram_processTelegramMessageFromClient(TelegramParticipant sender, TelegramMessageFromClient tmfc) {
         if(tmfc.u.hasMessage()  && tmfc.u.getMessage().hasText()){
              String text = tmfc.u.getMessage().getText();
+             
+             
+             
              if(text.startsWith("/menu")){
                  generatePinnedMessage(sender);
              }
              else{
-                    
-                 if(this.pctg!=null) this.pctg.evaluate(sender, tmfc);
+                 System.err.println("Attempting to acquire lock on pctasktg");
+                 
+                 if(q.isParticipantInQuad(sender)) q.evaluate(sender, tmfc);
+                 //if(this.pctg!=null) this.pctg.evaluate(sender, tmfc);
                 
                  
              }
@@ -152,7 +187,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
             Conversation.saveErr("Trying to generate pinned message for null participant");
             return;
         }
-        Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "please do not close this message. You will need it in the task");
+        Message m = c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Please do not close this message. You will need it in the task");
         c.telegram_sendPinChatMessageToParticipant(p, m);
         htPinnedMessages.put(p, m);      
     }
@@ -161,16 +196,23 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
     
     
     public void changePinnedMessage(TelegramParticipant p,String text){
+        System.err.println("CHANGEPINNEDMESSAGE1"+text);
          if(p==null){
             Conversation.saveErr("Trying to change pinned message for null participant. "+text);
             return;
         }
           String mostRecent = this.htMostRecentPinnedText.get(p);
+          System.err.println("CHANGEPINNEDMESSAGE2"+text);
+
           if(mostRecent!=null ){
+              System.err.println("CHANGEPINNEDMESSAGE3"+text);
               if(mostRecent.equals(text))return;
+              System.err.println("CHANGEPINNEDMESSAGE4"+text);
               if(mostRecent.equalsIgnoreCase(text)){
+                    System.err.println("CHANGEPINNEDMESSAGE5"+text);
                     org.telegram.telegrambots.meta.api.objects.Message m = (org.telegram.telegrambots.meta.api.objects.Message)this.htPinnedMessages.get(p);
                     if(m!=null){
+                        System.err.println("CHANGEPINNEDMESSAGE6"+text);
                         c.telegram_sendEditMessageToParticipant(p, m, "processing move");
                         htMostRecentPinnedText.put(p,"--------------------");
                     }
@@ -178,12 +220,14 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController{
               }
           }
          
-         
+           System.err.println("CHANGEPINNEDMESSAGE7"+text);
            org.telegram.telegrambots.meta.api.objects.Message m = (org.telegram.telegrambots.meta.api.objects.Message)this.htPinnedMessages.get(p);
            if(m!=null){
+               System.err.println("CHANGEPINNEDMESSAGE8"+text);
                c.telegram_sendEditMessageToParticipant(p, m, text);
                htMostRecentPinnedText.put(p,text);
            }
+           System.err.println("CHANGEPINNEDMESSAGE9"+text);
      }
     
     

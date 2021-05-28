@@ -894,7 +894,7 @@ synchronized public int getOthersSwitchTraversalCount(String participantname){
    this.mgcUI.moveToMazeNo(mazeNumber);
    this.sIOWriting.saveMessage(mnm);
     
-   this.c.getController().performActionCalledByTaskController(""+mazeNumber);
+   this.c.getController().performActionCalledByTaskController(""+mazeNumber, this);
    
    return true;
 }

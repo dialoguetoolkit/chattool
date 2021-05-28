@@ -117,7 +117,15 @@
     </plugins>
     <resources>
         <resource>
-		    <targetPath>mazegame</targetPath>
+        <targetPath>mazegame</targetPath>
+            <directory>experimentresources/mazegame</directory>
+            <includes>
+              <include>**/*.*</include>
+              <include>**/*.*</include>
+           </includes>
+        </resource>
+        <resource>
+        <targetPath></targetPath>
             <directory>experimentresources/mazegame</directory>
             <includes>
               <include>**/*.*</include>

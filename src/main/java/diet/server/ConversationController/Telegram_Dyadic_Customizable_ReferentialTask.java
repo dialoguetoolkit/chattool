@@ -113,6 +113,11 @@ public class Telegram_Dyadic_Customizable_ReferentialTask extends TelegramContro
              if(!text.startsWith("/")){
                 c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);      
              } 
+             
+            /* if(text.contains("this")){
+                 c.telegram_sendDelayedArtificialTurnFromApparentOriginToPermittedParticipants(sender, "oh and also that", 3000);
+             }
+             */
       
         }
         if(this.relayPhotos && tmfc.u.hasMessage()&&  tmfc.u.getMessage().hasPhoto()){

@@ -9,9 +9,12 @@ import diet.server.Conversation;
 import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.ConversationController.ui.JInterfaceMenuButtonsReceiverInterface;
 import diet.server.ConversationController.ui.JInterfaceTwelveButtons;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
 import diet.textmanipulationmodules.haha.HahaVariantGenerator;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
+import java.util.Hashtable;
 import java.util.Vector;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -23,11 +26,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
 
     
-   // CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "tangramset01", "tangramsequence.txt" );
-   // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
-   // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
-   // Participant pDirector;
-   // Participant pMatcher;
+CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this, true, null, null );
     
     
     
@@ -40,7 +39,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
     //JInterfaceMenuButtonsReceiverInterface
     
     
-    
+    Hashtable htCRT = new Hashtable();
     
     
     public Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA(Conversation c) {
@@ -107,6 +106,14 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
              TelegramParticipant tp1 = this.vQueuedNL.elementAt(0);
              TelegramParticipant tp2 = this.vQueuedNL.elementAt(1);
              pp.createNewSubdialogue(tp1,tp2); 
+            
+             
+             
+             CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+             this.htCRT.put(tp1, crt);
+             this.htCRT.put(tp2, crt);
+             
+             crt.startTask(tp1, tp2);
              Conversation.printWSln("Main", "NL: Created group of "+tp1.getConnection().getValidLogincode()+ " and "+tp2.getConnection().getValidLogincode());
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp1, "Please start!");
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp2, "Please start!");
@@ -117,6 +124,12 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
          while(this.vQueuedOTHER.size()>1){
              TelegramParticipant tp1 = this.vQueuedOTHER.elementAt(0);
              TelegramParticipant tp2 = this.vQueuedOTHER.elementAt(1);
+             
+             
+             CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+             this.htCRT.put(tp1, crt);
+             this.htCRT.put(tp2, crt);
+             crt.startTask(tp1, tp2);
              pp.createNewSubdialogue(tp1,tp2); 
              Conversation.printWSln("Main", "OTHER: Created group of "+tp1.getConnection().getValidLogincode()+ " and "+tp2.getConnection().getValidLogincode());
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp1, "Please start!");
@@ -192,6 +205,12 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
                   // c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);      
                 //  c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
              } 
+             else{
+                 CustomizableReferentialTask crt = (CustomizableReferentialTask)this.htCRT.get(sender);
+                 if(crt!=null){
+                     crt.processChatText(sender, text);
+                 }
+             }
       
         }
         if(this.relayPhotos && tmfc.u.hasMessage()&&  tmfc.u.getMessage().hasPhoto()){
@@ -262,7 +281,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
     
     
    public static boolean showcCONGUI() {
-        return false;
+        return true;
     }
     
 }

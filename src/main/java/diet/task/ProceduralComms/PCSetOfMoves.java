@@ -32,7 +32,20 @@ public class PCSetOfMoves {
     
     
     
-    public boolean evaluate(Participant p, String text){
+    public synchronized boolean evaluate(Participant p, String text){
+        if(this.issolved()){
+            return true;
+        }
+        if(this.moves==null){
+            Conversation.printWSln("Main", "This really shouldn't happen! Set of moves is NULL");
+            Conversation.saveErr("This shouldn`t happen! The set of moves is NULL");
+            return false; //this shouldn't happen
+        }
+        else if(this.moves.size()==0){
+            Conversation.printWSln("Main", "This really shouldn't happen! Set of moves is empty");
+            Conversation.saveErr("This shouldn`t happen! The set of moves is empty");
+            return false; //this shouldn't happen
+        }
         
         text = text.toLowerCase();
         
@@ -140,6 +153,11 @@ public class PCSetOfMoves {
     
     
     public void checkForTimeouts(){
+        if(this.issolved())return;
+        if(moves==null)return;
+        if(moves.size()==0)return;
+        
+        
         Move crnt = null;
         for(int i=0;i<moves.size();i++){
             if(!moves.elementAt(i).isSolved()){
@@ -151,7 +169,7 @@ public class PCSetOfMoves {
         
         if(crnt == null){
             Conversation.printWSln("Main", "This really shouldn't happen!");
-            Conversation.saveErr("This really shouldn`t happen The set of moves had no elements in it...while checking for timeouts");
+            Conversation.saveErr("This really shouldn`t happen The set of moves has "+moves.size() + " elements in it...while checking for timeouts...");
             return;
         
             

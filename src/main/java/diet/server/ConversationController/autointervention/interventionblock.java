@@ -37,7 +37,7 @@ public class interventionblock {
          if(!this.participantID.equalsIgnoreCase("")&! participantID.equalsIgnoreCase(pID)){
              return false;
          }
-         if(turn.contains(this.poscrit)){
+         if(turn.equalsIgnoreCase(this.poscrit)){
               if(this.negcrit.equalsIgnoreCase("")){
                   return true;
               }

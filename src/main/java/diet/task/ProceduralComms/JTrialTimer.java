@@ -6,6 +6,7 @@
 
 package diet.task.ProceduralComms;
 
+import diet.server.Conversation;
 import java.util.Date;
 import javax.swing.SwingUtilities;
 
@@ -31,6 +32,8 @@ public class JTrialTimer extends javax.swing.JFrame {
         this.setVisible(true);
         this.jLabel1.setText("");
         this.durationOfEachTrial=trialDuration;
+        Thread t = new Thread(){public void run(){checkForCompletionLoop();}};
+        t.start();
     }
     
     
@@ -43,6 +46,8 @@ public class JTrialTimer extends javax.swing.JFrame {
         this.setVisible(true);
         this.jLabel1.setText("");
         this.durationOfEachTrial=trialDuration;
+        Thread t = new Thread(){public void run(){checkForCompletionLoop();}};
+        t.start();
     }
 
     /**
@@ -146,7 +151,8 @@ public class JTrialTimer extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         this.timeOfEndOfTrial= this.timeOfEndOfTrial+10000;
+        this.timeLeft= this.timeLeft+10000;
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -178,7 +184,8 @@ public class JTrialTimer extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        this.timeOfEndOfTrial= this.timeOfEndOfTrial-10000;
+        this.timeLeft= this.timeLeft-10000;
+        if(timeLeft<0)timeLeft=0;
     }//GEN-LAST:event_jButton3ActionPerformed
 
     
@@ -193,6 +200,7 @@ public class JTrialTimer extends javax.swing.JFrame {
         
         
         t = new Thread(){public void run(){
+           timeLeft = durationOfEachTrial;
            timerLoop(); 
           }
         };
@@ -200,51 +208,91 @@ public class JTrialTimer extends javax.swing.JFrame {
         
     }
   
+  long timeLeft = 0;  
+    
   long durationOfEachTrial = 10000;
-  long timeOfEndOfTrial;
+  //long timeOfEndOfTrial;
   int trialnumber = 0;
   
   public boolean doLoop = true;
   boolean paus = false;
     
+   boolean doCheckForCompletion = true;
+   
+   
+   public void kill(){
+       this.doCheckForCompletion=false;
+       this.doLoop=false;
+       this.jtti=null;
+   }
+   
+   
+   
+   
+   public synchronized void checkForCompletionLoop(){
+       
+       while(this.doCheckForCompletion){
+           try{
+               notifyAll();
+               wait(100);
+               this.checkForCompletion();
+               
+           }catch(Exception e){
+               e.printStackTrace();
+               Conversation.saveErr(e);
+           }
+       }    
+       
+       
+       
+       
+   }
+  
   
     public synchronized void timerLoop(){
-        this.timeOfEndOfTrial= new Date().getTime()+this.durationOfEachTrial;
+        
         
         while(doLoop){
+             this.checkForCompletion();
+             System.err.println("CHECKING FOR COMPLETION");
             
-             long timeRemaining = this.timeOfEndOfTrial-   new Date().getTime();
             
-             if(timeRemaining >= 1000){
                  try{
+                     
+                   notifyAll();
                    long startnOfSleep =new Date().getTime();
-                   wait(1000);
+                  
+                   wait(100);
+                   
                    long endOfSleep = new Date().getTime();  
-                   if(paus)this.timeOfEndOfTrial = this.timeOfEndOfTrial+ (endOfSleep-startnOfSleep);
-                 }
-                 catch(Exception e){ e.printStackTrace(); }
-                 }
-             
-             else if (timeRemaining <1000   && timeRemaining >0){
-                 try{
-                   long startnOfSleep =new Date().getTime();
-                   wait(1000);
-                   long endOfSleep = new Date().getTime();  
-                   if(paus)this.timeOfEndOfTrial = this.timeOfEndOfTrial+ (endOfSleep-startnOfSleep);
+                   if(!paus){
+                       long durationOfSleep = endOfSleep-startnOfSleep;
+                       timeLeft=timeLeft-(durationOfSleep);
+                      
+                   }
+                   else{
+                       System.exit(-56);
+                   }
                  }
                  catch(Exception e){ e.printStackTrace(); }
                  
-              } 
+             
+            
+                 
+               
               
-             timeRemaining = this.timeOfEndOfTrial-   new Date().getTime();
-             if (timeRemaining <= 0){
-                  this.timeOfEndOfTrial = new Date().getTime()+ this.durationOfEachTrial;
-                  this.trialnumber++;
+            
+             if (timeLeft <= 0){
+                  
                   informOthersOfTimeout();
+                  this.trialnumber++;
+                  this.timeLeft=durationOfEachTrial;
+
+                  
                   
               }
-              final double percentage = 100*(((double)timeRemaining)/(double)this.durationOfEachTrial);
-              final long timeRemainingMilli = timeRemaining;
+              final double percentage = 100*(((double)timeLeft)/(double)this.durationOfEachTrial);
+              final long timeRemainingMilli = timeLeft;
               SwingUtilities.invokeLater(new Runnable(){
                
                  public void run(){
@@ -259,20 +307,23 @@ public class JTrialTimer extends javax.swing.JFrame {
              
              
         }  
-       
+       notifyAll();
     }
     
     
     
     public synchronized void informOthersOfTimeout(){
-        jtti.processNotification("timeout");
+        if(jtti!=null)   jtti.processNotification("timeout");
     }
     
+    public synchronized void checkForCompletion(){
+       if(jtti!=null)  jtti.processNotification("checkforcompletion");
+    }
     
-    public  void nextTrial(){
+    public  synchronized void nextTrial(){  //Called by the code that is called by checkforcompletion   
          
-         this.timeOfEndOfTrial= new Date().getTime()+this.durationOfEachTrial;
          this.trialnumber++;
+         this.timeLeft=durationOfEachTrial;
     }
     
     

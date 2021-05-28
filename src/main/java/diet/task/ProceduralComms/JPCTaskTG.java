@@ -23,6 +23,9 @@ public class JPCTaskTG extends javax.swing.JFrame {
     
     PCTaskTG pct;
     
+    
+    
+    
     public JPCTaskTG(PCTaskTG pct) {
         
         super("PCTask:"+pct.pA.getParticipantID()+","+pct.pA.getUsername()+"--"+pct.pB.getParticipantID()+","+pct.pB.getUsername());

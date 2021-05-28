@@ -57,7 +57,7 @@ public class CyclicRandomParticipantIDGeneratorGROOP {
 
     
     
-    
+    int counter=0;
     
     
     
@@ -77,20 +77,22 @@ public class CyclicRandomParticipantIDGeneratorGROOP {
         v2.removeElement(o);
         System.err.println("---IDGENERATORBEGINNING The 2nd list HERE RETURNING :"+(String)o);
          VectorToolkit.list(v2);
-        
-        return (String)o;
+        counter++;
+        return (String)o+counter;
     }
     public String getNext(){
         if(v2.size()==0)return "NOMOREIDSTOGENEREATE";
         Object o = v2.elementAt(r.nextInt(v2.size()));
         v2.removeElement(o);
-        return (String)o;
+        counter++;
+        return (String)o+counter;
     }
     public String getNextNonDeleting(){
         if(v2.size()==0)return "NOMOREIDSTOGENEREATE";
         Object o = v2.elementAt(r.nextInt(v2.size()));
         //v2.removeElement(o);
-        return (String)o;
+        counter++;
+        return (String)o+counter;
     }
     
     
