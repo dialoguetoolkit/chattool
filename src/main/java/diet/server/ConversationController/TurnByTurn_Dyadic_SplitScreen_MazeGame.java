@@ -21,12 +21,12 @@ import java.util.Vector;
  *
  * @author gj
  */
-public class TurnByTurnSplitScreen_Dyadic_MazeGame extends MazeGameConversationControllerMultipleDyads{
+public class TurnByTurn_Dyadic_SplitScreen_MazeGame extends MazeGameConversationControllerMultipleDyads{
 
     boolean evenMazesAreSplitScreen = true;
     
     
-    public TurnByTurnSplitScreen_Dyadic_MazeGame(Conversation c) {
+    public TurnByTurn_Dyadic_SplitScreen_MazeGame(Conversation c) {
         super(c);
         this.setID("DP2015SPLITSCREEN");
         super.sett.client_numberOfWindows=2;
@@ -116,7 +116,7 @@ public class TurnByTurnSplitScreen_Dyadic_MazeGame extends MazeGameConversationC
     }
     
       public static boolean showcCONGUI(){
-        return true;
+        return false;
     } 
     
 }

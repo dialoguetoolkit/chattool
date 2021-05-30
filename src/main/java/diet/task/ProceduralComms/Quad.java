@@ -7,6 +7,7 @@ package diet.task.ProceduralComms;
 
 import diet.server.Conversation;
 import diet.server.ConversationController.Telegram_Dyadic_PROCOMM;
+import diet.server.ConversationController.ui.CustomDialog;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import java.awt.BorderLayout;
@@ -27,6 +28,8 @@ public class Quad {
       PCTaskTG pctg1;// = new PCTaskTG(cC,p1,p2,true,true,false);
       PCTaskTG pctg2;// = new PCTaskTG(cC,p3,p4,true,true,false);
       JPanel jpui;
+      int swapState = 0;
+      
     
       public Quad(Telegram_Dyadic_PROCOMM cC,TelegramParticipant p1, TelegramParticipant p2, TelegramParticipant p3,TelegramParticipant p4){
           this.cC=cC;
@@ -34,8 +37,7 @@ public class Quad {
           this.p2=p2;
           this.p3=p3;
           this.p4=p4;
-          initialConnection();
-          constructUI();
+          startPRACTICE();
       }
     
       public boolean isParticipantInQuad(TelegramParticipant tp){
@@ -46,7 +48,7 @@ public class Quad {
           return false;
       }
       
-      public void evaluate (TelegramParticipant sender, TelegramMessageFromClient tmfc) {
+      public synchronized void evaluate (TelegramParticipant sender, TelegramMessageFromClient tmfc) {
            if(pctg1.pA==sender || pctg1.pB==sender) pctg1.evaluate(sender, tmfc);
            else if (pctg2.pA==sender || pctg2.pB==sender) pctg2.evaluate(sender, tmfc);
            else{
@@ -55,26 +57,101 @@ public class Quad {
       }
       
       
+      public synchronized void swapWITHIN(){
+            if(pctg1!=null && pctg1.ispracticestage){
+                CustomDialog.showDialog("Cannot do swap WITHIN of quad because one of the pairs is still in practice mode. Please start the experiment first!");
+                return;
+            }
+            if(pctg2!=null && pctg2.ispracticestage){
+                CustomDialog.showDialog("Cannot do swap WITHIN of quad because one of the pairs is still in practice mode. Please start the experiment first!");
+                return;
+            }
+          
+            this.pctg1.kill();
+            this.pctg2.kill();
+          
+            
+            String partnername = "p"+(swapState+1);
+            
+            if(swapState % 2 ==0){
+                   pctg1 = new PCTaskTG(cC,p1,p3,partnername,false,true,true,false);
+                   pctg2 = new PCTaskTG(cC,p2,p4,partnername,false,true,true,false);        
+            }
+            else{
+                   pctg1 = new PCTaskTG(cC,p1,p2,partnername,false,true,true,false);
+                   pctg2 = new PCTaskTG(cC,p3,p4,partnername,false,true,true,false);      
+            }
+            swapState = swapState+1;
+            constructUI();
+      }
       
+          public synchronized TelegramParticipant[] swapBETWEEN(){
+            if(pctg1!=null && pctg1.ispracticestage){
+                CustomDialog.showDialog("Cannot do swap BETWEEN of quad because one of the pairs is still in practice mode. Please start the experiment first!");
+                return null;
+            }
+            if(pctg2!=null && pctg2.ispracticestage){
+                CustomDialog.showDialog("Cannot do swap BETWEEN of quad because one of the pairs is still in practice mode. Please start the experiment first!");
+                return null;
+            }
+          
+            this.pctg1.kill();
+            this.pctg2.kill();
+          
+            String partnername = "p"+(swapState+1);
+            
+            pctg1 = new PCTaskTG(cC,p1,p4,partnername,false,true,true,false);
+            pctg2=null;
+            
+            swapState = swapState=swapState+1;
+            constructUI();
+            
+            return new TelegramParticipant[]{p2,p3};
+            
+      }
+      
+      
+      
+      
+      public synchronized void startPRACTICE(){
+             String partnername = "p"+(swapState+1);
+             pctg1 = new PCTaskTG(cC,p1,p2,partnername,true,false,false,false);
+             pctg2 = new PCTaskTG(cC,p3,p4,partnername,true,false,false,false);
+             constructUI();
+      }
+      
+      
+      public synchronized void startEXPERIMENT(){
+             String partnername = "p"+(swapState+1);
+             pctg1 = new PCTaskTG(cC,p1,p2,partnername,false,false,false,false);
+             pctg2 = new PCTaskTG(cC,p3,p4,partnername,false,false,false,false);
+             constructUI();
+      }
+      
+      public synchronized void startTIMER(){
+          if(pctg1!=null)pctg1.startTimer();
+          if(pctg2!=null)pctg2.startTimer();
+      }
+       public synchronized void pauseTIMER(){
+          if(pctg1!=null)pctg1.pauseTimer();
+          if(pctg2!=null)pctg2.pauseTimer();
+      }
       
       
       public JPanel getUI(){
           return jpui;
       }
+      
+      
      
-      private void initialConnection(){
-           System.err.println("Creating PCTG");
-           pctg1 = new PCTaskTG(cC,p1,p2,true,true,false);
-           pctg2 = new PCTaskTG(cC,p3,p4,false,false,false);
-           
-      }
+     
       
       private JPanel constructUI(){
           if(SwingUtilities.isEventDispatchThread()) {
                  JPanel jp = new JPanel();
                  jp.setLayout(new BorderLayout());
-                 jp.add(pctg1.getUI(), BorderLayout.WEST);
-                 jp.add(pctg2.getUI(), BorderLayout.EAST);
+                 if(pctg1!=null)jp.add(pctg1.getUI(), BorderLayout.WEST);
+                 if(pctg2!=null)jp.add(pctg2.getUI(), BorderLayout.EAST);
                  jpui=jp;
                  return jpui;
           }
@@ -84,8 +161,8 @@ public class Quad {
                public void run(){
                    JPanel jp = new JPanel();
                     jp.setLayout(new BorderLayout());
-                    jp.add(pctg1.getUI(), BorderLayout.WEST);
-                    jp.add(pctg2.getUI(), BorderLayout.EAST);
+                    if(pctg1!=null)jp.add(pctg1.getUI(), BorderLayout.WEST);
+                    if(pctg2!=null)jp.add(pctg2.getUI(), BorderLayout.EAST);
                     jpui=jp;
                    
                }
@@ -98,16 +175,21 @@ public class Quad {
               Conversation.saveErr("Trying to salvage Quad UI");
               JPanel jp = new JPanel();
                     jp.setLayout(new BorderLayout());
-                    jp.add(pctg1.getUI(), BorderLayout.WEST);
-                    jp.add(pctg2.getUI(), BorderLayout.EAST);
+                    if(pctg1!=null)jp.add(pctg1.getUI(), BorderLayout.WEST);
+                    if(pctg2!=null)jp.add(pctg2.getUI(), BorderLayout.EAST);
                     jpui=jp;
           }
           
           return jpui;
       }
       
-      public void startExperiment(){
-          
-      }
+      
     
+      
+      public PCTaskTG getPCTaskTGForParticipant(TelegramParticipant tp){
+         if(tp==p1) return null;
+         return null;
+       }
+      
+      
 }

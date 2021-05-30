@@ -15,11 +15,14 @@ import diet.task.ProceduralComms.PCTaskTG;
 import diet.task.ProceduralComms.Quad;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
-import java.util.Date;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.util.Hashtable;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 /**
@@ -28,10 +31,63 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  */
 public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
 
-   //
-   //Needs to sort through IDs numerically and then assign them
+    //// 31685435608
+     // 31686348684
     
-    JInterfaceTenButtons jitb = new JInterfaceTenButtons (this, "practice", "experiment", "swap","always send explanation","never send explanation","send explanation once","20","","","");
+    
+   //Quad of 4
+   //Start with practice                                                                             (DONE)
+   //Practice is unbounded                                                                           (DONE)
+   //button to swap within  (check is in experiment mode before swap)                                (DONE)
+   //button to swap between (Check is in experiment mode before swap)                            
+   //code that makes other appear as participant X                                                   (DONE)
+   //Need to be able to see what level they are at and what practice level they have achieved        
+   //The experiment size needs to be bounded....in terms of the maximum length of the sequence       (DONE)
+   // Make sure it scores points correctly
+   // Make it do the timeout for simultaneous moves correctly 
+   // 
+   //Quad of 8
+   //Wire up so that it can do the same as quad of 4.
+   //Automate the timing of swaps...
+   //Needs to be able to swap between the 8
+   //The timing needs to be done so that the swap doesn`t deadlock with the other timer!
+   //   It will need to simultaneously acquire locks on ALL the PCTaskTG ...and only then do the swap...
+   //   Should kill be synchronized in PCTaskTG
+   //   Should kill remove reference to cC (instantly)? 
+   // 
+   //Sorts through list of participants in Telegram ID order (So that it can be restarted in case of crash)
+   //Loads highest level to datafile (so can be recovered from crash)
+   //TEST CRASH RESISTANCE
+   //
+   //The practice stage is used to make sure that participant technology works...IF they don`t get to a certain point, then they can be excluded...and experiment restarted....
+    //Add functionality where when you do group assignment, it activates that in the ConversationController
+    
+    //Make it save in the CSV what the quad is and the swapstate
+
+    //
+    // Make it so that it records the number of points of each person and pair..
+    //
+    //Make it so that in the first game it ranks them by level....so that there is one quad with the w
+    
+    
+    // Check the output file! Who was interacting with whom..  
+    
+    //
+    //
+    // Needs to have "joker" participant so that if there are 9,11,13,15,17,19 participants...they participate....OR alternatively simply get told to wait...
+    
+    
+   //Needs to sort through IDs numerically and then assign themst be unbou
+    //Practice game must be unbounded...
+    //
+    //Needs to be able to start with...
+    //Must NOT be able to
+    //Then automate the swapping...within AND between
+    //Then be able to deal with
+    
+    JFrame jfUI;
+    
+    JInterfaceTenButtons jitb = new JInterfaceTenButtons (this, "practice stage", "start experiment", "start timer", "pause timer"   ,"swap within","swap between","","","","");
     
     public Telegram_Dyadic_PROCOMM(Conversation c) {
         super(c);
@@ -48,17 +104,46 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     public void performActionTriggeredByUI(String s) {
       
         
-        if(s.equalsIgnoreCase("swap")){
-             
-             pctg.kill();
-            try{Thread.sleep(5000);}catch(Exception e){e.printStackTrace();}
-
-            // pctg = new PCTaskTG(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),true,true,false);
+        
+        
+        
+        if(s.equalsIgnoreCase("swap within")){
+       
+            try{
+                //Thread.sleep(5000);
+                q.swapWITHIN();
+                buildUI();
             
-            
+            }catch(Exception e){e.printStackTrace();}         
         }
+         else if (s.equalsIgnoreCase("swap between")){
+            TelegramParticipant[] tps = q.swapBETWEEN();
+             
+             
+             
+            buildUI();
+        }
+         else if (s.equalsIgnoreCase("practice stage")){
+            q.startPRACTICE();
+            buildUI();
+        }
+        
+        
+        else if (s.equalsIgnoreCase("start experiment")){
+            q.startEXPERIMENT();
+            buildUI();
+        }
+        
+        
+        else if (s.equalsIgnoreCase("start timer")){
+            q.startTIMER();
+        }
+        else if(s.equalsIgnoreCase("pause timer")){
+            q.pauseTIMER();
+        }
+        
         else if (s.equalsIgnoreCase("send explanation once")){
-            pctg.sendInstructionsOnce();
+            //pctg.sendInstructionsOnce();
         }
         
         
@@ -80,7 +165,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
          
         if(c.getParticipants().getAllParticipants().size()==4) {
             
-             pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
+             //pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
                
              CustomDialog.showDialog("PRESS OK TO START!");
              this.experimentHasStarted=true;
@@ -88,18 +173,71 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
              q = new Quad(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),
                      (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(2), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(3));
              
-             JPanel jpui = q.getUI();
-             JFrame jf = new JFrame();
-             jf.getContentPane().add(jpui);
-             jf.pack();
-             jf.setVisible(true);
+             buildUI();
              
         }
        
     }
     
+     public void buildUI(){
+         
+         if(SwingUtilities.isEventDispatchThread()){
+             if(jfUI!=null){
+                try{ jfUI.dispose();}catch(Exception e){e.printStackTrace(); }
+             }
+             jfUI = new JFrame();
+             JPanel jpui = q.getUI();
+             //JFrame jf = new JFrame();
+             jfUI.getContentPane().add(jpui);
+             jfUI.pack();
+             jfUI.setVisible(true);
+             positionInTopRight(jfUI);
+         }
+         else{
+             try{
+             SwingUtilities.invokeAndWait(new Runnable(){
+                 public void run(){
+                     if(jfUI!=null){
+                          try{ jfUI.dispose();}catch(Exception e){e.printStackTrace(); }
+                     }
+                        jfUI = new JFrame();
+                        JPanel jpui = q.getUI();
+                        //JFrame jf = new JFrame();
+                        jfUI.getContentPane().add(jpui);
+                        jfUI.pack();
+                        jfUI.setVisible(true);
+                         positionInTopRight(jfUI);
+                            }
+             });
+             }catch(Exception e){
+                 e.printStackTrace();
+                 Conversation.saveErr(e);
+                 Conversation.saveErr("ERROR IN BUILDING UI");
+                if(jfUI!=null){
+                    try{ jfUI.dispose();}catch(Exception ee){ee.printStackTrace(); }
+             }
+             jfUI = new JFrame();
+             JPanel jpui = q.getUI();
+             //JFrame jf = new JFrame();
+             jfUI.getContentPane().add(jpui);
+             jfUI.pack();
+             jfUI.setVisible(true);
+              positionInTopRight(jfUI);
+             }
+         }
+         
+         
+     }
      
-     
+     public void positionInTopRight(JFrame jf){
+         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice defaultScreen = ge.getDefaultScreenDevice();
+        Rectangle rect = defaultScreen.getDefaultConfiguration().getBounds();
+        int x = (int) rect.getMaxX() - jf.getWidth();
+        int y = 40;
+        jf.setLocation(x, y);
+        jf.setVisible(true);
+     }
      
      
      
@@ -120,11 +258,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
              q = new Quad(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),
                      (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(2), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(3));
              
-             JPanel jpui = q.getUI();
-             JFrame jf = new JFrame();
-             jf.getContentPane().add(jpui);
-             jf.pack();
-             jf.setVisible(true);
+             buildUI();
              
         }
        
@@ -177,7 +311,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     
     
     
-     PCTaskTG pctg;
+     //PCTaskTG pctg;
      public Hashtable htPinnedMessages = new Hashtable();
      public Hashtable<TelegramParticipant,String> htMostRecentPinnedText = new Hashtable();
     
@@ -248,8 +382,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
 
     @Override
     public Vector<AttribVal> getAdditionalInformationForParticipant(Participant p) {
-        
-        if(this.pctg!=null) return this.pctg.getAdditionalValues(p);
+        PCTaskTG pctg=null;
+        if(pctg!=null) return pctg.getAdditionalValues(p);
         return super.getAdditionalInformationForParticipant(p);
     }
     
@@ -264,7 +398,9 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     
    
    
-    
+   public PCTaskTG getPCTaskTGForParticipant(TelegramParticipant tp){
+       return null;//q.getPCTaskTGForParticipant(tp);
+   } 
    
    
    

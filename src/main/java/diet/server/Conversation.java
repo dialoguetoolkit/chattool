@@ -1460,7 +1460,7 @@ public class Conversation extends Thread{
            if (value==null)value="";
            String subDialogueID = "notset";
            if(p!=null) subDialogueID =  cC.pp.getSubdialogueID(p);
-           
+           if(subDialogueID==null)subDialogueID="NULL";
           
            long currentTIME = new Date().getTime(); 
            long timeOfSendOnClient = currentTIME;
@@ -2992,15 +2992,14 @@ public class Conversation extends Thread{
   
       
       
-       public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, Vector<String> buttonnames){
+       public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, Vector<String> buttonnames, String messageText){
             String subdialogueID = cC.pp.getSubdialogueID(recipient);
         
         long recipientID = recipient.getConnection().telegramID;
             
         try{
                 SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText("Setting up");
+                       .setChatId(recipientID).setText(messageText);
                  message = message.disableNotification();
                  message.enableHtml(false);
                  //message.setText("<code>"+text+"</code>");  
@@ -3186,6 +3185,102 @@ public class Conversation extends Thread{
             telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vID,  text);
       }
      
+      
+      
+       
+      public void telegram_sendArtificialTurnFromApparentOriginToParticipant(String apparentSenderString, TelegramParticipant recip, String text){
+             Vector<String>  vID = new Vector();
+             vID.add(recip.getParticipantID());
+             
+            telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSenderString, vID,  text);
+       }
+      
+      
+      
+        private void telegram_sendArtificialTurnFromApparentOriginToParticipantID(String apparentSenderString, Vector<String> vid, String text){
+         
+        Vector additionalInfo = new Vector();
+         
+ 
+        for(int i=0;i<vid.size();i++){
+            TelegramParticipant recipient = (TelegramParticipant)this.getParticipants().findParticipantWithEmail((String) vid.elementAt(i));
+            
+             try{
+             
+              long recipientID = recipient.getConnection().telegramID;
+              
+              SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID);
+              message = message.disableNotification();
+              message.enableHtml(true);
+              message.setText("<b>"+apparentSenderString+": </b>"+text);
+              recipient.sendMessage(message);
+              
+              String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"from",new Date().getTime() , message.toString());
+               
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+               Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+               
+               
+                   
+                   AttribVal av1 = new AttribVal("telegramtype","artificialturn");
+                   additionalValues.add(av1);
+                   AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+                   additionalValues.add(av2);     
+                   
+               
+              
+       
+               cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(), apparentSenderString, text, recipientsNames, additionalValues, false);
+               
+               
+              
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }   
+            
+            
+            
+     
+            //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), apparentSender.getUsername(),text, recipientName, additionalInfo, false);
+   
+            }
+         }
+ 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
        public void telegram_sendArtificialTurnFromApparentOriginToParticipant(TelegramParticipant apparentSender, TelegramParticipant recip, String text){
              Vector<String>  vID = new Vector();

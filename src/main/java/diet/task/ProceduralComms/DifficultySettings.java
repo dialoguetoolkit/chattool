@@ -175,6 +175,9 @@ public  boolean isPermissible(Vector<String> vs){
      
 
      public Vector returnSequenceForLevelOrLower(int targetLevel){
+         
+        
+         
           System.err.println("Trying to find sequence for level "+targetLevel);
           Vector v = this.returnSequenceForLevel(targetLevel);
           while(v==null || v.size()==0){

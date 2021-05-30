@@ -17,18 +17,18 @@ import java.util.Vector;
 
 
 
-public class TurnByTurnSplitScreen_Dyadic extends DefaultConversationController{
+public class TurnByTurn_Dyadic_SplitScreen extends DefaultConversationController{
 
     
     
     
     public static boolean showcCONGUI(){
-        return true;
+        return false;
     } 
 
     
     
-    public TurnByTurnSplitScreen_Dyadic(Conversation c) {
+    public TurnByTurn_Dyadic_SplitScreen(Conversation c) {
         super(c);
         String portNumberOfServer = ""+ConnectionListener.staticGetPortNumber();
         this.setID("DefaultMultiPartyConversation");

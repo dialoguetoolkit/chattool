@@ -210,7 +210,14 @@ public class JTrialTimerPANEL extends javax.swing.JPanel {
     public void startTimer(){
         
         this.timerhasstarted=true;
+        this.paus=false;
     }
+    
+    public void pauseTimer(){
+        this.paus=true;
+    }
+    
+    
     
     
   long durationOfEachTrial = 10000;
@@ -256,7 +263,7 @@ public class JTrialTimerPANEL extends javax.swing.JPanel {
              
              
              
-             System.err.println("CHECKING FOR COMPLETION");
+                 //System.err.print(".");
                  // System.err.println("PAUSE IS:(001)"+paus);
                  long endofsleepn = new Date().getTime();
                  try{
@@ -284,7 +291,7 @@ public class JTrialTimerPANEL extends javax.swing.JPanel {
                    
                    
                   
-                  System.err.println("PAUSE IS:(1)"+paus);
+                   //System.err.println("PAUSE IS:(1)"+paus);
                    if(!paus){
                       // System.err.println("PAUSE IS:(2)"+paus);
 
