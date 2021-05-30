@@ -72,15 +72,16 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
        int level =0;
        
        boolean ispracticestage = true;
+       
        int maxLengthPracticeStageSequence = 5;
        long maxLengthPracticeStageAchievedByA= 0;
        long maxLengthPracticeStageAchievedByB= 0;
        
-       public static int windowForJointSelection = 10000;
+       public static int windowForJointSelection = 5000;
        
-        static int numberOfLevelsToDecreaseOnError = 1;//CustomDialog.getInteger("How many levels to decrease on error?", 1);
+       static int numberOfLevelsToDecreaseOnError = 1;//CustomDialog.getInteger("How many levels to decrease on error?", 1);
        static int streakofsuccessesbeforegoinguplevel = 3;
-       static int currentstreak=0;
+       int currentstreak=0;
       
       static  int difficultysettings_maxSwitchCost =  2;
       static int difficulty_settings_singleNotesCoef = 1;
@@ -153,6 +154,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           
           
             
+            this.appendToTextPane("Other`s name is: "+othersName);
             
             int minLevel = Math.min(pALevel, pBLevel);
            
@@ -164,7 +166,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                 jta.append("Setting difficulty level dynamically!"+"\n");
                 jta.append("current level of pA is "+pALevel+"\n");
                 jta.append("current level of pB is "+pBLevel+"\n"); 
-                jta.append("Setting level to "+level );
+                jta.append("Setting level to "+level +"\n");
                 
                 
             }
@@ -733,9 +735,11 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             if(previousWasSuccess&& !this.ispracticestage){
                 currentstreak++;
                 if(currentstreak>=streakofsuccessesbeforegoinguplevel){
+                    
                     this.level++;
                     this.jpctp.setLevel(this.level);
                     currentstreak=0;
+                    this.appendToTextPane("Increasing difficulty level to "+level);
                 }
                 
                 
@@ -748,8 +752,9 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                 this.level=this.level-numberOfLevelsToDecreaseOnError;
                 if(this.level<=0)this.level=0;
                 this.jpctp.setLevel(this.level);
+                 this.appendToTextPane("Decreasing difficulty level to "+level);
             }
-             
+            this.appendToTextPane("Current streak is: "+currentstreak);
             
           ;
             //this.level=19;
@@ -926,6 +931,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       
        public void createRandom_MoveSequence(){
+           
            if(ispracticestage & Math.min(this.maxLengthPracticeStageAchievedByA, this.maxLengthPracticeStageAchievedByB)>=maxLengthPracticeStageSequence){
                //this.ispracticestage=false;
                //CustomDialog.showDialog("START THE EXPERIMENT!");

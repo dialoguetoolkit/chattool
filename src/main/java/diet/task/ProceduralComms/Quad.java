@@ -40,6 +40,11 @@ public class Quad {
           startPRACTICE();
       }
     
+      public int getSwapState(){
+          return this.swapState;
+      }
+      
+      
       public boolean isParticipantInQuad(TelegramParticipant tp){
           if(tp==p1)return true;
           if(tp==p2)return true;
@@ -49,15 +54,35 @@ public class Quad {
       }
       
       public synchronized void evaluate (TelegramParticipant sender, TelegramMessageFromClient tmfc) {
-           if(pctg1.pA==sender || pctg1.pB==sender) pctg1.evaluate(sender, tmfc);
-           else if (pctg2.pA==sender || pctg2.pB==sender) pctg2.evaluate(sender, tmfc);
-           else{
-               Conversation.saveErr("This shouldn`t happen! Can`t find participant to evaluate");
-           }
+          if(pctg1!=null){
+              if(pctg1.pA==sender || pctg1.pB==sender) {
+                  pctg1.evaluate(sender, tmfc);
+                  return;
+              }
+          }
+          if(pctg2!=null){
+              if(pctg2.pA==sender || pctg2.pB==sender) {
+                  pctg2.evaluate(sender, tmfc);
+                  return;
+              }
+          }
+          Conversation.saveErr("This shouldn`t happen! Can`t find participant to evaluate");
+          
+         
       }
       
       
       public synchronized void swapWITHIN(){
+           if(pctg1==null){
+               CustomDialog.showDialog("Cannot do swap WITHIN of quad because pctg1 is NULL");
+               return;
+           }
+           if(pctg2==null){
+               CustomDialog.showDialog("Cannot do swap WITHIN of quad because pctg2 is NULL");
+               return;
+           }
+          
+          
             if(pctg1!=null && pctg1.ispracticestage){
                 CustomDialog.showDialog("Cannot do swap WITHIN of quad because one of the pairs is still in practice mode. Please start the experiment first!");
                 return;
@@ -70,10 +95,10 @@ public class Quad {
             this.pctg1.kill();
             this.pctg2.kill();
           
+            swapState = swapState+1;
+            String partnername = "p"+(swapState+2);
             
-            String partnername = "p"+(swapState+1);
-            
-            if(swapState % 2 ==0){
+            if(swapState % 2 ==1){
                    pctg1 = new PCTaskTG(cC,p1,p3,partnername,false,true,true,false);
                    pctg2 = new PCTaskTG(cC,p2,p4,partnername,false,true,true,false);        
             }
@@ -81,7 +106,7 @@ public class Quad {
                    pctg1 = new PCTaskTG(cC,p1,p2,partnername,false,true,true,false);
                    pctg2 = new PCTaskTG(cC,p3,p4,partnername,false,true,true,false);      
             }
-            swapState = swapState+1;
+            
             constructUI();
       }
       
@@ -98,12 +123,14 @@ public class Quad {
             this.pctg1.kill();
             this.pctg2.kill();
           
-            String partnername = "p"+(swapState+1);
+           
+            swapState = swapState+1;
+            String partnername = "p"+(swapState+2);
             
             pctg1 = new PCTaskTG(cC,p1,p4,partnername,false,true,true,false);
             pctg2=null;
             
-            swapState = swapState=swapState+1;
+            
             constructUI();
             
             return new TelegramParticipant[]{p2,p3};
@@ -114,7 +141,7 @@ public class Quad {
       
       
       public synchronized void startPRACTICE(){
-             String partnername = "p"+(swapState+1);
+             String partnername = "p"+(swapState+2);
              pctg1 = new PCTaskTG(cC,p1,p2,partnername,true,false,false,false);
              pctg2 = new PCTaskTG(cC,p3,p4,partnername,true,false,false,false);
              constructUI();
@@ -122,7 +149,7 @@ public class Quad {
       
       
       public synchronized void startEXPERIMENT(){
-             String partnername = "p"+(swapState+1);
+             String partnername = "p"+(swapState+2);
              pctg1 = new PCTaskTG(cC,p1,p2,partnername,false,false,false,false);
              pctg2 = new PCTaskTG(cC,p3,p4,partnername,false,false,false,false);
              constructUI();

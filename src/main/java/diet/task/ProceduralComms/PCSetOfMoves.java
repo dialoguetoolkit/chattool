@@ -178,6 +178,7 @@ public class PCSetOfMoves {
             MoveANDSAME crntMVEANDSAME = (MoveANDSAME)crnt;
             boolean hastimedout= crntMVEANDSAME.isTimedOut();
             if(hastimedout){
+                pctg.appendToTextPane("TIMEOUT OF MOVE "+crntMVEANDSAME.getDesc());
                 crntMVEANDSAME.setSolved(false);
                 this.pctg.displayMovesOnClients_DIRECTOR();
                 this.pctg.displayMovesOnServer();
@@ -188,6 +189,8 @@ public class PCSetOfMoves {
             MoveANDDIFFERENT crntMVEANDDIFFERENT = (MoveANDDIFFERENT)crnt;
             boolean hastimedout= crntMVEANDDIFFERENT.isTimedOut();
             if(hastimedout){
+                pctg.appendToTextPane("TIMEOUT OF MOVE "+crntMVEANDDIFFERENT.getDesc());
+
                 crntMVEANDDIFFERENT.setSolved(false);
                 this.pctg.displayMovesOnClients_DIRECTOR();
                 this.pctg.displayMovesOnServer();
