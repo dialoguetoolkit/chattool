@@ -72,6 +72,12 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     
     //Make it save in the CSV what the quad is and the swapstate
 
+    //Need to add an option for 4 participants - ALL WITHIN
+    //Need to add an option for 8 participants - ALL BETWEEN, NO WITHIN
+    //Need to add an option for 12 participant
+    
+    
+    
     //
     // Make it so that it records the number of points of each person and pair..
     //
@@ -349,7 +355,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
         
         this.generatePinnedMessage(p);
-               
+        
        
        if(c.getParticipants().getAllParticipants().size()==4) {
             

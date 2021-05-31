@@ -93,7 +93,7 @@ public abstract class TelegramController extends DefaultConversationController{
     
     
     
-    public  final String[] telegram_getUniqueParticipantIDAndUniqueUsername(long telegramID ,String logincodeattempt){
+    public   String[] telegram_getUniqueParticipantIDAndUniqueUsername(long telegramID ,String logincodeattempt){
          Conversation.printWSln("Main", "TelegramController receiving login request from "+ telegramID + " with "+ logincodeattempt  );
          if(logincodeattempt.equalsIgnoreCase(this.c.tgb.idc.idcIO.genericLoginCode)){  // This reference needs to be fixed / simplified
                
