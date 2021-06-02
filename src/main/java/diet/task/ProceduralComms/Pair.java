@@ -31,7 +31,8 @@ public class Pair {
       int swapState =0;
       
     
-      public Pair(Telegram_Dyadic_PROCOMM cC,TelegramParticipant tpA,TelegramParticipant tpB, int swapState, boolean startPractice){
+      public Pair(Telegram_Dyadic_PROCOMM cC,TelegramParticipant tpA,TelegramParticipant tpB, int swapState, boolean startPractice, boolean startTimer){
+          if(startPractice&&startTimer)CustomDialog.showDialog("Error: Is trying to start practice with timer started!");
           this.cC=cC;
           this.swapState=swapState;
           this.pA=tpA;
@@ -41,7 +42,7 @@ public class Pair {
           }
           else{
               startEXPERIMENT();
-              startTIMER();
+              if(startTimer)startTIMER();
           }
       }
     
@@ -64,10 +65,10 @@ public class Pair {
       }
       
       
-      public synchronized void swapWITHIN(){
+      public synchronized void swap(){
    
             swapState=swapState+1;
-            String partnername = "p"+(swapState);
+            String partnername = "p"+(swapState+2);
             pctg = new PCTaskTG(cC,pA,pB,partnername,false,true,true,false);
            
             
@@ -80,7 +81,7 @@ public class Pair {
       
       
       public synchronized void startPRACTICE(){
-             String partnername = "p"+swapState;
+             String partnername = "p"+(swapState+2);
              pctg = new PCTaskTG(cC,pA,pB,partnername,true,false,false,false);
              
              constructUI();
@@ -88,7 +89,7 @@ public class Pair {
       
       
       public synchronized void startEXPERIMENT(){
-             String partnername = "p"+swapState;
+             String partnername = "p"+(swapState+2);
              pctg = new PCTaskTG(cC,pA,pB,partnername,false,false,false,false);
            
              constructUI();

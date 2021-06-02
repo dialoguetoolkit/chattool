@@ -476,7 +476,7 @@ public void onUpdateReceived(Update update) {
  }
   }      
         
-   public void sendEditMessage(EditMessageText emt){
+   public synchronized void sendEditMessage(EditMessageText emt){
       try {
          execute(emt);
       }
@@ -486,7 +486,7 @@ public void onUpdateReceived(Update update) {
        this.tbl.saveTo(emt.toString());
    }      
         
-   public void sendEditMessageReplyMarkup(EditMessageReplyMarkup emrp){
+   public synchronized void sendEditMessageReplyMarkup(EditMessageReplyMarkup emrp){
        try {
                 
             execute(emrp); // Call method to send the message
@@ -520,7 +520,7 @@ public void onUpdateReceived(Update update) {
    } 
    
    
-   public void sendEditMessage(Message mOriginalMessage, EditMessageText emt){
+   public synchronized void sendEditMessage(Message mOriginalMessage, EditMessageText emt){
        try{
             
             /*Integer messageID = mOriginalMessage.getMessageId() ;
@@ -545,7 +545,7 @@ public void onUpdateReceived(Update update) {
    }
    
    
-   public void sendPinChatMessage(PinChatMessage pcm){
+   public synchronized void sendPinChatMessage(PinChatMessage pcm){
        try{
                  
                   

@@ -128,12 +128,23 @@ public class Quad {
             String partnername = "p"+(swapState+2);
             
             pctg1 = new PCTaskTG(cC,p1,p4,partnername,false,true,true,false);
+           
             pctg2=null;
             
             
+          
+      
+            TelegramParticipant tp2 = p2;
+            TelegramParticipant tp3 = p3;
+            
+            this.p2=null;
+            this.p3=null;
+            
             constructUI();
             
-            return new TelegramParticipant[]{p2,p3};
+            
+           
+            return new TelegramParticipant[]{tp2,tp3};
             
       }
       

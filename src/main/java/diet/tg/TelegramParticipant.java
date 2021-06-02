@@ -22,14 +22,21 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
  *
  * @author LX1C
  */
-public class TelegramParticipant extends Participant{
+public class TelegramParticipant extends Participant implements Comparable{
 
     public TelegramParticipant(Conversation c, String em, String usrname) {
         super(c, em, usrname);
     }
 
     
-   
+    public int compareTo(Object o){
+        if(!(o instanceof TelegramParticipant))return 0;
+        
+        TelegramParticipant tp = (TelegramParticipant)o;
+        long thisid = this.getConnection().telegramID;
+        long otherid = tp.getConnection().telegramID;
+        return(Long.compare(thisid, otherid));
+    }
     
     
             
