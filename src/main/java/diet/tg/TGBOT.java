@@ -62,7 +62,13 @@ public class TGBOT  extends TelegramLongPollingBot{
        
        String s= System.getProperty("user.dir");
        
-       
+       if(     !(this.mybottoken==null)&&
+               !this.mybottoken.equalsIgnoreCase("")&&
+                !(this.mybotusername==null)&&
+               !this.mybotusername.equalsIgnoreCase("")){
+                     this.startBOT();
+               Conversation.printWSln("Main", "Starting telegram bot:"+mybotusername +"\nUse the Telegram app to connect to this bot.");
+       }
        
        
        
