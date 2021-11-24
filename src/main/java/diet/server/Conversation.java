@@ -87,7 +87,7 @@ public class Conversation extends Thread{
 
     Metrics mm;   //For calculating metrics in the chat
     
-    public autointervention ai ;
+    ///public autointervention ai ;
     
     
     public TGBOT tgb ;
@@ -97,7 +97,7 @@ public class Conversation extends Thread{
      public Conversation(ExperimentManager expM,String nameOfDefaultConversationController){
          this.expManager=expM;
          mm = new Metrics(this);
-         ai=new autointervention(this);
+         ///ai=new autointervention(this);
          statC=this;
          try{  
               this.doBasicSetup(nameOfDefaultConversationController);
@@ -613,13 +613,14 @@ public class Conversation extends Thread{
                        tgups.addItem(tcp,tmfc.u);
                    }
                    
-                   boolean block = false;
+                   boolean hasBeenModifiedByAutoIntervention = false;
                    if(tmfc.u.hasMessage()&&tmfc.u.getMessage().hasText()){
-                        String text = tmfc.u.getMessage().getText();
-                        block = ai.processText(origin, text);
+                        
+                        hasBeenModifiedByAutoIntervention =  cC.processAutoIntervention(origin,tmfc);
+              
                    }
                    
-                   if(!block)cC.telegram_processTelegramMessageFromClient(tcp,tmfc);
+                   if(!hasBeenModifiedByAutoIntervention)cC.telegram_processTelegramMessageFromClient(tcp,tmfc);
                    
                    if(tmfc.u.hasPollAnswer()){
                        cC.telegram_processPollAnswerFromClient(tcp,tmfc);
@@ -1391,6 +1392,33 @@ public class Conversation extends Thread{
                 e.printStackTrace();
         }
     }
+    
+    
+    
+    
+    public void saveAdditionalRowOfDataToSpreadsheetOfTurns(String subdialogueID, String datatype,  String text){
+        try{
+            String senderID = "server";
+             String senderUsername = "server";
+             String apparentSenderUsername = "server";
+             long timeOfCreationOnClient =  new Date().getTime();
+             long timeOfSendOnClient = new Date().getTime();
+             long timeOfRELAYONSERVER = new Date().getTime();
+             Vector recipientsNames = new Vector();
+             Vector<AttribVal> additionalData = new Vector();
+            
+           //System.err.println("SL02");
+           String text1 = text.replace("\r","((NEWLINE))");
+           String text2 = text1.replace(System.getProperty("line.separator"), "((((NEWLINE))))");
+           
+           cH.saveDataAsRowInSpreadsheetOfTurns(subdialogueID, datatype,timeOfCreationOnClient ,timeOfSendOnClient, timeOfRELAYONSERVER ,senderID, senderUsername, apparentSenderUsername,text2.replaceAll("\n", "(NEWLINE)"),recipientsNames,false,new Vector<Keypress>(), new Vector<DocChange>()  ,new Vector<ClientInterfaceEvent>() , additionalData, false);
+             }catch (Exception e){
+                e.printStackTrace();
+        }
+    }
+    
+    
+    
     
     
     
@@ -4156,7 +4184,9 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
          
      }
      
-     
+     public autointervention getAI(){
+         return cC.ai;
+     }
      
      
      private class delayedaction{

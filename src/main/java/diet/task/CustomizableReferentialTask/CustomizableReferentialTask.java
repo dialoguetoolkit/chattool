@@ -1144,6 +1144,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 double score = (double)  this.htPOINTS.getObject(pA);
                 score=score+correctscoreinrement;
                 this.htPOINTS.putObject(pA,score);
+                this.htPOINTS.putObject(pB,score);
             
             }
             else if (sender ==pB){
@@ -1151,6 +1152,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 this.htscoreCORRECT.putObject(pB, scorepBsuccess+1);
                 double score = (double)  this.htPOINTS.getObject(pB);
                 score=score+correctscoreinrement;
+                this.htPOINTS.putObject(pA,score);
                 this.htPOINTS.putObject(pB,score);
             }         
         }
@@ -1164,6 +1166,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 score=score-this.incorrectpenalty;
                 if(score<0)score=0;
                 this.htPOINTS.putObject(pA,score);
+                this.htPOINTS.putObject(pB,score);
             
             }
             else if (sender ==pB){
@@ -1172,6 +1175,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 double score = (double)  this.htPOINTS.getObject(pB);
                 score=score-this.incorrectpenalty;
                 if(score<0)score=0;
+                this.htPOINTS.putObject(pA,score);
                 this.htPOINTS.putObject(pB,score);
             }
         }

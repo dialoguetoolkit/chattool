@@ -245,7 +245,7 @@ public class JTrialTimerPANEL extends javax.swing.JPanel {
    
      private synchronized void timerLoop(){
         System.err.println("STARTING TIMER");
-        
+        timeLeft=durationOfEachTrial;
         while(doLoop){
            try{   
              this.checkForCompletion();
@@ -261,53 +261,26 @@ public class JTrialTimerPANEL extends javax.swing.JPanel {
              }
              
              
-             
-             
-                 //System.err.print(".");
-                 // System.err.println("PAUSE IS:(001)"+paus);
-                 long endofsleepn = new Date().getTime();
-                 try{
-                   
-                  // System.err.println("PAUSE IS:(002)"+paus);
+             long endofsleepn = new Date().getTime();
+             try{
                    notifyAll();
-                   
-                  // System.err.println("PAUSE IS:(003)"+paus);
-                                    
-                   
-                   
+                                   
                    long startnOfSleep =new Date().getTime();
                    long endOfSleep = startnOfSleep;
-                   
-                 // System.err.println("PAUSE IS:(004)"+paus);
 
                    while(endOfSleep-startnOfSleep < 100  ){
-                     //   System.err.println("PAUSE IS:(005)"+paus);
-
                         wait(100);
                         endOfSleep = new Date().getTime();  
-                     //   System.err.println("PAUSE IS:(006)"+paus);
-
                    }
                    
-                   
-                  
-                   //System.err.println("PAUSE IS:(1)"+paus);
                    if(!paus){
                       // System.err.println("PAUSE IS:(2)"+paus);
 
                        long durationOfSleep = endOfSleep-startnOfSleep;
                        timeLeft=timeLeft-(durationOfSleep);
-                      // System.err.println("!Slept for "+durationOfSleep);
-                      // System.err.println("!Time left: "+timeLeft+"---------"+startnOfSleep+"----"+endOfSleep);
-                      // System.err.println("PAUSE IS:(3)"+paus);
 
                    }
-                   else{
-                     //  System.err.println("PAUSE IS:(4)"+paus);
-
-                      // System.err.println("!PAUSED");
-                   }
-                    //System.err.println("PAUSE IS:(5)"+paus);
+                  
  
                  }
                  catch(Exception e){ e.printStackTrace(); }

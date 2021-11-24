@@ -70,7 +70,7 @@ public class JRulesBasedInterventionsTableModelInterventionModify extends Abstra
 
   public Object getValueAt(int x, int y){
     try{  
-        interventionmodify im =   c.ai.getModifyRules().elementAt(x);
+        interventionmodify im =   c.getAI().getModifyRules().elementAt(x);
         if(y==0) return im.interventionid;
         if(y==1) return im.participantID;
         if(y==2) return im.poscrit;
@@ -91,7 +91,7 @@ public class JRulesBasedInterventionsTableModelInterventionModify extends Abstra
   }
   
   public int getRowCount(){
-     return c.ai.getModifyRules().size();
+     return c.getAI().getModifyRules().size();
     
   }
   public int getColumnCount(){

@@ -48,18 +48,7 @@ public class Telegram_Quad_Pseudonyms extends TelegramController{
   
 
    
-     public void telegram_participantJoinedConversation(TelegramParticipant p) {
-         
-        //Each time there is a new participant, a new group is created with all members in it.
-        
-        if(c.getParticipants().getAllParticipants().size()==4) startExperiment();
-        
-         
-        
-    }
-     
-     
-     Hashtable htNames = new Hashtable();
+    
      
 
        
@@ -67,13 +56,20 @@ public class Telegram_Quad_Pseudonyms extends TelegramController{
      
      
      public String getNextFreeUsername(){
-          String randomname = (String)vnames.elementAt(r.nextInt(vnames.size()));
+         // String randomname = (String)vnames.elementAt(r.nextInt(vnames.size()));
           
-          vnames.remove(randomname);
+          
+          //vnames.remove(randomname);
+          
+          
+          String nextname = (String)vnames.elementAt(0);
+          vnames.remove(nextname);
         
-          return randomname;  
+          return nextname;  
      }
      
+     
+     Hashtable htNames = new Hashtable();
      
      public String getPseudonym(TelegramParticipant tp){
          String s = (String) this.htNames.get(tp);
@@ -109,6 +105,20 @@ public class Telegram_Quad_Pseudonyms extends TelegramController{
          }
       }
      
+      
+      
+     public void telegram_participantJoinedConversation(TelegramParticipant p) {
+         
+        //Each time there is a new participant, a new group is created with all members in it.
+        
+        if(c.getParticipants().getAllParticipants().size()==2) startExperiment();
+        
+         
+        
+    }
+     
+     
+     
      
      
     @Override
@@ -116,22 +126,23 @@ public class Telegram_Quad_Pseudonyms extends TelegramController{
        //Each time there is a new participant, a new group is created with all members in it.
       
         
-        if(c.getParticipants().getAllParticipants().size()==4) startExperiment();
+        if(c.getParticipants().getAllParticipants().size()==2) startExperiment();
              
         
     }
      
     public void startExperiment(){
         
-         CustomDialog.showDialog("All participants logged in. Start");
-             pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-             this.experimentHasStarted=true;
+        this.experimentHasStarted=true;
         
         Vector v = c.getParticipants().getAllParticipants();
         
         for(int i=0;i<v.size();i++){
             TelegramParticipant tp = (TelegramParticipant)v.elementAt(i);
-            c.telegram_sendInstructionToParticipant_MonospaceFont(tp, "Welcome. Your name in this chat is: "+tp.getUsername());
+            c.telegram_sendInstructionToParticipant_MonospaceFont(tp, "Everyone is now logged in!");
+            c.telegram_sendInstructionToParticipant_MonospaceFont(tp, "You are in group number "+1);
+            c.telegram_sendInstructionToParticipant_MonospaceFont(tp, "Your assigned name in the chat is "+tp.getUsername());
+            
         }
     }
     

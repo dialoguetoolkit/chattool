@@ -1,9 +1,7 @@
-
- /// Change to remove haha
-   /// Add the control group...
-
-
-
+   
+         ///have an option of pairing them differently, e.g. simply take the first element and put it at the end. This will pair them differently
+         ///Also need control condition 
+     
 
 
 /*
@@ -13,7 +11,6 @@
  */
 package diet.server.ConversationController;
 
-import diet.attribval.AttribVal;
 import diet.server.Conversation;
 import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.ConversationController.ui.JInterfaceMenuButtonsReceiverInterface;
@@ -21,7 +18,6 @@ import diet.server.ConversationController.ui.JInterfaceTwelveButtons;
 import diet.server.Participant;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
-import diet.textmanipulationmodules.haha.HahaVariantGenerator;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import java.util.Hashtable;
@@ -33,15 +29,27 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  *
  * @author LX1C
  */
-public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
+public class Telegram_dyadic_AskFor_Language_NL_EN_FILTEROK_RORSCHACH extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
 
     
-//CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this, true, null, null );
+   // CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "rorschachset02" ,"rorschachsequence01.txt");
+   // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+   // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
+    
+    
+    CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "rorschachset01", "rorschachlongersequence.txt" );
+   
+   // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
+   // Participant pDirector;
+   // Participant pMatcher;
     
     
     
-    JInterfaceTwelveButtons jitb = new JInterfaceTwelveButtons(this,"Assign to groups","start", "pause", "", "", "", "", "","","");
+    JInterfaceTwelveButtons jitb = new JInterfaceTwelveButtons(this,"Assign to groups","start", "pause", "", "", "", "", "","","50% control. 50% experimental");
 
+    
+    boolean hasStarted = false;
+    
     /**
      * Creates new form JInterfaceFiveButtons
      */
@@ -49,17 +57,15 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
     //JInterfaceMenuButtonsReceiverInterface
     
     
-    Hashtable htCRT = new Hashtable();
     
     
-    public Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA(Conversation c) {
+    
+    public Telegram_dyadic_AskFor_Language_NL_EN_FILTEROK_RORSCHACH(Conversation c) {
         super(c);
-        
     }
 
-    public Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA(Conversation c, long istypingtimeout) {
+    public Telegram_dyadic_AskFor_Language_NL_EN_FILTEROK_RORSCHACH(Conversation c, long istypingtimeout) {
         super(c, istypingtimeout);
-       
     }
 
     
@@ -86,38 +92,32 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
 
     @Override
     public void performActionTriggeredByUI(String s) {
+        
+        String[] options = new String[]{"Forgotten", "Remembered"};
+        
+        
+        
+        String response = CustomDialog.show2OptionDialog(options, "Did you remember to specify the interventions?", "Did you remember to specify the interventions?");
+        if (response.equalsIgnoreCase(options[0]))return;
+       
+        
         if(s.equalsIgnoreCase("Assign to groups")){
-             assignQueueParticipantsAndStart(true);
-        }    
-    }
-     
-    
-    public  Vector randomize(Vector vSource){
-        if (vSource.size()<2)return vSource;
-        Vector vNEW = new Vector();
-        for(int i = 0;i < vSource.size();i++){
-            vNEW.insertElementAt(vSource.elementAt(i), r.nextInt(vNEW.size()+1));
-           
+             assignQueueParticipantsAndStart(false);
+             this.hasStarted=true;
         }
-        return vNEW;
+        if(s.equalsIgnoreCase("50% control. 50% experimental")){
+            assignQueueParticipantsAndStart(true);
+            this.hasStarted=true;
+                    
+        }
     }
-    
-    
      
-        
-        
-        
-        
-        
-         int createdSubdialogue = 0;
+    Hashtable htTasks = new Hashtable();
+    
+    
+     int createdSubdialogue = 0;
     
      public synchronized void assignQueueParticipantsAndStart(boolean doHalfControls){
-         
-        Conversation.printWSln("Main", "Randomizing order of queued participants");
-        this.vQueuedNL = randomize(this.vQueuedNL);
-        this.vQueuedOTHER = randomize (this.vQueuedOTHER);
-         
-         
         if(vQueuedNL.size() +  vQueuedOTHER.size() <2){
             CustomDialog.showDialog("Can't start with NL: "+vQueuedNL.size()+ "    OTHER: "+this.vQueuedOTHER.size());
             return;
@@ -201,7 +201,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
 
     }
     
-    Vector experimentalParticipants = new Vector();
+    Vector experimentalTasks = new Vector();
     
     public void createNewPair(TelegramParticipant tp1, TelegramParticipant tp2){
          createdSubdialogue=createdSubdialogue+1;
@@ -212,9 +212,11 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
              Conversation.printWSln("Main", "Created new pair"+tp1.getConnection().getValidLogincode()+ " and "+tp2.getConnection().getValidLogincode());
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp1, "Please start!");
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp2, "Please start!");
-             this.experimentalParticipants.add(tp1);
-             this.experimentalParticipants.add(tp2);
-
+             CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+             this.htTasks.put(tp1, crt);
+             this.htTasks.put(tp2, crt);
+             crt.startTask(tp1, tp2);
+             this.experimentalTasks.add(crt);
              
              
         
@@ -225,7 +227,10 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
              Conversation.printWSln("Main", "Created new pair"+tp1.getConnection().getValidLogincode()+ " and "+tp2.getConnection().getValidLogincode());
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp1, "Please start!");
              c.telegram_sendInstructionToParticipant_MonospaceFont(tp2, "Please start!");
-             
+             CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+             this.htTasks.put(tp1, crt);
+             this.htTasks.put(tp2, crt);
+             crt.startTask(tp1, tp2);
         
          }
         
@@ -237,44 +242,21 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
             
     }
     
-  
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
      
-  
+   
+     
      
      
      
@@ -284,30 +266,54 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
    
     @Override
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
+        if(p.getConnection().getLogincode().toUpperCase().endsWith("NL")){
+                 Conversation.printWSln("Main", "Queuing "+p.getConnection().telegramID + " to NL");
+                 vQueuedNL.add(p);
+             }
+             else{
+                 Conversation.printWSln("Main", "Queuing "+p.getConnection().telegramID + " to OTHER");
+                 vQueuedOTHER.add(p);
+             }
+            Conversation.printWSln("Main", "Current queue size: NL QUEUE: "+vQueuedNL.size()+" OTHER QUEUE: "+this.vQueuedOTHER.size());
+        // }
         
-         vQueuedOTHER.add(p);
-         Conversation.printWSln("Main", "Current queue size: NL QUEUE: "+vQueuedNL.size()+" OTHER QUEUE: "+this.vQueuedOTHER.size());
        
     }
      
+    
+    
+    
+  
+    
+    
+    
+    
+    
+    
+    
+    
 
     @Override
     public void telegram_processTelegramMessageFromClient(TelegramParticipant sender, TelegramMessageFromClient tmfc) {
+        if(this.hasStarted==false) {
+            Conversation.printWSln("Main", sender.getParticipantID()+ " sent a message. The server blocked it because experiment hasn`t started.");
+            return;
+        }
+        
         if(tmfc.u.hasMessage()  && tmfc.u.getMessage().hasText()){
              String text=tmfc.u.getMessage().getText();
             // this.crt.processChatText(sender, text);
-             if(!text.startsWith("/")){
-                  this.processMessageFromClient(sender, tmfc);
+                  
                  
-                  // c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);      
-                //  c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-             } 
-             else{
-                 CustomizableReferentialTask crt = (CustomizableReferentialTask)this.htCRT.get(sender);
-                 if(crt!=null){
-                     crt.processChatText(sender, text);
-                 }
-             }
+                  CustomizableReferentialTask crt =  (CustomizableReferentialTask)  this.htTasks.get(sender);
+                  if(crt ==null){
+                      c.saveErrorLog("Error! Cannot find the Referential task for the participant "+sender.getParticipantID());
+                  }
+                  else{
+                      crt.processChatText(sender, text);
+                      
+                  }
+                  c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
       
         }
         if(this.relayPhotos && tmfc.u.hasMessage()&&  tmfc.u.getMessage().hasPhoto()){
@@ -327,72 +333,73 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_REMOVEHAHA extends TelegramCo
         
         
     }
-     //has to be organized from longest to shortest
-     //"what about ha"
+     
    
     
-    HahaVariantGenerator hvg = new HahaVariantGenerator();
+   // Vector<TelegramParticipant> recipientOfNaturalHahaAndSenderOfFakeHaha = new Vector();
+   // Hashtable htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha =  new  Hashtable();
+    
+   // Vector fakeSendersOfHaha  = new Vector();
     
     
     
-    public void processMessageFromClient(TelegramParticipant sender, TelegramMessageFromClient tmfc){
-   
-        if (!this.experimentalParticipants.contains(sender)){
-             c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-             
-             return;
-        }
-        
-        
-        try{
-          String textFromSender = tmfc.u.getMessage().getText();
-          
-          String newText = hvg.filterOutHaha(textFromSender);
-          if(newText==null ){
-              c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-          }
-          else if(newText.equalsIgnoreCase("")||newText.equalsIgnoreCase("\n")){
-              //Don`t send anything
-               Conversation.printWSln("Main", "Found standalone haha");
-          }
-          
-          
-          else {
-              Conversation.printWSln("Main", "Found haha in turn");
-              c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(sender, newText);
-          }
-                   
-                
-          
-        }catch(Exception e){
-            e.printStackTrace();
-            Conversation.saveErr(e);
-           
-            c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-             Conversation.printWSln("Main", "Error processing turn "+tmfc.u.getMessage().getText());
-        }
-          
-          
-          
-    }
 
     @Override
-    public Vector<AttribVal> getAdditionalInformationForParticipant(Participant p) {
-         CustomizableReferentialTask crt = (CustomizableReferentialTask)this.htCRT.get(p);
-         if (crt==null) return new Vector();
-         return crt.getAdditionalValues(p);
-
+    public boolean processAutoIntervention(Participant sender, TelegramMessageFromClient tmfc) {
+        
+        CustomizableReferentialTask crtn =  (CustomizableReferentialTask)  this.htTasks.get(sender);
+        boolean didIntervention = false;
+        if(this.experimentalTasks.contains(crtn)){
+            Conversation.printWSln("Main", "Received text from a dyad that is experimental group");
+            didIntervention = super.processAutoIntervention(sender, tmfc); 
+        }
+        else{
+            Conversation.printWSln("Main", "Received text from a dyad that is CONTROL group");
+        }
         
         
         
-        //return super.getAdditionalInformationForParticipant(p); //To change body of generated methods, choose Tools | Templates.
+        if(!didIntervention){
+            Conversation.printWSln("Main", "Did not process intervention");
+        }
+        else{
+               Conversation.printWSln("Main", "Did process intervention");
+                CustomizableReferentialTask crt =  (CustomizableReferentialTask)  this.htTasks.get(sender);
+                  if(crt ==null){
+                      c.saveErrorLog("Error! Cannot find the Referential task for the participant "+sender.getParticipantID());
+                  }
+                  else{
+                      try{
+                      String text=tmfc.u.getMessage().getText();
+                      crt.processChatText(sender, text + "EDITED");
+                      }catch(Exception e){Conversation.saveErr(e);}
+                      
+                  }
+        }
+            
+        
+        
+        
+        
+        return didIntervention;
+        
     }
     
     
     
     
+    
+    
+    //Hashtable<TelegramParticipant,Integer> htNumberOfInterventions = new Hashtable();
+    Hashtable<TelegramParticipant,Integer> htTurnOfTurns = new Hashtable();
+    //Hashtable<TelegramParticipant,Integer> htTurnOfLastIntervention = new Hashtable();
    
     
+    
+
+    
+    
+   
     
     
     

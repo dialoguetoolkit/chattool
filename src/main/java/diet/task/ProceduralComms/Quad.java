@@ -111,7 +111,7 @@ public class Quad {
       }
       
           public synchronized TelegramParticipant[] swapBETWEEN(){
-            if(pctg1!=null && pctg1.ispracticestage){
+           if(pctg1!=null && pctg1.ispracticestage){
                 CustomDialog.showDialog("Cannot do swap BETWEEN of quad because one of the pairs is still in practice mode. Please start the experiment first!");
                 return null;
             }
@@ -120,9 +120,15 @@ public class Quad {
                 return null;
             }
           
+            System.err.println("swapbetween1-STARTING KILL");
+           
             this.pctg1.kill();
+            
+             System.err.println("swapbetween1-ENDING KILL");
+             
+            System.err.println("swapbetween2-STARTING KILL");
             this.pctg2.kill();
-          
+            System.err.println("swapbetween2-ENDING KILL");
            
             swapState = swapState+1;
             String partnername = "p"+(swapState+2);
@@ -225,9 +231,32 @@ public class Quad {
     
       
       public PCTaskTG getPCTaskTGForParticipant(TelegramParticipant tp){
-         if(tp==p1) return null;
+         if(pctg1!=null){
+             if(pctg1.pA==tp) return pctg1;
+             if(pctg1.pB==tp) return pctg1;
+         }
+         if(pctg2!=null){
+             if(pctg2.pA==tp) return pctg2;
+             if(pctg2.pB==tp) return pctg2;
+         }
          return null;
        }
       
+       public TelegramParticipant[] getAllParticipants(){
+           TelegramParticipant[] tps = new TelegramParticipant[]{p1,p2,p3,p4};
+           return tps;
+       }
+       public void kill(){
+           try{
+               pctg1.kill();
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+            try{
+               pctg2.kill();
+           }catch (Exception e){
+               e.printStackTrace();
+           }
+       }
       
 }

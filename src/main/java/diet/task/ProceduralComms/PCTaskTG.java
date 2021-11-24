@@ -84,7 +84,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
        int currentstreak=0;
       
       static  int difficultysettings_maxSwitchCost =  2;
-      static int difficulty_settings_singleNotesCoef = 1;
+      static int difficulty_settings_singleNotesCoef = 1; //
       static int difficultysettings_simulNotesCoef = 4; 
        
        // double singlenotes_probabilityshared,  simultaneousnotes_probabilityshared =0.5;
@@ -163,10 +163,10 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                 this.level=(int)minLevel;
                 this.jpctp.setLevel((int)this.level);
                 
-                jta.append("Setting difficulty level dynamically!"+"\n");
-                jta.append("current level of pA is "+pALevel+"\n");
-                jta.append("current level of pB is "+pBLevel+"\n"); 
-                jta.append("Setting level to "+level +"\n");
+                jta.append("Initializing and setting the difficulty level dynamically!"+"\n");
+                jta.append("The previous level of pA was "+pALevel+"\n");
+                jta.append("The previous level of pB was "+pBLevel+"\n"); 
+                jta.append("Setting the level for both to: "+level +"\n");
                 
                 
             }
@@ -179,7 +179,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             pcset = new PCSetOfMoves(this);
                 
           
-            this.createNewSequence(false);
+            this.createNewSequence(false, true);
             displayMovesOnServer();     
           
            
@@ -191,7 +191,13 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
          if(startTimer){
            this.jttp.startTimer();
          }
-            
+          
+         Thread t = new Thread(){
+             public void run(){
+                 checkForTimeoutsOfMoves();
+             }
+         };
+         t.start();
           
       }
       
@@ -520,7 +526,10 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
               
               // AttribVal avo = new AttribVal("keyother",text);
               
-             
+            
+              
+              
+              
               
               String pAPossibleChars = this.translateFromGUIToSystem(pA,this.pAWhitelist+sharedWhitelist).toUpperCase();
               String pBPossibleChars = this.translateFromGUIToSystem(pB,this.pBWhitelist+sharedWhitelist).toUpperCase();
@@ -632,7 +641,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                         
                     cC.c.saveAdditionalRowOfDataToSpreadsheetOfTurns("NEWGAME", pA, "NEWGAME", new Vector());
                     cC.c.saveAdditionalRowOfDataToSpreadsheetOfTurns("NEWGAME", pB, "NEWGAME", new Vector());
-                    createNewSequence(true);
+                    createNewSequence(true,false);
                     this.jttp.nextTrial();
           }
       }
@@ -729,10 +738,10 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
      
       
-      public synchronized void createNewSequence(boolean previousWasSuccess ){
+      public synchronized void createNewSequence(boolean previousWasSuccess, boolean is_post_swap ){
               
           
-            if(previousWasSuccess&& !this.ispracticestage){
+            if(!is_post_swap&&    previousWasSuccess&& !this.ispracticestage){
                 currentstreak++;
                 if(currentstreak>=streakofsuccessesbeforegoinguplevel){
                     
@@ -746,7 +755,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                 
                
             }
-            else if ( !ispracticestage){
+            else if ( !is_post_swap &&    !ispracticestage){
                 //this.level--;
                 currentstreak=0;
                 this.level=this.level-numberOfLevelsToDecreaseOnError;
@@ -992,7 +1001,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                    }
                    
                    double adjustedprobabilityshared = probabilityshared;
-                   if(this.level==0 | this.level==1){
+                   if(this.level==0 ){//  | this.level==1){
                         adjustedprobabilityshared = 1;
                     }
                    
@@ -1403,12 +1412,16 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             
             
             this.decreaseScoresTimeout(pA,pB,this.pcset.moves.size());
-            this.createNewSequence(false); 
+            this.appendToTextPane("TIMEOUT!");
+            this.createNewSequence(false,false); 
+            
+            
+            
         }
         else if (s.equalsIgnoreCase("next")){
             //cC.c.textOutputWindow_ChangeText("instructions", ": " ,false, pA );   
             //cC.c.textOutputWindow_ChangeText("instructions", ": " ,false, pB );   
-            this.createNewSequence(false); 
+            this.createNewSequence(false,false); 
         }
         
     }
@@ -1682,14 +1695,14 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       public void kill(){
           
           
-          synchronized(this){
+          
               this.checkForTimeOutOfSimultaneousMoves=false;
               if(jttp!=null)this.jttp.kill();
           
               if(jttp!=null)this.jttp.doLoop=false;
               if(jttp!=null)this.jttp.jtti=null;
               //this.cC=null;
-          }
+          
           SwingUtilities.invokeLater(new Runnable(){public void run(){
                if(jttp!=null)jttp.setVisible(false);
                jpctp.setVisible(false);

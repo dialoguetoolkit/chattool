@@ -90,8 +90,12 @@ public class Pair {
       
       public synchronized void startEXPERIMENT(){
              String partnername = "p"+(swapState+2);
-             pctg = new PCTaskTG(cC,pA,pB,partnername,false,false,false,false);
+             pctg = new PCTaskTG(cC,pA,pB,partnername,false,true,false,false);
            
+             
+           //  (Telegram_Dyadic_PROCOMM cC, TelegramParticipant pA, TelegramParticipant pB, String othersName, boolean ispracticestage, boolean moveToLowestLevel, boolean startTimer, boolean sendinstructions){
+         // super(); 
+             
              constructUI();
       }
       
@@ -150,7 +154,9 @@ public class Pair {
           return jpui;
       }
       
-      
+      public PCTaskTG getPCtaskTG(){
+          return this.pctg;
+      }
     
       
      

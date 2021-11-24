@@ -17,19 +17,18 @@ import diet.task.ProceduralComms.Quad;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -39,6 +38,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  */
 public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
 
+     //Make it show how many are logged in
+    
+    
+    
     //// 31685435608
      // 31686348684
     
@@ -114,7 +117,14 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     JFrame jfUISolitaryPairs;
     JFrame jfUIBETWEENPairs;
     
-    JInterfaceTenButtons jitb = new JInterfaceTenButtons (this, "assign to initial quads and pairs", "start experiment", "start timer", "pause timer"   ,"swap within","swap between","","","","");
+    
+    
+    
+    
+    JInterfaceTenButtons jitb = new JInterfaceTenButtons (this, "assign to initial quads and pairs", "start experiment", "start timer", "pause timer"   ,"swap within","swap between","swap between - all are cross group","","","dbg");
+    
+    //Object swapLock = new Object();
+    
     
     public Telegram_Dyadic_PROCOMM(Conversation c) {
         super(c);
@@ -203,7 +213,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     
     
     @Override
-    public void performActionTriggeredByUI(String s) {
+    public synchronized void performActionTriggeredByUI(String s) {
       
         
        if(s.equalsIgnoreCase("assign to initial quads and pairs")){
@@ -217,6 +227,11 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
         
        else if(s.equalsIgnoreCase("swap within")){
        
+           try{  
+              c.saveAdditionalRowOfDataToSpreadsheetOfTurns("", "swapwithin",  "swap within");
+           }catch(Exception e){Conversation.saveErr(e);}
+           
+           
             try{
                 //Thread.sleep(5000);
                 for(int i=0;i<quads.size();i++){
@@ -228,11 +243,152 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                     solitaryPairs.elementAt(i).swap();
                 }
                 buildUISOLITARYPAIR();
+                
             
             }catch(Exception e){e.printStackTrace();}         
         }
-         else if (s.equalsIgnoreCase("swap between")){
-            boolean cont = CustomDialog.getBoolean("Perform the swap BETWEEN THE GROUPS?", "SWAP", "CANCEL");
+       else if (s.equalsIgnoreCase("swap between - all are cross group")){
+            if(this.quads.size()<2){
+                    CustomDialog.showDialog("Need at least 2 quads for this!");
+                    return;
+             }
+              boolean cont = CustomDialog.getBoolean("This will swap them half within and half between", "SWAP", "CANCEL");
+               try{  
+              c.saveAdditionalRowOfDataToSpreadsheetOfTurns("", "swapbetween_startingkill - cross group",  "swapbetween_startingkill - cross group");
+           }catch(Exception e){Conversation.saveErr(e);}
+            int swapState = 100;
+            if(quads.size()==0){
+                CustomDialog.showDialog("No Swapping actually done. There are no quads");
+                return;
+            }
+            else if (quads.size()==1){
+                 CustomDialog.showDialog("No Swapping actually done. There need to be at least 2 quads");
+                 return;
+            }
+            else if (quads.size()==2){
+                  TelegramParticipant[] tpq1=quads.elementAt(0).getAllParticipants();
+                  TelegramParticipant[] tpq2=quads.elementAt(1).getAllParticipants();
+                  
+                  quads.elementAt(0).kill();
+                  quads.elementAt(1).kill();
+                  
+                  swapState = quads.elementAt(0).getSwapState();
+                  Pair p1 = new Pair(this,tpq1[0],tpq2[0],swapState,false,true);
+                  Pair p2 = new Pair(this,tpq1[1],tpq2[1],swapState,false,true);
+                  Pair p3 = new Pair(this,tpq1[2],tpq2[2],swapState,false,true);
+                  Pair p4 = new Pair(this,tpq1[3],tpq2[3],swapState,false,true);
+
+                  this.betweenPairs.add(p1);
+                  this.betweenPairs.add(p2);
+                  this.betweenPairs.add(p3);
+                  this.betweenPairs.add(p4);
+            }  
+            else if (quads.size()==3){
+                  TelegramParticipant[] tpq1=quads.elementAt(0).getAllParticipants();
+                  TelegramParticipant[] tpq2=quads.elementAt(1).getAllParticipants();
+                  TelegramParticipant[] tpq3=quads.elementAt(2).getAllParticipants();
+                  
+                  quads.elementAt(0).kill();
+                  quads.elementAt(1).kill();
+                  quads.elementAt(2).kill();
+                  
+                  
+                  
+                  swapState = quads.elementAt(0).getSwapState();
+                  Pair p1 = new Pair(this,tpq1[0],tpq2[0],swapState,false,true);  
+                  Pair p2 = new Pair(this,tpq1[1],tpq2[2],swapState,false,true);
+                          Pair p3 = new Pair(this,tpq2[1],tpq3[1],swapState,false,true);
+                          Pair p4 = new Pair(this,tpq2[3],tpq3[0],swapState,false,true);
+                                  Pair p5 = new Pair(this,tpq3[2],tpq1[3],swapState,false,true);
+                                  Pair p6 = new Pair(this,tpq3[3],tpq1[2],swapState,false,true);
+                  
+                     
+                  
+                  
+                  this.betweenPairs.add(p1);
+                  this.betweenPairs.add(p2);
+                  this.betweenPairs.add(p3);
+                  this.betweenPairs.add(p4);
+                  this.betweenPairs.add(p5);
+                  this.betweenPairs.add(p6);
+            }   
+            
+            else if (quads.size()==4){
+                  TelegramParticipant[] tpq1=quads.elementAt(0).getAllParticipants();
+                  TelegramParticipant[] tpq2=quads.elementAt(1).getAllParticipants();
+                  TelegramParticipant[] tpq3=quads.elementAt(2).getAllParticipants();
+                  TelegramParticipant[] tpq4=quads.elementAt(3).getAllParticipants();
+                  
+                  quads.elementAt(0).kill();
+                  quads.elementAt(1).kill();
+                  quads.elementAt(2).kill();
+                  quads.elementAt(3).kill();
+                 
+                  
+                  swapState = quads.elementAt(0).getSwapState();
+                  Pair p1 = new Pair(this,tpq1[0],tpq2[0],swapState,false,true);  
+                  Pair p2 = new Pair(this,tpq1[1],tpq2[2],swapState,false,true);
+                          Pair p3 = new Pair(this,tpq2[1],tpq3[1],swapState,false,true);
+                          Pair p4 = new Pair(this,tpq2[3],tpq3[0],swapState,false,true);
+                                  Pair p5 = new Pair(this,tpq3[2],tpq4[1],swapState,false,true);
+                                  Pair p6 = new Pair(this,tpq3[3],tpq4[3],swapState,false,true);
+                                 
+                                            Pair p7 = new Pair(this,tpq4[0],tpq1[3],swapState,false,true);
+                                            Pair p8 = new Pair(this,tpq4[2],tpq1[2],swapState,false,true);
+                     
+                  
+                  
+                  this.betweenPairs.add(p1);
+                  this.betweenPairs.add(p2);
+                  this.betweenPairs.add(p3);
+                  this.betweenPairs.add(p4);
+                  this.betweenPairs.add(p5);
+                  this.betweenPairs.add(p6);
+                  this.betweenPairs.add(p7);
+                  this.betweenPairs.add(p8);
+                  
+            }   
+            
+            
+            
+            
+            
+            
+            
+           for(int i=0;i<this.solitaryPairs.size();i++){
+               this.solitaryPairs.elementAt(i).swap();
+           }
+            
+            
+          c.saveAdditionalRowOfDataToSpreadsheetOfTurns("", "swapbetween_endofkill - cross group",  "swapbetween_endofkill - cross group");          
+           
+          this.buildUIQUAD();
+          this.buildUIBETWEENPAIR();
+          this.buildUISOLITARYPAIR();
+            
+            
+            
+            
+            
+            
+       }
+        
+        else if (s.equalsIgnoreCase("swap between")){
+         
+                if(this.quads.size()<2){
+                    CustomDialog.showDialog("Need at least 2 quads for this!");
+                    return;
+                }
+               
+                boolean cont = CustomDialog.getBoolean("This will swap them half within and half between", "SWAP", "CANCEL");
+         
+           
+            
+             try{  
+              c.saveAdditionalRowOfDataToSpreadsheetOfTurns("", "swapbetween_startingkill",  "swapbetween_startingkill");
+           }catch(Exception e){Conversation.saveErr(e);}
+            
+            
             if(!cont)return;
              
             int swapState = 100;
@@ -258,7 +414,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 this.betweenPairs.add(pB);
                 
             }
-             else if (quads.size()==3){
+            else if (quads.size()==3){
                 TelegramParticipant[] tpsA = quads.elementAt(0).swapBETWEEN();
                 TelegramParticipant[] tpsB = quads.elementAt(1).swapBETWEEN();
                 TelegramParticipant[] tpsC = quads.elementAt(2).swapBETWEEN();
@@ -274,6 +430,71 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 this.betweenPairs.add(pC);
                 
             }
+            else if (quads.size()==4){
+                TelegramParticipant[] tpsA = quads.elementAt(0).swapBETWEEN();
+                TelegramParticipant[] tpsB = quads.elementAt(1).swapBETWEEN();
+                TelegramParticipant[] tpsC = quads.elementAt(2).swapBETWEEN();
+                TelegramParticipant[] tpsD = quads.elementAt(3).swapBETWEEN();
+                
+                swapState = quads.elementAt(0).getSwapState();
+                
+                Pair pA = new Pair(this,tpsA[1],tpsB[0],swapState,false,true);
+                Pair pB = new Pair(this,tpsB[1],tpsC[0],swapState,false,true);
+                Pair pC = new Pair(this,tpsC[1],tpsD[0],swapState,false,true);
+                Pair pD = new Pair(this,tpsD[1],tpsA[0],swapState,false,true);
+                
+                this.betweenPairs.add(pA);
+                this.betweenPairs.add(pB);
+                this.betweenPairs.add(pC);
+                this.betweenPairs.add(pD);
+            }
+            else if (quads.size()==5){
+                TelegramParticipant[] tpsA = quads.elementAt(0).swapBETWEEN();
+                TelegramParticipant[] tpsB = quads.elementAt(1).swapBETWEEN();
+                TelegramParticipant[] tpsC = quads.elementAt(2).swapBETWEEN();
+                TelegramParticipant[] tpsD = quads.elementAt(3).swapBETWEEN();
+                TelegramParticipant[] tpsE = quads.elementAt(4).swapBETWEEN();
+                
+                swapState = quads.elementAt(0).getSwapState();
+                
+                Pair pA = new Pair(this,tpsA[1],tpsE[0],swapState,false,true);
+                Pair pB = new Pair(this,tpsB[1],tpsA[0],swapState,false,true);
+                Pair pC = new Pair(this,tpsC[1],tpsB[0],swapState,false,true);
+                Pair pD = new Pair(this,tpsD[1],tpsC[0],swapState,false,true);
+                Pair pE = new Pair(this,tpsE[1],tpsD[0],swapState,false,true);
+                
+                this.betweenPairs.add(pA);
+                this.betweenPairs.add(pB);
+                this.betweenPairs.add(pC);
+                this.betweenPairs.add(pD);
+                this.betweenPairs.add(pE);
+            }
+             else if (quads.size()==6){
+                TelegramParticipant[] tpsA = quads.elementAt(0).swapBETWEEN();
+                TelegramParticipant[] tpsB = quads.elementAt(1).swapBETWEEN();
+                TelegramParticipant[] tpsC = quads.elementAt(2).swapBETWEEN();
+                TelegramParticipant[] tpsD = quads.elementAt(3).swapBETWEEN();
+                TelegramParticipant[] tpsE = quads.elementAt(4).swapBETWEEN();
+                TelegramParticipant[] tpsF = quads.elementAt(5).swapBETWEEN();
+                
+                swapState = quads.elementAt(0).getSwapState();
+                
+                Pair pA = new Pair(this,tpsA[1],tpsF[0],swapState,false,true);
+                Pair pB = new Pair(this,tpsB[1],tpsA[0],swapState,false,true);
+                Pair pC = new Pair(this,tpsC[1],tpsB[0],swapState,false,true);
+                Pair pD = new Pair(this,tpsD[1],tpsC[0],swapState,false,true);
+                Pair pE = new Pair(this,tpsE[1],tpsD[0],swapState,false,true);
+                Pair pF = new Pair(this,tpsF[1],tpsE[0],swapState,false,true);
+                
+                this.betweenPairs.add(pA);
+                this.betweenPairs.add(pB);
+                this.betweenPairs.add(pC);
+                this.betweenPairs.add(pD);
+                this.betweenPairs.add(pE);
+                this.betweenPairs.add(pF);
+            }
+            
+            
             
            for(int i=0;i<this.solitaryPairs.size();i++){
                this.solitaryPairs.elementAt(i).swap();
@@ -281,12 +502,12 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
             
            // Need to do within for  solitarypairs so they think they have swapped
             
-                    
+          c.saveAdditionalRowOfDataToSpreadsheetOfTurns("", "swapbetween_endofkill",  "swapbetween_endofkill");          
            
           this.buildUIQUAD();
           this.buildUIBETWEENPAIR();
           this.buildUISOLITARYPAIR();
-             
+           
           
 
         }
@@ -317,10 +538,16 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                     solitaryPairs.elementAt(i).startTIMER();
              }
              buildUISOLITARYPAIR();
+             
+              for(int i=0;i<betweenPairs.size();i++){
+                    betweenPairs.elementAt(i).startTIMER();
+             }
+             this.buildUIBETWEENPAIR();
+             
         }
         else if(s.equalsIgnoreCase("pause timer")){
             for(int i=0;i<quads.size();i++){
-                    quads.elementAt(i).startTIMER();
+                    quads.elementAt(i).pauseTIMER();
              }
              buildUIQUAD();
             
@@ -328,10 +555,24 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                     solitaryPairs.elementAt(i).pauseTIMER();
              }
              buildUISOLITARYPAIR();
+             
+             for(int i=0;i<betweenPairs.size();i++){
+                    betweenPairs.elementAt(i).pauseTIMER();
+             }
+             this.buildUIBETWEENPAIR();
         }
         
         else if (s.equalsIgnoreCase("send explanation once")){
             //pctg.sendInstructionsOnce();
+        }
+        else if (s.equalsIgnoreCase("dbg")){
+            Vector vtp = c.getAllParticipantsAsList();
+            for(int i=0;i<vtp.size();i++){
+                TelegramParticipant tp = (TelegramParticipant)vtp.elementAt(i);
+                long telegramid = tp.getConnection().telegramID;
+                PCTaskTG.htCurrentLevel.putObject(tp, (int)telegramid/100000);
+                System.err.println("Debug - setting level to "+telegramid);
+            }
         }
         
         
@@ -350,20 +591,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
               
         this.generatePinnedMessage(p);
          
-        if(c.getParticipants().getAllParticipants().size()==4) {
-            
-             //pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-               
-             //CustomDialog.showDialog("PRESS OK TO START!");
-             //this.experimentHasStarted=true;
-             
-             //q = new Quad(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),
-              //       (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(2), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(3));
-             
-             //buildUIQUAD();
-             
-        }
        
+        c.printWln("Main", "There are now "+c.getParticipants().getAllParticipants().size()+ " participants logged in.");
     }
     
      
@@ -380,6 +609,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUISolitaryPairs.dispose();}catch(Exception e){e.printStackTrace(); }
              }
              jfUISolitaryPairs = new JFrame();
+             jfUISolitaryPairs.getContentPane().setLayout(new FlowLayout());
+             
              for(int i = 0; i < this.solitaryPairs.size();i++){
                  Pair p = solitaryPairs.elementAt(i);
                  JPanel jpp = new JPanel();      
@@ -404,6 +635,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUISolitaryPairs.dispose();}catch(Exception e){e.printStackTrace(); }
              }
              jfUISolitaryPairs = new JFrame();
+             jfUISolitaryPairs.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < solitaryPairs.size();i++){
                  Pair p = solitaryPairs.elementAt(i);
                  JPanel jpp = new JPanel();      
@@ -428,7 +660,8 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                if(jfUISolitaryPairs!=null){
                 try{ jfUISolitaryPairs.dispose();}catch(Exception ee){ee.printStackTrace(); }
              }
-              jfUISolitaryPairs = new JFrame();
+             jfUISolitaryPairs = new JFrame();
+             jfUISolitaryPairs.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < this.solitaryPairs.size();i++){
                  Pair p = solitaryPairs.elementAt(i);
                  JPanel jpp = new JPanel();      
@@ -464,6 +697,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUIBETWEENPairs.dispose();}catch(Exception e){e.printStackTrace(); }
              }
              jfUIBETWEENPairs = new JFrame();
+             jfUIBETWEENPairs.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < this.betweenPairs.size();i++){
                  Pair p = betweenPairs.elementAt(i);
                  JPanel jpp = new JPanel();      
@@ -488,6 +722,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUIBETWEENPairs.dispose();}catch(Exception e){e.printStackTrace(); }
              }
              jfUIBETWEENPairs = new JFrame();
+             jfUIBETWEENPairs.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < betweenPairs.size();i++){
                  Pair p = betweenPairs.elementAt(i);
                  JPanel jpp = new JPanel();      
@@ -512,6 +747,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUIBETWEENPairs.dispose();}catch(Exception ee){ee.printStackTrace(); }
              }
              jfUIBETWEENPairs = new JFrame();
+             jfUIBETWEENPairs.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < this.betweenPairs.size();i++){
                  Pair p = betweenPairs.elementAt(i);
                  JPanel jpp = new JPanel();      
@@ -554,17 +790,21 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUIQuads.dispose();}catch(Exception e){e.printStackTrace(); }
              }
              jfUIQuads = new JFrame();
+             jfUIQuads.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < this.quads.size();i++){
                  Quad q = quads.elementAt(i);
                  JPanel jpq = new JPanel();      
                  TitledBorder title;
                  title = BorderFactory.createTitledBorder("Quad: "+i);
+                 System.err.println("jfuiquadsadding "+i);
                  jpq.setBorder(title);               
                  jpq.setLayout(new BorderLayout());
                 
                  JPanel jpui = q.getUI();
-                 jpq.add(jpui, BorderLayout.CENTER);              
+                 jpq.add(jpui, BorderLayout.CENTER); 
+                 //jfUIQuads.getContentPane().add(new JLabel("BEGIN"));
                  jfUIQuads.getContentPane().add(jpq);
+                // jfUIQuads.getContentPane().add(new JLabel("END"));
              }
              jfUIQuads.pack();
              jfUIQuads.setVisible(true);
@@ -578,17 +818,24 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUIQuads.dispose();}catch(Exception e){e.printStackTrace(); }
              }
              jfUIQuads = new JFrame();
+             jfUIQuads.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < quads.size();i++){
                  Quad q = quads.elementAt(i);
                  JPanel jpq = new JPanel();      
                  TitledBorder title;
                  title = BorderFactory.createTitledBorder("Quad: "+i);
+                 System.err.println("jfuiquadsadding2 "+i);
                  jpq.setBorder(title);               
                  jpq.setLayout(new BorderLayout());
                 
                  JPanel jpui = q.getUI();
-                 jpq.add(jpui, BorderLayout.CENTER);              
+                 jpq.add(jpui, BorderLayout.CENTER);
+                 
+                 
+                 
+                // jfUIQuads.getContentPane().add(new JLabel("BEGIN"));
                  jfUIQuads.getContentPane().add(jpq);
+                // jfUIQuads.getContentPane().add(new JLabel("END"));
            }
              jfUIQuads.pack();
              jfUIQuads.setVisible(true);
@@ -607,6 +854,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                 try{ jfUIQuads.dispose();}catch(Exception ee){ee.printStackTrace(); }
              }
              jfUIQuads = new JFrame();
+             jfUIQuads.getContentPane().setLayout(new FlowLayout());
              for(int i = 0; i < this.quads.size();i++){
                  Quad q = quads.elementAt(i);
                  JPanel jpq = new JPanel();      
@@ -675,21 +923,9 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
         this.generatePinnedMessage(p);
         
        
-       if(c.getParticipants().getAllParticipants().size()==4) {
-            
-           //  pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-               
-            // CustomDialog.showDialog("PRESS OK TO START!");
-            // this.experimentHasStarted=true;
-             
-             //q = new Quad(this,(TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(0), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(1),
-             //        (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(2), (TelegramParticipant)c.getParticipants().getAllParticipants().elementAt(3));
-             
-             //buildUIQUAD();
-             
-        }
+      
        
-       
+        c.printWln("Main", "There are now "+c.getParticipants().getAllParticipants().size()+ " participants logged in.");
     }
      
 
@@ -705,6 +941,20 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
              }
              else{
                  System.err.println("Attempting to acquire lock on pctasktg");
+                 
+                  Object o = this.getQuadOrPairForParticipant(sender);
+                  if(o instanceof Quad){
+                      Quad q = (Quad)o;
+                      q.evaluate(sender, tmfc);
+                  }
+                  else if (o instanceof Pair){
+                      Pair p = (Pair)o;
+                      p.evaluate(sender, tmfc);
+                  }
+                  else{
+                      Conversation.printWSln("Main", "Can`t find Quad or pair for Telegram participant "+sender.getConnection().telegramID);
+                  }
+                 
                  
                  // if(q!=null&&q.isParticipantInQuad(sender)) q.evaluate(sender, tmfc);
                  //if(this.pctg!=null) this.pctg.evaluate(sender, tmfc);
@@ -774,7 +1024,7 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
                     org.telegram.telegrambots.meta.api.objects.Message m = (org.telegram.telegrambots.meta.api.objects.Message)this.htPinnedMessages.get(p);
                     if(m!=null){
                         System.err.println("CHANGEPINNEDMESSAGE6"+text);
-                        c.telegram_sendEditMessageToParticipant(p, m, "processing move");
+                        c.telegram_sendEditMessageToParticipant(p, m, "updating");
                         htMostRecentPinnedText.put(p,"--------------------");
                     }
 
@@ -808,10 +1058,41 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
      }
 
     @Override
-    public Vector<AttribVal> getAdditionalInformationForParticipant(Participant p) {
-        PCTaskTG pctg=null;
-        if(pctg!=null) return pctg.getAdditionalValues(p);
-        return super.getAdditionalInformationForParticipant(p);
+    public Vector<AttribVal> getAdditionalInformationForParticipant(Participant prt) {
+        try{
+            Object o = this.getQuadOrPairForParticipant((TelegramParticipant)prt);
+            if(o==null){
+                System.err.println("Returning null quadpair for participant");
+                return new Vector();
+            }
+            if(o instanceof Quad){
+                Quad q = (Quad)o;
+                PCTaskTG pctg = q.getPCTaskTGForParticipant((TelegramParticipant)prt);
+                if(pctg==null)return new Vector();
+                Vector v = pctg.getAdditionalValues(prt);
+                
+                
+                
+                return v;
+            }
+            else if(o instanceof Pair){
+                Pair p = (Pair)o;
+                PCTaskTG pctg =p.getPCtaskTG();
+                if(pctg==null)return new Vector();
+                Vector v = pctg.getAdditionalValues(prt);
+                
+                return v;
+               
+            }
+            
+        }catch(Exception e){
+            Conversation.saveErr(e);
+        }
+        
+        
+        
+        
+        return super.getAdditionalInformationForParticipant(prt);
     }
     
     
@@ -824,10 +1105,30 @@ public class Telegram_Dyadic_PROCOMM extends TelegramController implements JInte
     }
     
    
+   public Object getQuadOrPairForParticipant(TelegramParticipant tp){
+      
+          for(int i =0;i< this.quads.size();i++){
+             Quad q = quads.elementAt(i);
+             if(q.isParticipantInQuad(tp)) return q;
+         }
+          for(int i=0;i<this.betweenPairs.size();i++){
+              Pair p = this.betweenPairs.elementAt(i);
+              if(p.isParticipantInPair(tp)) return p;
+          }
+          for(int i=0;i<this.solitaryPairs.size();i++){
+              Pair p = this.solitaryPairs.elementAt(i);
+              if(p.isParticipantInPair(tp)) return p;
+          }
+          return null;
+     
+       
+       
+       
+   }
    
-   public PCTaskTG getPCTaskTGForParticipant(TelegramParticipant tp){
-       return null;//q.getPCTaskTGForParticipant(tp);
-   } 
+   
+   
+   
    
    
    

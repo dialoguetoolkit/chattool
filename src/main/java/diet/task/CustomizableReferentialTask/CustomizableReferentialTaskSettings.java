@@ -81,7 +81,7 @@ public class CustomizableReferentialTaskSettings  {
     public boolean showIfSelectionWasCorrrectOrIncorrect  = true;
     public boolean advanceToNextManually = true;
    
-     
+    // option of looping around when done
     
     
     public CustomizableReferentialTaskSettings(DefaultConversationController cC,  boolean telegram,  String stimulisubfolderCANBENULL, String sequencefilenameCANBENULL){
