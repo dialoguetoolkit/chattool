@@ -131,7 +131,9 @@ public class MoveANDSAME extends Move{
     }
          
     public String getDesc() {
-        return "ANDSAME:"+  this.name+"-"+timeOfSelectionByPA+"-"+timeOfSelectionByPB;
+         //return "ANDSAME:"+  this.name+"-"+timeOfSelectionByPA+"-"+timeOfSelectionByPB;
+         String description = "ANDSAME "+pA.getParticipantID()+" "+pA.getUsername()+" "+this.name+" "+this.timeOfSelectionByPA + " "+pB.getParticipantID()+" "+pB.getUsername() + " "+this.name + " "+this.timeOfSelectionByPB;
+         return description;
     }
     
     public boolean isTimedOut(){

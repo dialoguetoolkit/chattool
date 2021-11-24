@@ -76,7 +76,7 @@ public class JRulesBasedInterventionsTableModelInterventionBlock extends Abstrac
 
   public Object getValueAt(int x, int y){
     try{  
-        interventionblock ib =   c.ai.getBlockRules().elementAt(x);
+        interventionblock ib =   c.getAI().getBlockRules().elementAt(x);
         if(y==0) return ib.interventionid;
         if(y==1) return ib.participantID;
         if(y==2) return ib.poscrit;
@@ -94,7 +94,7 @@ public class JRulesBasedInterventionsTableModelInterventionBlock extends Abstrac
   
   
   public int getRowCount(){
-     return c.ai.getBlockRules().size();
+     return c.getAI().getBlockRules().size();
     
   }
   public int getColumnCount(){

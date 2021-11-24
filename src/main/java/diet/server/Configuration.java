@@ -39,7 +39,7 @@ public class Configuration implements Cloneable{
     
      //Below are some debug parameters - they are not essential.
     public int login_minimumlength_of_participantID = 4; 
-    public int login_numberOfParticipants = 2;
+    public int login_numberOfParticipants = 12;
     public boolean login_autologin = false;
      
     public boolean debug_debugMESSAGEBLOCKAGE = false; //true;//false;//true;//true;//false;//true;
@@ -165,10 +165,14 @@ public class Configuration implements Cloneable{
    
     static public String telegram_generic_login = "login";
     
-    static final public String outputfile_newline_replacement_character = "↲";
-    static final public String outputfile_unsupported_character = "█";
     
+    //static final public String outputfile_newline_replacement_character =    "↲";
+    //static final public String outputfile_unsupported_character = "█"; 
     
+    static final public String outputfile_newline_replacement_character =  ""+  '\u21b2';       //"↲";
+    static final public String outputfile_unsupported_character = ""+ '\u2588';      //"█"; 
+    
+    static final public String a = ""+ '\u9608';
     
     //end of paramater settings.
     
@@ -187,6 +191,10 @@ public class Configuration implements Cloneable{
     public static void main(String[] args){
        try{ 
 
+        System.out.println(Configuration.outputfile_newline_replacement_character);         
+        System.out.println(Configuration.outputfile_unsupported_character);         
+
+        
          Configuration ss = new Configuration();
          //YamlWriter writer = new YamlWriter(new FileWriter("output3.yml"));
         // writer.write(ss);  

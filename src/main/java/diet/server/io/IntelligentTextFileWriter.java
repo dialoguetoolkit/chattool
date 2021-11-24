@@ -6,6 +6,8 @@
 
 package diet.server.io;
 
+import diet.server.Configuration;
+import diet.server.Conversation;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,7 +36,7 @@ public class IntelligentTextFileWriter extends Thread{
             //encoder.onMalformedInput(CodingErrorAction.REPORT);
             //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
 
-            byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+            byte[] bytesReplacementForMalformedInput =Configuration.outputfile_unsupported_character.getBytes();         
             this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
             
            
@@ -43,6 +45,8 @@ public class IntelligentTextFileWriter extends Thread{
              
           }catch (Exception e){
               e.printStackTrace();
+              Conversation.saveErr(e);
+
           }
           this.start();
     }
@@ -103,7 +107,7 @@ public class IntelligentTextFileWriter extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                byte[] bytesReplacementForMalformedInput = ("█").getBytes();           
+                byte[] bytesReplacementForMalformedInput = Configuration.outputfile_unsupported_character.getBytes();//("█").getBytes();           
                 this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
             
                 if(f.canWrite()) wasSuccessfulReestablishing = true;

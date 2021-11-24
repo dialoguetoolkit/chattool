@@ -100,6 +100,21 @@ public class interventionmodify {
         
     }
     
+   /* public String getModifiedTextOTHER(String originalTurn){
+         String currentModified = ""+originalTurn; 
+        
+         String nextModified = this.getModifiedTextRecursive(originalTurn);
+         while(!currentModified.equalsIgnoreCase(nextModified)){
+             currentModified = ""+nextModified;
+             nextModified = this.getModifiedTextRecursive(nextModified);
+             
+         }
+         return nextModified;
+         
+    }
+    
+    */
+    
     public String getModifiedText(String originalTurn){
         // return  originalTurn.replace(this.stringToBeReplaced, stringReplacement);
         String modifiedTurn = stringToBeReplaced.matcher(originalTurn).replaceAll(stringReplacement);

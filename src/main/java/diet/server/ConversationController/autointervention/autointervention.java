@@ -152,12 +152,25 @@ public class autointervention {
             System.err.print("ROWMODIFY: "+i+ " interventionid:"+interventionid+" targetposcriteria:"+targetposcriteria);
             
             
-            
+            try{
             if(!interventionid.equalsIgnoreCase("") && !targetposcriteria.equalsIgnoreCase("")){
                 interventionmodify im = new interventionmodify(interventionid,participantid,targetposcriteria,targetnegcriteria,stringToBeReplaced, stringReplacement);
                 this.vim.add(im);
                 System.err.println("Adding rule: "+ im.toString());
-            }          
+            }
+            }catch(Exception e){
+                e.printStackTrace();
+                Conversation.saveErr(e);
+                CustomDialog.showDialog("There was an error loading intervention: "+interventionid+ " \n" 
+                        + participantid+ "\n"
+                        + targetposcriteria +"\n"
+                        + targetnegcriteria + "\n"
+                        + stringToBeReplaced + "\n"
+                        + stringReplacement +"\n\n\n"
+                        + "The error is most likely to be a typo in one of the regular expressions\n\n\n"
+                                + "The java system error is:\n\n"
+                                + e.getMessage());
+            }
         }
         
     }
@@ -248,40 +261,90 @@ public class autointervention {
     }
     
     
-    public boolean processText_doModify(Participant p, String textOfTurn){
-         System.err.println("AUTOINTERVENTION: DOMODIFYA");
+    
+     public boolean processText_doModify(Participant p, String textOfTurn){
+         
+      try{   
+         String sv1 = ""+textOfTurn;
+         String sv2 = this.getModifiedString(p, sv1);
+         System.err.println("Here98getmod-----"+sv1+"-----------"+sv2);
+         while(!sv1.equals(sv2)){
+             sv1 = ""+sv2;
+             sv2=this.getModifiedString(p, sv1);
+             System.err.println("Here99getmod-----"+sv1+"-----------"+sv2);
+         }
+          System.err.println("Here100getmod-----"+sv1+"-----------"+sv2);
+         if(!textOfTurn.equals(sv2)) {
+             System.err.println("Here101getmod");
+              if(c.isInTelegramMode()){   
+                          System.err.println("Here102getmod");
+                         long dDly = processText_doDelay(p, sv2);
+                         if(dDly >0){
+                              System.err.println("AUTOINTERVENTION DELAY IS MORE THAN ZERO");
+                             c.telegram_sendDelayedArtificialTurnFromApparentOriginToPermittedParticipants((TelegramParticipant)p,  sv2, dDly);
+                             
+                         }
+                         else{
+                              c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants((TelegramParticipant)p,  sv2);    
+                         }
+       }
+                     else{
+                         System.err.println("AUTOINTERVENTION: DOMODIFYF"); 
+                         long doDelay = this.processText_doDelay(p, sv2);
+                         if(doDelay>0){
+                             c.sendArtificialDelayedTurnToPermittedParticipants(p, sv2, doDelay);
+                             
+                         }
+                         else{
+                              c.sendArtificialTurnFromApparentOriginToPermittedParticipants(p,  sv2);
+                         }
+                     }
+                     Conversation.printWSln("Main", "OK Detected! CHANGING: "+textOfTurn+" TO: "+sv2);
+                     return true;
+         }
+         return false;
+         
+      }catch(Exception e){
+          e.printStackTrace();
+          Conversation.saveErr(e);
+          return false;
+      }
+     }
+    
+     public String getModifiedString(Participant p,String textOriginal){
+         System.err.println("Here1getmod");
+         for(int i=0;i<this.vim.size();i++){
+             System.err.println("Here2getmod");
+             interventionmodify im = vim.elementAt(i);
+             boolean doModify = im.modifyTurn(p.getParticipantID(), textOriginal);
+             if(doModify){
+                 System.err.println("Here3getmod");
+                 c.saveAdditionalRowOfDataToSpreadsheetOfTurns( "autointervention", p, im.toString());
+                 return im.getModifiedText(textOriginal);
+             }
+                  
+     }
+      System.err.println("Here4getmod "+textOriginal);
+      return textOriginal;
+     }
+    
+    public boolean processText_doModifyOLD(Participant p, String textOfTurn){
+        
          boolean performedModify = false;
          for(int i=0;i<this.vim.size();i++){
-             System.err.println("AUTOINTERVENTION: DOMODIFYB");
+             
              interventionmodify im = vim.elementAt(i);
              boolean doModify = im.modifyTurn(p.getParticipantID(), textOfTurn);
              if(doModify){
-                 System.err.println("AUTOINTERVENTION: DOMODIFYC");
+                 
                  String newTurn = im.getModifiedText(textOfTurn);
                  if(newTurn.equals(textOfTurn)){
-                     System.err.println("AUTOINTERVENTION: DOMODIFYD");
+                     
                      //Don't need to do intervention - they are the same.
                  }
                  else{
-                     if(c.isInTelegramMode()){
-                         System.err.println("AUTOINTERVENTION: DOMODIFYE");
-                        
-                         if(p==null) {
-                             System.err.println("AUTOINTERVENTION: P IS NULL");
-                         }
-                         else{
-                              System.err.println("AUTOINTERVENTION: P IS"+ p.getParticipantID());
-                         }
-                         if(textOfTurn==null) {
-                             System.err.println("AUTOINTERVENTION: TEXTOFTURN IS NULL");
-                         }
-                         else{
-                             System.err.println("AUTOINTERVENTION:" + textOfTurn);
-                         }
-                         
+                     if(c.isInTelegramMode()){                        
                          long dDly = processText_doDelay(p, textOfTurn);
-                        
-                             System.err.println("AUTOINTERVENTION DELAY IS:" + dDly);
                          if(dDly >0){
                               System.err.println("AUTOINTERVENTION DELAY IS MORE THAN ZERO");
                              c.telegram_sendDelayedArtificialTurnFromApparentOriginToPermittedParticipants((TelegramParticipant)p,  newTurn, dDly);
@@ -291,9 +354,8 @@ public class autointervention {
                          }
        }
                      else{
-                         System.err.println("AUTOINTERVENTION: DOMODIFYF");
-                         //c.sendArtificialTurnFromApparentOriginToPermittedParticipants(p,  newTurn);
-                          long doDelay = this.processText_doDelay(p, textOfTurn);
+                         System.err.println("AUTOINTERVENTION: DOMODIFYF"); 
+                         long doDelay = this.processText_doDelay(p, textOfTurn);
                          if(doDelay>0){
                              c.sendArtificialDelayedTurnToPermittedParticipants(p, newTurn, doDelay);
                              
@@ -302,17 +364,12 @@ public class autointervention {
                               c.sendArtificialTurnFromApparentOriginToPermittedParticipants(p,  newTurn);
                          }
                      }
-                     System.err.println("AUTOINTERVENTION: DOMODIFYG");
                      c.saveAdditionalRowOfDataToSpreadsheetOfTurns( "autointervention", p, textOfTurn+":"+im.toString());
                      return true;
                  }
              }    
-                 
-                 
-             
          }
          return false;
-         
     }
     
     

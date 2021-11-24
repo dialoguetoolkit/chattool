@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lx</groupId>
     <artifactId>chattoolTG</artifactId>
-    <version>5.2</version>
+    <version>5.3.2</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -117,7 +117,15 @@
     </plugins>
     <resources>
         <resource>
-		    <targetPath>mazegame</targetPath>
+        <targetPath>mazegame</targetPath>
+            <directory>experimentresources/mazegame</directory>
+            <includes>
+              <include>**/*.*</include>
+              <include>**/*.*</include>
+           </includes>
+        </resource>
+        <resource>
+        <targetPath></targetPath>
             <directory>experimentresources/mazegame</directory>
             <includes>
               <include>**/*.*</include>

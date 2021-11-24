@@ -87,7 +87,7 @@ public class Conversation extends Thread{
 
     Metrics mm;   //For calculating metrics in the chat
     
-    public autointervention ai ;
+    ///public autointervention ai ;
     
     
     public TGBOT tgb ;
@@ -97,7 +97,7 @@ public class Conversation extends Thread{
      public Conversation(ExperimentManager expM,String nameOfDefaultConversationController){
          this.expManager=expM;
          mm = new Metrics(this);
-         ai=new autointervention(this);
+         ///ai=new autointervention(this);
          statC=this;
          try{  
               this.doBasicSetup(nameOfDefaultConversationController);
@@ -613,13 +613,14 @@ public class Conversation extends Thread{
                        tgups.addItem(tcp,tmfc.u);
                    }
                    
-                   boolean block = false;
+                   boolean hasBeenModifiedByAutoIntervention = false;
                    if(tmfc.u.hasMessage()&&tmfc.u.getMessage().hasText()){
-                        String text = tmfc.u.getMessage().getText();
-                        block = ai.processText(origin, text);
+                        
+                        hasBeenModifiedByAutoIntervention =  cC.processAutoIntervention(origin,tmfc);
+              
                    }
                    
-                   if(!block)cC.telegram_processTelegramMessageFromClient(tcp,tmfc);
+                   if(!hasBeenModifiedByAutoIntervention)cC.telegram_processTelegramMessageFromClient(tcp,tmfc);
                    
                    if(tmfc.u.hasPollAnswer()){
                        cC.telegram_processPollAnswerFromClient(tcp,tmfc);
@@ -632,14 +633,28 @@ public class Conversation extends Thread{
                               String subdialogueID =  cC.pp.getSubdialogueID(origin);
                               if(subdialogueID==null)subdialogueID=""; 
                                
-                              Vector vAdditionalValues = cC.getAdditionalInformationForParticipant(origin);
+                             
                               
-                              Vector addVals = cC.getAdditionalInformationForParticipant(origin);
+                              //Vector vAdditionalValues = cC.getAdditionalInformationForParticipant(origin);
+                              
+                               Vector addVals = cC.getAdditionalInformationForParticipant(origin);
+                              
+                             
+  
+                               
+                               
+                               
+                               
+                              
                               AttribVal av1 = new AttribVal("telegramtype","text");
                               addVals.add(av1);
             
                               AttribVal av2 = new AttribVal("telegramrawdata",tmfc.u.toString());
                               addVals.add(av2);
+                              
+                               Vector vAddValsFromMessage = tmfc.getAttribVals();
+                               addVals.addAll(vAddValsFromMessage);
+                              
                               
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.u.getMessage().getDate(), tmfc.u.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
@@ -671,6 +686,10 @@ public class Conversation extends Thread{
                               AttribVal av3 = new AttribVal("telegramrawdata",tmfc.u.toString());
                               addVals.add(av3);
                               
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
+                              
+                              
                               String text = tmfc.u.getMessage().getText();
                               if(text==null)text="";
                               
@@ -700,6 +719,9 @@ public class Conversation extends Thread{
                               
                               String text = tmfc.u.getMessage().getText();
                               if(text==null)text="";
+                              
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                               addVals.addAll(vAddValsFromMessage);
                               
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.u.getMessage().getDate(), tmfc.u.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
@@ -736,6 +758,9 @@ public class Conversation extends Thread{
                               try{ text=cbq.getMessage().getText();} catch(Exception e){e.printStackTrace(); }
                               if(text==null ) text=""; 
                             
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
+                              
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, cbq.getMessage().getDate(), cbq.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
                                       origin.getParticipantID(),
@@ -766,6 +791,9 @@ public class Conversation extends Thread{
                  
                               long dtlong = new Date().getTime();
                               
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
+                              
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.timeOfCreation, tmfc.timeOfCreation,
                                       tmfc.timeOfCreation, 
                                       origin.getParticipantID(),
@@ -793,7 +821,10 @@ public class Conversation extends Thread{
                               AttribVal av2 = new AttribVal("telegramrawdata",tmfc.u.toString());
                               addVals.add(av2);
                               
+                              Vector vAddValsFromMessage = tmfc.getAttribVals();
+                              addVals.addAll(vAddValsFromMessage);
                               
+                             
                               
                               cH.saveInterceptedNonRelayedMessage(subdialogueID, tmfc.u.getMessage().getDate(), tmfc.u.getMessage().getDate(),
                                       tmfc.timeOfCreation, 
@@ -1364,6 +1395,33 @@ public class Conversation extends Thread{
     
     
     
+    
+    public void saveAdditionalRowOfDataToSpreadsheetOfTurns(String subdialogueID, String datatype,  String text){
+        try{
+            String senderID = "server";
+             String senderUsername = "server";
+             String apparentSenderUsername = "server";
+             long timeOfCreationOnClient =  new Date().getTime();
+             long timeOfSendOnClient = new Date().getTime();
+             long timeOfRELAYONSERVER = new Date().getTime();
+             Vector recipientsNames = new Vector();
+             Vector<AttribVal> additionalData = new Vector();
+            
+           //System.err.println("SL02");
+           String text1 = text.replace("\r","((NEWLINE))");
+           String text2 = text1.replace(System.getProperty("line.separator"), "((((NEWLINE))))");
+           
+           cH.saveDataAsRowInSpreadsheetOfTurns(subdialogueID, datatype,timeOfCreationOnClient ,timeOfSendOnClient, timeOfRELAYONSERVER ,senderID, senderUsername, apparentSenderUsername,text2.replaceAll("\n", "(NEWLINE)"),recipientsNames,false,new Vector<Keypress>(), new Vector<DocChange>()  ,new Vector<ClientInterfaceEvent>() , additionalData, false);
+             }catch (Exception e){
+                e.printStackTrace();
+        }
+    }
+    
+    
+    
+    
+    
+    
    /*
     *
     * Convenience function - do not use unless you know what you are doing!
@@ -1428,7 +1486,10 @@ public class Conversation extends Thread{
     public void saveAdditionalRowOfDataToSpreadsheetOfTurns(String datatype,  Participant p, String value, Vector additionalAttribVals){
         try{
            if (value==null)value="";
-           String subDialogueID = cC.pp.getSubdialogueID(p);
+           String subDialogueID = "notset";
+           if(p!=null) subDialogueID =  cC.pp.getSubdialogueID(p);
+           if(subDialogueID==null)subDialogueID="NULL";
+          
            long currentTIME = new Date().getTime(); 
            long timeOfSendOnClient = currentTIME;
            long timeOfRELAYONSERVER = currentTIME;
@@ -2959,15 +3020,14 @@ public class Conversation extends Thread{
   
       
       
-       public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, Vector<String> buttonnames){
+       public void telegram_sendInstructionToParticipantWithForcedKeyboardButtons(TelegramParticipant recipient, Vector<String> buttonnames, String messageText){
             String subdialogueID = cC.pp.getSubdialogueID(recipient);
         
         long recipientID = recipient.getConnection().telegramID;
             
         try{
                 SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText("Setting up");
+                       .setChatId(recipientID).setText(messageText);
                  message = message.disableNotification();
                  message.enableHtml(false);
                  //message.setText("<code>"+text+"</code>");  
@@ -3153,6 +3213,102 @@ public class Conversation extends Thread{
             telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSender, vID,  text);
       }
      
+      
+      
+       
+      public void telegram_sendArtificialTurnFromApparentOriginToParticipant(String apparentSenderString, TelegramParticipant recip, String text){
+             Vector<String>  vID = new Vector();
+             vID.add(recip.getParticipantID());
+             
+            telegram_sendArtificialTurnFromApparentOriginToParticipantID(apparentSenderString, vID,  text);
+       }
+      
+      
+      
+        private void telegram_sendArtificialTurnFromApparentOriginToParticipantID(String apparentSenderString, Vector<String> vid, String text){
+         
+        Vector additionalInfo = new Vector();
+         
+ 
+        for(int i=0;i<vid.size();i++){
+            TelegramParticipant recipient = (TelegramParticipant)this.getParticipants().findParticipantWithEmail((String) vid.elementAt(i));
+            
+             try{
+             
+              long recipientID = recipient.getConnection().telegramID;
+              
+              SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                       .setChatId(recipientID);
+              message = message.disableNotification();
+              message.enableHtml(true);
+              message.setText("<b>"+apparentSenderString+": </b>"+text);
+              recipient.sendMessage(message);
+              
+              String group =cC.pp.getSubdialogueID(recipient);
+               if(group==null)group="";
+               convIO.saveTelegramIO(group, recipient.getParticipantID(), recipient.getUsername(),"from",new Date().getTime() , message.toString());
+               
+               Vector<String> recipientsNames = new Vector(); recipientsNames.add(recipient.getUsername());
+               Vector additionalValues = cC.getAdditionalInformationForParticipant(recipient);
+               
+               
+                   
+                   AttribVal av1 = new AttribVal("telegramtype","artificialturn");
+                   additionalValues.add(av1);
+                   AttribVal av2 = new AttribVal("telegramrawdata",message.toString());
+                   additionalValues.add(av2);     
+                   
+               
+              
+       
+               cH.saveArtificialMessageCreatedByServer(group, new Date().getTime(), apparentSenderString, text, recipientsNames, additionalValues, false);
+               
+               
+              
+              } catch (Exception e){
+                  e.printStackTrace();
+                  Conversation.saveErr(e);
+                  
+              }   
+            
+            
+            
+     
+            //cH.saveArtificialMessageCreatedByServer(subdialogueID, mctc.getTimeOfSending().getTime(), apparentSender.getUsername(),text, recipientName, additionalInfo, false);
+   
+            }
+         }
+ 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
        public void telegram_sendArtificialTurnFromApparentOriginToParticipant(TelegramParticipant apparentSender, TelegramParticipant recip, String text){
              Vector<String>  vID = new Vector();
@@ -3354,7 +3510,8 @@ public class Conversation extends Thread{
              AttribVal av4 = new AttribVal("telegramid",senderTelegramLogin);
              addVals.add(av3);
              
-             
+             Vector vAddValsFromMessage = tmfc.getAttribVals();
+             addVals.addAll(vAddValsFromMessage);
              
             cH.saveMessageRelayedToOthers(group,  tmfc.u.getMessage().getDate() ,  tmfc.u.getMessage().getDate()  , tmfc.timeOfCreation,sender.getParticipantID(), sender.getUsername(),sender.getUsername(),text,vRecipientsUsernames,false,new Vector(),new Vector(), new Vector(), addVals,false);
        
@@ -3434,6 +3591,9 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
              
              AttribVal av3 = new AttribVal("telegramid",senderTelegramLogin);
              addVals.add(av3);
+             
+             Vector vAddValsFromMessage = tmfc.getAttribVals();
+             addVals.addAll(vAddValsFromMessage);
              
              cH.saveMessageRelayedToOthers(sendergroup,  tmfc.u.getMessage().getDate() ,  tmfc.u.getMessage().getDate()  , tmfc.timeOfCreation,sender.getParticipantID(), sender.getUsername(),sender.getUsername(),text,vRecipientsUsernames,false,new Vector(),new Vector(), new Vector(), addVals,false);
        
@@ -4024,7 +4184,9 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
          
      }
      
-     
+     public autointervention getAI(){
+         return cC.ai;
+     }
      
      
      private class delayedaction{

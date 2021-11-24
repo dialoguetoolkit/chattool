@@ -5,9 +5,11 @@
  */
 package diet.tg;
 
+import diet.attribval.AttribVal;
 import diet.message.Message;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Vector;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -30,6 +32,19 @@ public class TelegramMessageFromClient extends Message implements Serializable{
     public TelegramMessageFromClient(Update u, String email, String username) {
         super(email, username);
         this.u = u;
+    }
+    
+    
+    
+    
+    Vector<AttribVal> avs = new Vector();
+    //This is a hack - it might be worthwhile implementing everything like this
+    public void addAttributeValuePair(AttribVal av){
+         this.avs.addElement(av);
+    }
+    
+    public Vector<AttribVal> getAttribVals(){
+        return avs;
     }
     
 }

@@ -39,32 +39,7 @@ public class Telegram_Multiparty extends TelegramController{
 
     
     
-    @Override
-    public synchronized void processChatText(Participant sender, MessageChatTextFromClient mct) {
-        
-            
-    }
-    
-    
-    
-    @Override
-    public void participantJoinedConversation(Participant p) {
-        super.participantJoinedConversation(p); 
-        
-       
-        if(c.getParticipants().getAllParticipants().size()==2) {
-            
-             pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-             //this.itnt.addGroupWhoAreMutuallyInformedOfTyping(c.getParticipants().getAllParticipants());
-              
-             CustomDialog.showDialog("PRESS OK TO START!");
-             this.experimentHasStarted=true;
-             
-            
-        }
-        
-        
-    }
+  
 
    
      public void telegram_participantJoinedConversation(TelegramParticipant p) {
@@ -83,7 +58,7 @@ public class Telegram_Multiparty extends TelegramController{
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
        //Each time there is a new participant, a new group is created with all members in it.
       
-      pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
+          pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
         
     }
      
@@ -94,7 +69,8 @@ public class Telegram_Multiparty extends TelegramController{
              String text=tmfc.u.getMessage().getText();
             // this.crt.processChatText(sender, text);
              if(!text.startsWith("/")){
-                c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);      
+                  c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);      
+                 
              } 
       
         }

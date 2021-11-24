@@ -7,6 +7,7 @@
 package diet.task.ProceduralComms;
 
 import diet.server.Participant;
+import java.util.Date;
 
 /**
  *
@@ -16,6 +17,7 @@ public class MoveONLY extends Move{
     
      Participant pPerformer;
      String name;
+     long timeOfSolution = -1;
 
     public MoveONLY(PCSetOfMoves pcs, Participant pPerformer, String name) {
         super(pcs);
@@ -33,12 +35,25 @@ public class MoveONLY extends Move{
          if(p==pPerformer && name.equalsIgnoreCase(text)) {
              this.solved=true;
              System.err.println("EVALUATING CORRECT");
+             this.timeOfSolution=new Date().getTime();
              return 1;     
          }
          this.solved=false;
+         this.timeOfSolution=-1;
          System.err.println("EVALUATING INCORRECT");
          return 0;
      }
+
+    @Override
+    public void setSolved(boolean solved) {
+        if(!solved){
+            this.timeOfSolution=-1;
+            this.solved=false;
+        }  
+        super.setSolved(solved); //To change body of generated methods, choose Tools | Templates.
+    }
+     
+     
  
      public String getText(){
          return this.name;
@@ -49,7 +64,10 @@ public class MoveONLY extends Move{
 
     @Override
     public String getDesc() { 
-        return "ONLY:"+this.name+"-"+this.solved;
+        String description = "ONLY "+pPerformer.getParticipantID()+" "+pPerformer.getUsername()+" "+this.name+" "+this.timeOfSolution;
+        return description;
+        
+        //return "ONLY:"+this.name+"-"+this.solved;
     
     }
  

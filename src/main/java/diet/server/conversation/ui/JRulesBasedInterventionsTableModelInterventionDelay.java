@@ -67,7 +67,7 @@ public class JRulesBasedInterventionsTableModelInterventionDelay extends Abstrac
 
   public Object getValueAt(int x, int y){
     try{  
-        interventiondelay id =   c.ai.getDelayRules().elementAt(x);
+        interventiondelay id =   c.getAI().getDelayRules().elementAt(x);
         if(y==0) return id.interventionid;
         if(y==1) return id.participantID;
         if(y==2) return id.poscrit;
@@ -87,7 +87,7 @@ public class JRulesBasedInterventionsTableModelInterventionDelay extends Abstrac
   }
   
   public int getRowCount(){
-     return c.ai.getDelayRules().size();
+     return c.getAI().getDelayRules().size();
     
   }
   public int getColumnCount(){

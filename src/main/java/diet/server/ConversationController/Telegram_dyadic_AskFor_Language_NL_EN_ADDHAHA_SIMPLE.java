@@ -22,7 +22,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  *
  * @author LX1C
  */
-public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
+public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_SIMPLE extends TelegramController implements JInterfaceMenuButtonsReceiverInterface{
 
     
    // CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "tangramset01", "tangramsequence.txt" );
@@ -45,11 +45,11 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA extends TelegramContr
     
     
     
-    public Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA(Conversation c) {
+    public Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_SIMPLE(Conversation c) {
         super(c);
     }
 
-    public Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA(Conversation c, long istypingtimeout) {
+    public Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_SIMPLE(Conversation c, long istypingtimeout) {
         super(c, istypingtimeout);
     }
 
@@ -221,83 +221,56 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA extends TelegramContr
      
    
     
-    Vector<TelegramParticipant> recipientOfNaturalHahaAndSenderOfFakeHaha = new Vector();
-    Hashtable htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha =  new  Hashtable();
+   // Vector<TelegramParticipant> recipientOfNaturalHahaAndSenderOfFakeHaha = new Vector();
+   // Hashtable htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha =  new  Hashtable();
     
+    Vector fakeSendersOfHaha  = new Vector();
+    
+    
+   /// Change to remove haha
+   /// Add the control group...
     
     public void processMessageFromClient(TelegramParticipant sender, TelegramMessageFromClient tmfc){
           Integer numberOfTurns = this.htTurnOfTurns.get(sender);
           if(numberOfTurns==null)numberOfTurns=0;
           numberOfTurns++;
           htTurnOfTurns.put(sender, numberOfTurns);  
-        
-        
           
-          //new Date().getTime()-  (Long)this.htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha.getObject(sender)<10000)        
+          
+          
+          
+          
+          String textFromSender = tmfc.u.getMessage().getText();
+          boolean containsHaha = doesTextContainHaha(textFromSender);
+          
+          boolean domanipulation=false;
+          
+          if ((numberOfTurns + 5) % 15 ==0 && !containsHaha ) {
+              domanipulation = true;
+          }
+          else{
+              Conversation.printWSln("Main", "Not generating haha for: "+sender.getParticipantID()+ ": "+(numberOfTurns + 5) % 15);
+          }
           
           
          
-          
-        
-          String textFromSender = tmfc.u.getMessage().getText();
-          if(doesTextContainHaha(textFromSender)){
-              Conversation.printWSln("Main", "Detected that "+sender.getUsername()+ " said HAHA naturally");
+         
+         if(domanipulation){
+              String newMessage = this.transformTurnAddHaha(textFromSender);   
+              c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(sender, newMessage);
+              Conversation.printWSln("Main", "Doing the manipulation! Sending from "+sender.getUsername());
+              this.fakeSendersOfHaha.add(sender);
+         }
+         else{
               Vector  tps=  this.pp.getRecipients(sender);
+              if(tps==null||tps.size()==0) return;
               TelegramParticipant tpr = (TelegramParticipant)tps.elementAt(0);
               c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-              
-              //Potentially stop it
-              
-              if(this.recipientOfNaturalHahaAndSenderOfFakeHaha.contains(sender)){
-                  //A: HAHA   -> B: HAHA  -> 
-                  this.recipientOfNaturalHahaAndSenderOfFakeHaha.remove(sender);
-                  Conversation.printWSln("Main", "The recipient of the natural HAHA said HAHA naturally! Aborted sequence");
-              }
-              else{
-                  recipientOfNaturalHahaAndSenderOfFakeHaha.add(tpr);
-                  this.htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha.put(tpr, new Date().getTime());
-                  Conversation.printWSln("Main", "The next turn by "+tpr.getUsername()+ " will be manipulated!");
-                  //A: HAHA   -> B is primed   (OK!)
-              }   
-              return;
-          }
-          
-          else  if(this.recipientOfNaturalHahaAndSenderOfFakeHaha.contains(sender)  ){
-               
-               Long timeOfReceiptOfNaturalHaha = (Long)this.htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha.get(sender);
-               if(timeOfReceiptOfNaturalHaha==null)timeOfReceiptOfNaturalHaha= (long)0;
-               
-                Conversation.printWSln("Main", "A: "+new Date().getTime());
-                Conversation.printWSln("Main", "B: "+timeOfReceiptOfNaturalHaha);
-                Conversation.printWSln("Main", "C: "+ (new Date().getTime()-  (timeOfReceiptOfNaturalHaha)));
-               
-               if(new Date().getTime()-timeOfReceiptOfNaturalHaha < 3000){
-                   Conversation.printWSln("Main", "The  turn by "+sender.getUsername()+ " was sent too quickly to be manipulated....next turn will be manipulated");
-                   c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-                   return;
-               }
-              
-              
-              
-              
-               Integer numberOfInterventions = this.htNumberOfInterventions.get(sender);
-               if(numberOfInterventions==null)numberOfInterventions=0;
-               int numberOfInterventionsINT = numberOfInterventions;
-
-               String newMessage = this.transformTurnAddHaha(textFromSender);
-                
-               c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(sender, newMessage);
-                
-               numberOfInterventionsINT++;
-               htNumberOfInterventions.put(sender, numberOfInterventionsINT); 
-               htTurnOfLastIntervention.put(sender, numberOfTurns);
-               
-               this.recipientOfNaturalHahaAndSenderOfFakeHaha.remove(sender);
-          }
-          else{
-                c.telegram_relayMessageTextToOtherParticipants(sender, tmfc);
-          }
-          
+         }
+         
+         
+         
+         
     }
     
     
@@ -305,9 +278,9 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA extends TelegramContr
     
     
     
-    Hashtable<TelegramParticipant,Integer> htNumberOfInterventions = new Hashtable();
+    //Hashtable<TelegramParticipant,Integer> htNumberOfInterventions = new Hashtable();
     Hashtable<TelegramParticipant,Integer> htTurnOfTurns = new Hashtable();
-    Hashtable<TelegramParticipant,Integer> htTurnOfLastIntervention = new Hashtable();
+    //Hashtable<TelegramParticipant,Integer> htTurnOfLastIntervention = new Hashtable();
    
     
     

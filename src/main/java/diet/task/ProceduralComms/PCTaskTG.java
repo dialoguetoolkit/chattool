@@ -15,8 +15,18 @@ import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import diet.utils.HashtableWithDefaultvalue;
 import diet.utils.VectorToolkit;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.util.Date;
 import java.util.Random;
 import java.util.Vector;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -24,15 +34,17 @@ import java.util.Vector;
  */
 public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
-      JPCTaskTG jpct;
+      JPCTaskTGPANEL jpctp;
       Random r =new Random();
     
       static HashtableWithDefaultvalue htwdcSCORE = new HashtableWithDefaultvalue((long)0);
-      static HashtableWithDefaultvalue htwdcLARGESTSUCCESS = new HashtableWithDefaultvalue((long)0);
+      static HashtableWithDefaultvalue htwdcLARGESTLEVEL = new HashtableWithDefaultvalue((long)0);
       static HashtableWithDefaultvalue htwdcCORRECTMINUSINCORRECT = new HashtableWithDefaultvalue((long)0);
       //static HashtableWithDefaultvalue htwdcLARGESTSETSIZETOBEASSIGNED = new HashtableWithDefaultvalue((long)1);
       static HashtableWithDefaultvalue htwnumberOfSets = new HashtableWithDefaultvalue((long)0);
-      public  static HashtableWithDefaultvalue htCurrentLevel = new HashtableWithDefaultvalue((int)0);
+      
+
+     public  static HashtableWithDefaultvalue htCurrentLevel = new HashtableWithDefaultvalue((int)0);
       
       //static HashtableWithDefaultvalue htwdcLARGESTMOSTRECENTSUCCES = new HashtableWithDefaultvalue(0);
     
@@ -51,49 +63,56 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       long durationOfTrial = 90 *1000;
       
-      JTrialTimer jt;
-      
-      DifficultySettings ds = new DifficultySettings();
+      JTrialTimerPANEL jttp;
+      JTextArea jta;
+    
       
       //model = only items that are in shared
       
        int level =0;
        
        boolean ispracticestage = true;
+       
        int maxLengthPracticeStageSequence = 5;
        long maxLengthPracticeStageAchievedByA= 0;
        long maxLengthPracticeStageAchievedByB= 0;
        
-       public static int windowForJointSelection = 10000;
+       public static int windowForJointSelection = 5000;
        
-        static int numberOfLevelsToDecreaseOnError = 1;//CustomDialog.getInteger("How many levels to decrease on error?", 1);
+       static int numberOfLevelsToDecreaseOnError = 1;//CustomDialog.getInteger("How many levels to decrease on error?", 1);
        static int streakofsuccessesbeforegoinguplevel = 3;
-       static int currentstreak=0;
+       int currentstreak=0;
       
       static  int difficultysettings_maxSwitchCost =  2;
-      static int difficulty_settings_singleNotesCoef = 1;
+      static int difficulty_settings_singleNotesCoef = 1; //
       static int difficultysettings_simulNotesCoef = 4; 
        
        // double singlenotes_probabilityshared,  simultaneousnotes_probabilityshared =0.5;
         double probabilityshared = 0.5;
        
-       public boolean debug = true;
+       //This must be after the difficulty settings, otherwise they won`t be initialized
+       static DifficultySettings ds = new DifficultySettings();
        
+       //public boolean debug = true;
+       
+       public boolean checkForTimeOutOfSimultaneousMoves = true; 
+        
+       public JPanel jpui;
+       JSplitPane jsp;
       
-      public PCTaskTG(Telegram_Dyadic_PROCOMM cC, TelegramParticipant pA, TelegramParticipant pB, boolean startTimer){
-          this( cC,  pA,  pB);
-          if(startTimer){
-              jt.startTimer();
-          }
-      }
+      boolean sendinstructions; //CustomDialog.getBoolean("Do you want to send instructions?", "INSTRUCTIONS", "NO INSTRUCTIONS");
+      
+      String partnername;
       
       
-      public PCTaskTG(Telegram_Dyadic_PROCOMM cC, TelegramParticipant pA, TelegramParticipant pB){
+      public PCTaskTG(Telegram_Dyadic_PROCOMM cC, TelegramParticipant pA, TelegramParticipant pB, String othersName, boolean ispracticestage, boolean moveToLowestLevel, boolean startTimer, boolean sendinstructions){
           super(); 
+          
           //cC.c.textOutputWindow_ChangeText("instructions", "",false, pA );
           //cC.c.textOutputWindow_ChangeText("instructions", "",false, pB );
-          jt = new JTrialTimer("Timer: "+pA.getParticipantID()+","+pA.getUsername()+"--"+pB.getParticipantID()+","+pB.getUsername(),this, durationOfTrial);     
-          this.cC=cC;
+         this.cC=cC;
+         this.sendinstructions=sendinstructions;//
+         this.ispracticestage=ispracticestage;
          
           //boolean defaultSettings = CustomDialog.getBoolean("Do you want to use default settings?", "yes", "no");
           
@@ -112,36 +131,219 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           } 
             this.pA=pA;
             this.pB=pB;
+            this.partnername=othersName;
             this.director=pA;
             this.matcher=pB;
             
-            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pA, VectorToolkit.getVectorOfCharactersFromString(this.translateFromSystemToGUI(pA,   (pAWhitelist+sharedWhitelist+allowedMetaChars))));
-            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pB, VectorToolkit.getVectorOfCharactersFromString(this.translateFromSystemToGUI(pB,  (pBWhitelist+sharedWhitelist+allowedMetaChars))));
+            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pA, VectorToolkit.getVectorOfCharactersFromString(this.translateFromSystemToGUI(pA,   (pAWhitelist+sharedWhitelist+allowedMetaChars))), "You have been assigned to a random partner");
+            cC.c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(pB, VectorToolkit.getVectorOfCharactersFromString(this.translateFromSystemToGUI(pB,  (pBWhitelist+sharedWhitelist+allowedMetaChars))),  "You have been assigned to a random partner");
 
             
-            
-            jpct = new JPCTaskTG(this); 
-      
             int pALevel = (int)PCTaskTG.htCurrentLevel.getObject(pA);
             int pBLevel = (int)PCTaskTG.htCurrentLevel.getObject(pB);
+            String labelstring = pA.getParticipantID()+","+pA.getUsername()+" PRIORLEVEL: "+pALevel+      "    --    "+pB.getParticipantID()+","+pB.getUsername()+" PRIORLEVEL:"+pBLevel;
+          
+            System.err.println("CHECKINGGENERATINGUISWINGTHREAD"+new Date().getTime());
+
+            if (SwingUtilities.isEventDispatchThread()) {
+                this.generateUISwingThread(labelstring);
+            }
+            else{
+                 this.generateUINonSwingThread(labelstring);
+            }
+          
+          
+            
+            this.appendToTextPane("Other`s name is: "+othersName);
             
             int minLevel = Math.min(pALevel, pBLevel);
            
-            if(debug)this.level=(int)minLevel;
-            if(debug)this.jpct.setLevel((int)this.level);
+            if(moveToLowestLevel){
+                System.err.println("LEVELMOVINGTO: "+minLevel);
+                this.level=(int)minLevel;
+                this.jpctp.setLevel((int)this.level);
+                
+                jta.append("Initializing and setting the difficulty level dynamically!"+"\n");
+                jta.append("The previous level of pA was "+pALevel+"\n");
+                jta.append("The previous level of pB was "+pBLevel+"\n"); 
+                jta.append("Setting the level for both to: "+level +"\n");
+                
+                
+            }
+            else{
+                jta.append("Setting difficulty level of dyad to "+level+"\n");
+            }
+          
+            
+          
+            pcset = new PCSetOfMoves(this);
+                
+          
+            this.createNewSequence(false, true);
+            displayMovesOnServer();     
+          
+           
+         
+          
+           
           
           
-          pcset = new PCSetOfMoves(this);
+         if(startTimer){
+           this.jttp.startTimer();
+         }
           
+         Thread t = new Thread(){
+             public void run(){
+                 checkForTimeoutsOfMoves();
+             }
+         };
+         t.start();
           
-          
-          
-          
-          this.createNewSequence(false);
-          displayMovesOnServer();     
-          
-          Thread t = new Thread(){public void run(){checkForTimeouts();}};t.start();
       }
+      
+      
+      public void startTimer(){
+          if(this.jttp!=null)jttp.startTimer();
+      }
+       public void pauseTimer(){
+          if(this.jttp!=null)jttp.pauseTimer();
+      }
+      
+      
+      public JPanel getUI(){
+          return this.jpui;
+      }
+      
+      public void generateUISwingThread(String title){
+          
+          System.err.println("GENERATINGUISWINGTHREAD");
+          jttp = new JTrialTimerPANEL("Timer: "+pA.getParticipantID()+","+pA.getUsername()+"--"+pB.getParticipantID()+","+pB.getUsername(),this, durationOfTrial);          
+          jpctp = new JPCTaskTGPANEL(this);
+          jpui = new JPanel();
+          jpui.setLayout(new BorderLayout());
+          jpui.add(new JLabel(title), BorderLayout.NORTH);
+                   
+          jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jpctp, jttp);
+          jsp.setVisible(true);
+          jpui.add(jsp,BorderLayout.CENTER);
+                  
+        
+          jta = new JTextArea();
+          jta.setLineWrap(true);
+          JScrollPane jsp = new JScrollPane(jta);
+          jsp.setPreferredSize(new Dimension(300,200));
+          //jsp.getViewport().add(jta);
+          jpui.add(jsp,BorderLayout.SOUTH);
+                  
+         // JFrame jf = new JFrame();
+          //jf.getContentPane().add(jpui);
+          
+          //jf.pack();
+          //jf.setVisible(true);
+      }
+      
+      
+      public void generateUINonSwingThread(String title){
+                       System.err.println("GENERATINGUINONSWINGTHREAD");
+
+             PCTaskTG thispctasktg = this;
+            try{
+                SwingUtilities.invokeAndWait(new Runnable(){public void run(){
+                    jttp = new JTrialTimerPANEL("Timer: "+pA.getParticipantID()+","+pA.getUsername()+"--"+pB.getParticipantID()+","+pB.getUsername(),thispctasktg, durationOfTrial);          
+                    jpctp = new JPCTaskTGPANEL(thispctasktg);
+                }});
+            }catch(Exception e){
+                e.printStackTrace();
+                Conversation.saveErr(e);
+               
+                if(jpctp==null){
+                    Conversation.saveErr("Attempting to salvage interrupted construction of jpctp ");
+                    jpctp = new JPCTaskTGPANEL(this);
+                } 
+                else{
+                     Conversation.saveErr("Do not need to create jpctp as it is non-null");
+                }
+                if(jttp==null){
+                     Conversation.saveErr("Attempting to salvage interrupted construction of jttp ");
+                    jttp = new JTrialTimerPANEL("Timer: "+pA.getParticipantID()+","+pA.getUsername()+"--"+pB.getParticipantID()+","+pB.getUsername(),this, durationOfTrial);     
+        
+                }
+                else{
+                    Conversation.saveErr("Do not need to create jpctp as it is non-null");
+                }
+                          
+            }
+
+            
+             try{
+                SwingUtilities.invokeAndWait(new Runnable(){public void run(){
+                    
+                   jpui = new JPanel();
+                   jpui.setLayout(new BorderLayout());
+                   jpui.add(new JLabel(title), BorderLayout.NORTH);
+                   
+                   jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jpctp, jttp);
+                   jsp.setVisible(true);
+                   jpui.add(jsp,BorderLayout.CENTER);
+                  
+                  
+                   jta = new JTextArea();
+                   jta.setLineWrap(true);
+                   JScrollPane jsp = new JScrollPane(jta);
+                   jsp.setPreferredSize(new Dimension(300,200));
+                   //jsp.getViewport().add(jta);
+                   jpui.add(jsp,BorderLayout.SOUTH);
+                  
+                  // JFrame jf = new JFrame();
+                  // jf.getContentPane().add(jpui);
+          
+                  // jf.pack();
+                  // jf.setVisible(true);
+                }});
+            }catch(Exception e){
+                e.printStackTrace();
+                Conversation.saveErr(e);
+                
+                if(jpui==null){
+                    Conversation.saveErr("Attempting to salvage interrupted construction of jpui ");
+                    jpui = new JPanel();
+                    jpui.setLayout(new BorderLayout());
+                    jpui.add(new JLabel(title), BorderLayout.NORTH);
+                }
+                if(jsp==null){
+                     Conversation.saveErr("Attempting to salvage interrupted construction of jsp");
+                    jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jpctp, jttp);
+                   jsp.setVisible(true);
+                   jpui.add(jsp,BorderLayout.CENTER);
+                  jta = new JTextArea();
+                   jta.setLineWrap(true);
+                   JScrollPane jsp = new JScrollPane(jta);
+                   jsp.setPreferredSize(new Dimension(300,200));
+                   jpui.add(jsp,BorderLayout.SOUTH);
+                }
+               
+               
+                        
+            }
+      }
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       
       //boolean displayDebug = false;//CustomDialog.getBoolean("Display debug info");
       
@@ -154,7 +356,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
          
       public String pBWhitelist         = "tu";
      
-      public String whitelist_SelfGUI  = "fd";
+      public String whitelist_SelfGUI  = "fd";// Configuration.outputfile_newline_replacement_character+Configuration.outputfile_unsupported_character;         //"fd";
       public String whitelist_OtherGUI = "xv";
       
       static public String allowedMetaChars =  "";
@@ -186,7 +388,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       */
       
       
-    public String translateCharFromSystemToGUI(Participant recipient, char textfromsystem) {
+    private String translateIndividualCharFromSystemToGUI(Participant recipient, char textfromsystem) {
           
           
            char textfromsystemlowercase =  Character.toLowerCase(textfromsystem);
@@ -237,7 +439,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             
             
       
-       public String translateCharFromGUIToSystem(Participant sender, String textSentByP){
+       private String translateIndividualCharFromGUIToSystem(Participant sender, String textSentByP){
            String textSentByParticipant = textSentByP.toLowerCase();
            int index = sharedWhitelist_GUI.indexOf(textSentByParticipant);
            if(index>=0) return ""+sharedWhitelist.charAt(index);    
@@ -267,7 +469,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       public String translateFromGUIToSystem(Participant sender, String textSentByParticipant){
           String output ="";
           for(int i=0;i<textSentByParticipant.length();i++){
-              output = output + this.translateCharFromGUIToSystem(sender, ""+textSentByParticipant.charAt(i));
+              output = output + this.translateIndividualCharFromGUIToSystem(sender, ""+textSentByParticipant.charAt(i));
           }
           return output;
       }
@@ -275,32 +477,59 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           System.err.println("TRANSLATETEXTSENTTOPARTICIPANT:"+textSentToParticipant+"----");
           String output ="";
           for(int i=0;i<textSentToParticipant.length();i++){
-              output = output + this.translateCharFromSystemToGUI(recipient,textSentToParticipant.charAt(i));
+              output = output + this.translateIndividualCharFromSystemToGUI(recipient,textSentToParticipant.charAt(i));
           }
           return output;
       }
       
       
-      
+      public void appendToTextPane(String s){
+          if(this.jta==null) return;
+           SwingUtilities.invokeLater(new Runnable(){public void run(){
+               jta.append(s+"\n");
+           }});
+      }
       
       public synchronized void evaluate(TelegramParticipant p,TelegramMessageFromClient tmfc){         
-          synchronized(this.jt){
+         
               
               if(tmfc==null|| !tmfc.u.hasMessage()){
                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message must be a single letter. Please try again!");
                   return;
               }
               
+             
               
               String textanycase=tmfc.u.getMessage().getText();
+              
+              this.appendToTextPane(p.getUsername()+":"+ textanycase);
+             
              
               
               String text = this.translateFromGUIToSystem(p, textanycase).toUpperCase();
                       
-                      
-             
+               AttribVal avi = new AttribVal("keyinternal",text);
+               tmfc.addAttributeValuePair(avi);
+               if(p==pA){
+                   String s = this.translateFromSystemToGUI(pB, textanycase);
+                   AttribVal avo = new AttribVal("keysenttoother", s);
+                   if(s!=null)tmfc.addAttributeValuePair(avo);
+               }
+               else if(p==pB){
+                   String s = this.translateFromSystemToGUI(pA, textanycase);
+                   AttribVal avo = new AttribVal("keysenttoother", s);
+                   if(s!=null)tmfc.addAttributeValuePair(avo);
+               }
+              String levelCorrected = this.level +"";
+              AttribVal avC = new AttribVal("levelcorrected",levelCorrected);
+              tmfc.addAttributeValuePair(avC);
               
-             
+              // AttribVal avo = new AttribVal("keyother",text);
+              
+            
+              
+              
+              
               
               String pAPossibleChars = this.translateFromGUIToSystem(pA,this.pAWhitelist+sharedWhitelist).toUpperCase();
               String pBPossibleChars = this.translateFromGUIToSystem(pB,this.pBWhitelist+sharedWhitelist).toUpperCase();
@@ -308,24 +537,24 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
               
               
               
-              if(p==pA && !pAPossibleChars.contains(text.toUpperCase())){
+              if(p==pA && (!pAPossibleChars.contains(text.toUpperCase())||text.length()>1)){
                   String permittedchars = "";
                   for(int i=0;i<pAPossibleChars.length();i++){
                       
                        permittedchars = permittedchars+pAPossibleChars.charAt(i); 
                   }
                                    
-                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+    this.translateFromSystemToGUI(p,permittedchars)    .toUpperCase());
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following: "+    this.translateFromSystemToGUI(p,permittedchars)    .toUpperCase());
                   return ; 
               }
-              else  if(p==pB && !pBPossibleChars.contains(text.toUpperCase())){
+              else  if(p==pB && (!pBPossibleChars.contains(text.toUpperCase())   ||text.length()>1)){
                   String permittedchars = "";
                   for(int i=0;i<pBPossibleChars.length();i++){
                       
                        permittedchars = permittedchars+pBPossibleChars.charAt(i); 
                   }
                                    
-                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following letters: "+this.translateFromSystemToGUI(p,permittedchars).toUpperCase());
+                  cC.c.telegram_sendInstructionToParticipant_MonospaceFont(p, "Message NOT sent. Your message may only contain one of the following: "+this.translateFromSystemToGUI(p,permittedchars).toUpperCase());
                   return ; 
               }
               
@@ -341,15 +570,21 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                String textToSend = this.translateFromSystemToGUI(recip,text);
              // cC.c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(p, textanycase+"!!!!"+text+"!!!!"+textToSend);
              // cC.c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(director, text);
-              cC.c.telegram_sendArtificialTurnFromApparentOriginToParticipant(p,recip, textToSend.toLowerCase());
+             // cC.c.telegram_sendArtificialTurnFromApparentOriginToParticipant(p,recip, textToSend.toLowerCase());
              
-               boolean success = pcset.evaluate(p, text);
+             cC.c.telegram_sendArtificialTurnFromApparentOriginToParticipant(this.partnername,recip, textToSend.toLowerCase());
+             
+              if(!pcset.issolved()){
+                  boolean success = pcset.evaluate(p, text); // Don`t use this variable any more - has been moved to timer thread so everything is controlled from it
+              }
+              
+               
                
                displayMovesOnServer();     
                displayMovesOnClients();      
                           
       
-               if(success) {
+              /* if(success) {
                     
                     System.err.println("LEVEL:");
                     int sizesucc = pcset.moves.size();
@@ -371,14 +606,52 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                    }
                    
                    
-               }
-          }
-           return ;
+               }*/
+           
+           return; 
       }
     
       
       
-      public void updateScoresSuccess_PRACTICE(Participant pAA, Participant pBB, long sizeOfSet){
+      
+      public synchronized void checkForCompletion(){
+          if(this.pcset==null){
+              System.err.println("Check for completion - pcset is null");
+              return;
+          }
+          if(this.pcset.moves==null){
+              System.err.println("Check for completion - pcset moves is null");
+              return;
+          }
+          if(this.pcset.moves.size()==0){
+              System.err.println("Check for completion - pcset moves size is 0");
+              return;
+          }
+          
+          
+          
+          if(this.pcset.issolved()){
+                    System.err.println("LEVEL:");
+                    this.appendToTextPane("Solved the move set");
+                    //int sizesucc = pcset.moves.size();
+                    updateScoresSuccess(pA,pB);
+                                                   
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA,"CORRECT!");
+                    cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB,"CORRECT!" );
+                        
+                    cC.c.saveAdditionalRowOfDataToSpreadsheetOfTurns("NEWGAME", pA, "NEWGAME", new Vector());
+                    cC.c.saveAdditionalRowOfDataToSpreadsheetOfTurns("NEWGAME", pB, "NEWGAME", new Vector());
+                    createNewSequence(true,false);
+                    this.jttp.nextTrial();
+          }
+      }
+      
+      
+      
+      
+      
+      public void updateScoresSuccess_PRACTICE(Participant pAA, Participant pBB){
+          long sizeOfSet = pcset.moves.size();
           if(director==pA) {
               this.maxLengthPracticeStageAchievedByA = sizeOfSet;
           }
@@ -391,18 +664,18 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       
     
-      public void updateScoresSuccess(Participant pAA, Participant pBB, long sizeOfSet){  
+      public void updateScoresSuccess(Participant pAA, Participant pBB){  
             if(ispracticestage){
-                this.updateScoresSuccess_PRACTICE(pAA, pBB, sizeOfSet);
+                this.updateScoresSuccess_PRACTICE(pAA, pBB);
                 return;
             }
            
           
-             long pALargest = (long)htwdcLARGESTSUCCESS.getObject(pAA);
-             long pBLargest = (long)htwdcLARGESTSUCCESS.getObject(pBB);
+             long pALargest = (long)htwdcLARGESTLEVEL.getObject(pAA);
+             long pBLargest = (long)htwdcLARGESTLEVEL.getObject(pBB);
              
-             htwdcLARGESTSUCCESS.putObject(pAA, Math.max(pALargest, sizeOfSet));
-             htwdcLARGESTSUCCESS.putObject(pBB, Math.max(pBLargest, sizeOfSet));    
+             htwdcLARGESTLEVEL.putObject(pAA, Math.max(pALargest, this.level));
+             htwdcLARGESTLEVEL.putObject(pBB, Math.max(pBLargest, this.level));    
              
              long pACORRECTMINUSINCORRECT= (long)htwdcCORRECTMINUSINCORRECT.getObject(pAA)+1;
              long pBCORRECTMINUSINCORRECT= (long)htwdcCORRECTMINUSINCORRECT.getObject(pBB)+1;
@@ -416,11 +689,20 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
              long pAScore = (long)this.htwdcSCORE.getObject(pAA); 
              long pBScore = (long)this.htwdcSCORE.getObject(pBB);
              
-             pAScore = (long)  (pAScore+ 10*(sizeOfSet));
-             pBScore = (long)  (pBScore+ 10*(sizeOfSet));
+             System.err.println("PASCORE1: "+pAScore);
+             System.err.println("PBSCORE1: "+pBScore);
+             
+             pAScore = (long)  (pAScore+ (level+1));
+             pBScore = (long)  (pBScore+ (level+1));
+             
+             System.err.println("PASCORE2: "+pAScore);
+             System.err.println("PBSCORE2: "+pBScore);
              
              htwdcSCORE.putObject(pAA, (long)pAScore);
-             htwdcSCORE.putObject(pBB, (long)pBScore);       
+             htwdcSCORE.putObject(pBB, (long)pBScore);      
+             
+             System.err.println("PASCORE3: "+pAScore);
+             System.err.println("PBSCORE3: "+pBScore);
       }
       
        
@@ -456,34 +738,38 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
      
       
-      public synchronized void createNewSequence(boolean previousWasSuccess ){
+      public synchronized void createNewSequence(boolean previousWasSuccess, boolean is_post_swap ){
               
           
-            if(previousWasSuccess&& !this.ispracticestage){
+            if(!is_post_swap&&    previousWasSuccess&& !this.ispracticestage){
                 currentstreak++;
                 if(currentstreak>=streakofsuccessesbeforegoinguplevel){
+                    
                     this.level++;
-                    this.jpct.setLevel(this.level);
+                    this.jpctp.setLevel(this.level);
                     currentstreak=0;
+                    this.appendToTextPane("Increasing difficulty level to "+level);
                 }
                 
                 
                 
                
             }
-            else if ( !ispracticestage){
+            else if ( !is_post_swap &&    !ispracticestage){
                 //this.level--;
                 currentstreak=0;
                 this.level=this.level-numberOfLevelsToDecreaseOnError;
                 if(this.level<=0)this.level=0;
-                this.jpct.setLevel(this.level);
+                this.jpctp.setLevel(this.level);
+                 this.appendToTextPane("Decreasing difficulty level to "+level);
             }
-             
+            this.appendToTextPane("Current streak is: "+currentstreak);
             
           ;
             //this.level=19;
             //this.jpct.setLevel(2);
-            ispracticestage=false;
+            
+            ///ispracticestage=false;
             
             
             
@@ -491,15 +777,19 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
              PCTaskTG.htCurrentLevel.putObject(pA, this.level);
              PCTaskTG.htCurrentLevel.putObject(pB, this.level);
           
-             long pAScore = (long)this.htwdcSCORE.getObject(pA);
-             long pBScore = (long)this.htwdcSCORE.getObject(pB);
+            
              
              System.err.println("SAVINGLEVELOF:"+pA.getUsername()+" is "+level);
              System.err.println("SAVINGLEVELOF:"+pB.getUsername()+" is "+level);
                        
-            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pA));
-            cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Your score is: "+  (Long)PCTaskTG.htwdcSCORE.getObject(pB));
-            
+            if(!ispracticestage){
+                
+                long pAScore = (long)this.htwdcSCORE.getObject(pA);
+                long pBScore = (long)this.htwdcSCORE.getObject(pB); 
+                
+               cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Your score is: "+  (Long)pAScore);
+               cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Your score is: "+  (Long)pBScore);
+            }
                 
              long pANumberOfTrials = (long)PCTaskTG.htwnumberOfSets.getObject(pA)+1;
              long pBNumberOfTrials = (long)PCTaskTG.htwnumberOfSets.getObject(pB)+1;
@@ -519,19 +809,19 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             }
             
             if(!ispracticestage){
-            if(pA==director){
-                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: You are the instructor");
-                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: Follow your partner`s instructions");
+               if(pA==director){
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: You are the instructor");
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: Follow your partner`s instructions");
                 
-                if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, this.pcset.generateDescription(pA));
+                   if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, this.pcset.generateDescription(pA));
                 
-            }
-            else {
-                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: You are the instructor");
-                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: Follow your partner`s instructions");
+                }
+                else {
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "Next game: You are the instructor");
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "Next game: Follow your partner`s instructions");
                 
-                if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, this.pcset.generateDescription(pB));
-            }
+                   if(sendinstructions)cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, this.pcset.generateDescription(pB));
+                }
             }
             else{
                 if(pA==director){
@@ -562,15 +852,42 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
      
       
     
-     boolean sendinstructions = CustomDialog.getBoolean("Do you want to send instructions?", "INSTRUCTIONS", "NO INSTRUCTIONS");
-      
+      public void setAlwaysSendInstructionsAtStartOfEachSet(boolean alwayssendinstructions){
+          this.sendinstructions=alwayssendinstructions;
+      }
 
+      public void sendInstructionsOnce(){
+          
+        if(!ispracticestage){
+            if(pA==director){
+                
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, this.pcset.generateDescription(pA));
+                
+            }
+            else if(pB==director){
+                
+                cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, this.pcset.generateDescription(pB));
+            }
+            }
+        else {
+                if(pA==director){
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, this.pcset.generateDescription(pA));
+                }
+                else if(pB==director){
+                
+                    
+                   cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, this.pcset.generateDescription(pB));
+                }
+                
+            }
+      }
       
      
      
       
       public void setLevel(int lev){
           this.level=lev;
+          System.err.println("SETTINGLEVELTO"+lev);
       }
      
       
@@ -598,9 +915,9 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             
             Vector<MoveONLY> numberONLYSelfV = new Vector();
             
-            
+            long lengthOfMoves = Math.min(maxLengthAchievedByBoth+1, 5);
            
-            for(int i=0;i<maxLengthAchievedByBoth+1;i++){
+            for(int i=0;i<lengthOfMoves;i++){
                 int indexOfChar = r.nextInt(directorWhitelist.length());
                 String s = ""+directorWhitelist.charAt(indexOfChar);
                 MoveONLY mo = new MoveONLY(this.pcset,director,s);
@@ -616,19 +933,21 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             }
             
             this.pcset.moves=finalMoveSet;
-            this.displayMovesOnClients();
+            ////this.displayMovesOnClients();
            
        }
       
       
       
        public void createRandom_MoveSequence(){
+           
            if(ispracticestage & Math.min(this.maxLengthPracticeStageAchievedByA, this.maxLengthPracticeStageAchievedByB)>=maxLengthPracticeStageSequence){
-               this.ispracticestage=false;
-               CustomDialog.showDialog("START THE EXPERIMENT!");
-               cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "The game starts!");
-               cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "The game starts!");
-               createRandom_MoveSequence_Experiment();
+               //this.ispracticestage=false;
+               //CustomDialog.showDialog("START THE EXPERIMENT!");
+               //cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pB, "The game starts!");
+              // cC.c.telegram_sendInstructionToParticipant_MonospaceFont(pA, "The game starts!");
+              // createRandom_MoveSequence_Experiment();
+               createRandom_MoveSequence_PracticeStage();
            }
            else if(this.ispracticestage){
                createRandom_MoveSequence_PracticeStage();
@@ -682,7 +1001,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                    }
                    
                    double adjustedprobabilityshared = probabilityshared;
-                   if(this.level==0 | this.level==1){
+                   if(this.level==0 ){//  | this.level==1){
                         adjustedprobabilityshared = 1;
                     }
                    
@@ -829,7 +1148,9 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
         
         
         public void displayMovesOnClients(){
+            System.err.println("Displaying moves on director");
             this.displayMovesOnClients_DIRECTOR();
+             System.err.println("Displaying moves on matcher");
             this.displayMovesOnClientMATCHER();
         }
         
@@ -906,9 +1227,14 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                
            }
            
+           System.err.println("DisplayingmovespAoutput:"+pAOutput);
+           System.err.println("DisplayingmovespBoutput:"+pBOutput);
+           System.err.println("Displayingmovesoutput:"+output);
            
-           
+           //output = "THIS IS OUTPUT";
             if(pA==director){
+                
+                
                String outputTransformed = this.translateFromSystemToGUI(pA,output);
                cC.changePinnedMessage(pA,pAOutput+outputTransformed);
             }
@@ -1019,7 +1345,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
            //String outputTranslated = this.translateFromSystemToGUI(this.director, output);
            ;
            
-           this.jpct.displayText(outputheader +output);
+           this.jpctp.displayText(outputheader +output);
       }
       
      
@@ -1065,8 +1391,11 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
     @Override
     public synchronized void processNotification(String s) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-       
-        if(s.equalsIgnoreCase("timeout")){
+        if(s.equalsIgnoreCase("checkforcompletion")){
+            this.checkForCompletion();
+        }
+        
+        else if(s.equalsIgnoreCase("timeout")){
              //System.exit(-567);
              
              cC.changePinnedMessage(pA,"TIMEOUT. NEXT GAME!");
@@ -1083,12 +1412,16 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
             
             
             this.decreaseScoresTimeout(pA,pB,this.pcset.moves.size());
-            this.createNewSequence(false); 
+            this.appendToTextPane("TIMEOUT!");
+            this.createNewSequence(false,false); 
+            
+            
+            
         }
         else if (s.equalsIgnoreCase("next")){
             //cC.c.textOutputWindow_ChangeText("instructions", ": " ,false, pA );   
             //cC.c.textOutputWindow_ChangeText("instructions", ": " ,false, pB );   
-            this.createNewSequence(false); 
+            this.createNewSequence(false,false); 
         }
         
     }
@@ -1103,7 +1436,7 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
     
       
-      public Vector getAdditionalValues(Participant p){
+      public synchronized Vector getAdditionalValues(Participant p){
         
           
           Vector avs = new Vector(); 
@@ -1135,14 +1468,32 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
           else{
               av4 = new AttribVal("currmove",currMove.getDesc() );
           }
-          AttribVal av5 = new AttribVal("sequence",this.pcset.getSequenceDescription());
+          
+          AttribVal av5 = new AttribVal("score",PCTaskTG.htwdcSCORE.getObject(p));
+          
+          AttribVal av6 = new AttribVal("sequence",this.pcset.getSequenceDescription());
           avs.addElement(av0A);
          
+          
+          boolean currSetIsSolved = this.pcset.issolved();
+          if(currSetIsSolved){
+               AttribVal av7 = new AttribVal("currentsequence","solved");
+               avs.addElement(av7);
+          }
+          else{
+               AttribVal av7 = new AttribVal("currentsequence","unsolved");
+               avs.addElement(av7);
+          }
+          
+          
+         
+          
           avs.addElement(av1);
           avs.addElement(av2);
           avs.addElement(av3);
           avs.addElement(av4);
           avs.addElement(av5);
+          avs.addElement(av6);
           System.err.println("---------------------------------------------------------");
           System.err.println("Sequencedescription is: "+av5.getValAsString());
           return avs;
@@ -1330,18 +1681,35 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
                 finalMoveSet.insertElementAt(numberANDDifferentV.elementAt(i) ,index  );
             }
             this.pcset.moves=finalMoveSet;
-            this.displayMovesOnClients();
+            /////this.displayMovesOnClients();
             
        }
      
-        
+      public String getUISummary(){
+          return "";
+      }   
+       
+       
       
       
       public void kill(){
-          this.jt.doLoop=false;
-          this.jt.jtti=null;
-          this.jt.setVisible(false);
-          this.jpct.setVisible(false);
+          
+          
+          
+              this.checkForTimeOutOfSimultaneousMoves=false;
+              if(jttp!=null)this.jttp.kill();
+          
+              if(jttp!=null)this.jttp.doLoop=false;
+              if(jttp!=null)this.jttp.jtti=null;
+              //this.cC=null;
+          
+          SwingUtilities.invokeLater(new Runnable(){public void run(){
+               if(jttp!=null)jttp.setVisible(false);
+               jpctp.setVisible(false);
+               jpui.setVisible(false);
+          }});
+          
+         
       }
     
       
@@ -1352,8 +1720,8 @@ public class PCTaskTG implements JTrialTimerActionRecipientInterface{
       
       
       
-      private synchronized void checkForTimeouts(){
-          while(true){
+      private synchronized void checkForTimeoutsOfMoves(){
+          while(checkForTimeOutOfSimultaneousMoves){
               try{
                   wait(500);
                   if(this.pcset!=null){

@@ -47,7 +47,7 @@ public class JRulesBasedInterventions extends javax.swing.JPanel {
     JRulesBasedInterventionsTableModelInterventionDelay jrbittmDELAY;
     
     public void createPanels(){
-        Vector<interventionblock> ib =  c.ai.getBlockRules();
+        Vector<interventionblock> ib =  c.getAI().getBlockRules();
         JRulesBasedInterventionsTable jrbit = new JRulesBasedInterventionsTable(c);
         jrbittmBLOCK = new JRulesBasedInterventionsTableModelInterventionBlock(jrbit,c);
          jrbit.setModel(jrbittmBLOCK);
@@ -56,7 +56,7 @@ public class JRulesBasedInterventions extends javax.swing.JPanel {
          jrbittmBLOCK.refresh();
         
         
-        Vector<interventionmodify> im =  c.ai.getModifyRules();
+        Vector<interventionmodify> im =  c.getAI().getModifyRules();
         JRulesBasedInterventionsTable jrbit2 = new JRulesBasedInterventionsTable(c);
         jrbittmMODIFY = new JRulesBasedInterventionsTableModelInterventionModify(jrbit2,c);
         jrbit2.setModel(jrbittmMODIFY);
@@ -65,7 +65,7 @@ public class JRulesBasedInterventions extends javax.swing.JPanel {
         jrbittmMODIFY.refresh();
         
         
-        Vector<interventiondelay> id =  c.ai.getDelayRules();
+        Vector<interventiondelay> id =  c.getAI().getDelayRules();
         JRulesBasedInterventionsTable jrbit3 = new JRulesBasedInterventionsTable(c);
         jrbittmDELAY = new JRulesBasedInterventionsTableModelInterventionDelay(jrbit3,c);
         jrbit3.setModel(jrbittmDELAY);
@@ -199,7 +199,7 @@ public class JRulesBasedInterventions extends javax.swing.JPanel {
         Thread t = new Thread(){
             public void run(){
                 
-                c.ai.loadFromFile();
+                c.getAI().loadFromFile();
                 
                 SwingUtilities.invokeLater(new Runnable(){
                      public void run(){

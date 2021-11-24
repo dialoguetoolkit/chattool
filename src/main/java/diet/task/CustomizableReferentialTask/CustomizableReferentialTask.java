@@ -148,19 +148,37 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          
          
          
-         
-         
-         
-         
-         SwingUtilities.invokeLater(new Runnable(){
-             public void run(){
-                   jcrt = new JCustomizableReferentialTask(crtthis);
+        if(SwingUtilities.isEventDispatchThread()){
+              jcrt = new JCustomizableReferentialTask(crtthis);
                    JFrame jf = new JFrame();
                    jf.getContentPane().add(jcrt);
                    jf.setVisible(true);
                    jf.pack();
-             }
-         });
+                   System.err.println("Created the jcrt");
+            
+        }
+        else{
+            try{
+            SwingUtilities.invokeAndWait(new Runnable(){
+                public void run(){
+                    jcrt = new JCustomizableReferentialTask(crtthis);
+                   JFrame jf = new JFrame();
+                   jf.getContentPane().add(jcrt);
+                   jf.setVisible(true);
+                   jf.pack();
+                   System.err.println("Created the jcrt");
+                }
+            });
+            }catch(Exception e){
+                e.printStackTrace();
+                Conversation.saveErr(e);
+                Conversation.printWSlnLog("Main", "Error creating JCRT");
+            }
+            
+        }
+         
+         
+        
          
          
     }
@@ -1126,6 +1144,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 double score = (double)  this.htPOINTS.getObject(pA);
                 score=score+correctscoreinrement;
                 this.htPOINTS.putObject(pA,score);
+                this.htPOINTS.putObject(pB,score);
             
             }
             else if (sender ==pB){
@@ -1133,6 +1152,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 this.htscoreCORRECT.putObject(pB, scorepBsuccess+1);
                 double score = (double)  this.htPOINTS.getObject(pB);
                 score=score+correctscoreinrement;
+                this.htPOINTS.putObject(pA,score);
                 this.htPOINTS.putObject(pB,score);
             }         
         }
@@ -1146,6 +1166,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 score=score-this.incorrectpenalty;
                 if(score<0)score=0;
                 this.htPOINTS.putObject(pA,score);
+                this.htPOINTS.putObject(pB,score);
             
             }
             else if (sender ==pB){
@@ -1154,6 +1175,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
                 double score = (double)  this.htPOINTS.getObject(pB);
                 score=score-this.incorrectpenalty;
                 if(score<0)score=0;
+                this.htPOINTS.putObject(pA,score);
                 this.htPOINTS.putObject(pB,score);
             }
         }

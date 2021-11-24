@@ -26,17 +26,22 @@ import java.util.Vector;
 public class HahaVariantGenerator {
     
     
-    public int maxlength = 12;
+    public int maxlength = 14;
     Vector<String> allVariants =  new Vector();
     Vector<String> allVariantsSORTED =  new Vector();
     
      public HahaVariantGenerator(){
           this.generateAllVariants();
           allVariantsSORTED =  sortByLength(allVariants);
+          System.err.println("ALL VARIANTS");
+          for(int i=0;i<allVariantsSORTED.size();i++){
+              System.err.println(allVariantsSORTED.elementAt(i));
+          }
 
      }
      
      public void generateAllVariants(){
+          Conversation.printWSln("Main", "Please wait while all variants are loaded...");
           Vector ha = new Vector();
           Vector hha = new Vector();
           Vector hhha = new Vector();
@@ -58,24 +63,27 @@ public class HahaVariantGenerator {
           
           
           
-          generateVVariants(ha,"ha");
-          generateVVariants(hha, "hha");
-          generateVVariants(hhha , "hhha");
+          generateHAHAVariants(ha,"ha");
+          generateHAHAVariants(hha, "hha");
+          generateHAHAVariants(hhha , "hhha");
           
           
-          generateVVariants(ahah , "ahah");
-          generateVVariants(aahah,  "aahah");
-          generateVVariants(ahhah , "ahhah");
+          generateHAHAVariants(ahah , "ahah");
+          generateHAHAVariants(aahah,  "aahah");
+          generateHAHAVariants(ahhah , "ahhah");
           
-          generateVVariants(aaahah , "aaahah");
-          generateVVariants(ahhhah , "ahhhah");
+          generateHAHAVariants(aaahah , "aaahah");
+          generateHAHAVariants(ahhhah , "ahhhah");
           
-          generateVVariants(ahaah , "ahaah");
+          generateHAHAVariants(ahaah , "ahaah");
           
-          generateVVariants(ahahh, "ahahh");
+          generateHAHAVariants(ahahh, "ahahh");
+          
+          /////
+          
+         
           
           
-       
           
           allVariants.addAll(ha);
           allVariants.addAll(hha);
@@ -88,8 +96,52 @@ public class HahaVariantGenerator {
           allVariants.addAll(ahaah);
           allVariants.addAll(ahahh);
           
+          
+          
+          
+          
+          //if(2<5)return;
+          
+          
+          
+          Vector aaaaha = new Vector();
+          Vector aaaaaha = new Vector();
+          Vector aaaaaaha = new Vector();
+          Vector aaaaaaaha = new Vector();
+          Vector aaaaaaaaha = new Vector();
+          
+          generateHAHAVariants(aaaaha,    "aaaaha");
+          generateHAHAVariants(aaaaaha,   "aaaaaha");
+          generateHAHAVariants(aaaaaaha,  "aaaaaaha");
+          generateHAHAVariants(aaaaaaaha, "aaaaaaaaha");
+          generateHAHAVariants(aaaaaaaaha,"aaaaaaaaaha");
+          
+          
+          allVariants.addAll(aaaaha);
+          allVariants.addAll(aaaaaha);
+          allVariants.addAll(aaaaaaha);
+          allVariants.addAll(aaaaaaaha);
+          allVariants.addAll(aaaaaaaaha);
+          
+          
+          Vector lol = new Vector();
+          generateLOLVariants(lol,"lol");
+          allVariants.addAll(lol);
+          
+          Vector llol = new Vector();
+          generateLOLVariants(llol,"llol");
+          allVariants.addAll(llol);
+          
+          
+          Conversation.printWSln("Main", "Loaded variants. There are "+allVariants.size()+ " variants");
+          
      }
     
+     
+      
+     
+     
+     
     
        static Vector<Object> function_that_takes_a_b_merges(Vector<Object> Va, Vector<Object> Vb) {
           Vector<Object> merge = new Vector<Object>();
@@ -120,24 +172,45 @@ public class HahaVariantGenerator {
         }
      
      
-        public  void generateVVariants(Vector v, String s){
+        public  void generateHAHAVariants(Vector v, String s){
           
             
              v.addElement(" "+s+" ");
             if(s.length()>maxlength){
                 //v.addElement(s);
-                //System.out.print(".");
+                //System.out.print("Haha Variant: "+s);
                 return;
             }
             else{
                
                
-                generateVVariants(v,s+"h");
+                generateHAHAVariants(v,s+"h");
                 
-                generateVVariants(v,s+"a");
-            }
-            
+                generateHAHAVariants(v,s+"a");
+            }      
      }
+        
+        
+        
+        public  void generateLOLVariants(Vector v, String s){
+          
+            
+             v.addElement(" "+s+" ");
+            if(s.length()>maxlength){
+                //v.addElement(s);
+                //System.out.print("Lol Variant: "+s);
+                return;
+            }
+            else{
+               
+               
+                generateLOLVariants(v,s+"l");
+                
+                generateLOLVariants(v,s+"o");
+            }      
+     }
+        
+        
     
         
       public String getLargestHahaContainedInString(String s){

@@ -374,12 +374,15 @@ public class ConversationHistory implements Serializable {
 	
 
 	public void closeDown() {
+                
 		try {
-			turns = null;
-			contiguousTurns = null;
+                        Conversation.saveErr("There was a command to close down conversationhistory. This is not necessarily an error.");
+			//turns = null;
+			//contiguousTurns = null;
 			
 		} catch (Exception e) {
-
+                     e.printStackTrace();
+                     
 		}
 	}
 

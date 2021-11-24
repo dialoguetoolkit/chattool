@@ -17,7 +17,9 @@ import diet.message.*;
 import diet.server.ParticipantGroups.ParticipantGroups;
 import diet.server.IsTypingController.IsTypingOrNotTyping;
 import diet.server.Configuration;
+import diet.server.ConversationController.autointervention.autointervention;
 import diet.server.io.IntelligentIO;
+import diet.task.DefaultTaskController;
 import diet.task.TaskControllerInterface;
 import diet.textmanipulationmodules.CyclicRandomTextGenerators.CyclicRandomParticipantIDGeneratorGROOP;
 import diet.tg.TelegramMessageFromClient;
@@ -50,6 +52,8 @@ public abstract class DefaultConversationController  {
     public Conversation c;
     
     
+    //This class detects whether or not to do an auto intervention
+    public autointervention ai ;
     
     
     
@@ -109,6 +113,7 @@ public abstract class DefaultConversationController  {
         c.convIO = new IntelligentIO(c,parentDirectory,this.getID());
         pp = new ParticipantGroups(this);
         itnt = new IsTypingOrNotTyping(this, sett.client_TextEntryWindow_istypingtimeout);
+        this.ai=new autointervention(c);
        
     }
     
@@ -124,7 +129,7 @@ public abstract class DefaultConversationController  {
         c.convIO = new IntelligentIO(c,parentDirectory,this.getID());
         pp = new ParticipantGroups(this);
         itnt = new IsTypingOrNotTyping(this, istypingtimeout);
-        
+        this.ai=new autointervention(c);
     }
     
     /**
@@ -470,7 +475,7 @@ public abstract class DefaultConversationController  {
     }
     
     
-    public void performActionCalledByTaskController(String s){
+    public void performActionCalledByTaskController(String s, DefaultTaskController tc){
         
     }
     
@@ -502,6 +507,15 @@ public abstract class DefaultConversationController  {
     public boolean telegram_startTelegramBOT(){
         return false;
     }
+    
+    
+    public boolean processAutoIntervention(Participant sender, TelegramMessageFromClient tmfc){
+        String text = tmfc.u.getMessage().getText();
+        boolean hasBeenModified = ai.processText(sender, text);
+        return hasBeenModified;
+    }
+    
+    
     
     
     
