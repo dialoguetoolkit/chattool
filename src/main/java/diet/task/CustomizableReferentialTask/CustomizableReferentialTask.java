@@ -86,8 +86,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
     
     boolean isinphysicalfolder = true;        //ok
     
-    public Vector<String[]> vstimuli = new Vector();
-    public Vector<String[]> vstimuliFULL = new Vector();
+    private Vector<String[]> vstimuli = new Vector();
+    private Vector<String[]> vstimuliFULL = new Vector();
     Hashtable htIMAGE = new Hashtable();
     
     int timeouts=0;
@@ -135,8 +135,11 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.stimulusheight=crts.stimulusheight;
          this.stimuluswidth=crts.stimuluswidth;
          this.telegram=crts.telegram;
-         this.vstimuli=crts.vstimuli;
-         this.vstimuliFULL=crts.vstimuliFULL;
+         
+         Vector[] vstimuli = crts.getVstimuli();
+         
+         this.vstimuli=vstimuli[0];
+         this.vstimuliFULL=vstimuli[1];
          
          
          this. showScoreOnEachGame = crts.showScoreOnEachGame;
@@ -368,16 +371,23 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
     
      
      
-      private void checkIfHasLoopedThroughAll(){
+      private boolean checkIfHasLoopedThroughAll(){
           
+         if(vstimuli.size()==0){
+             Conversation.printWSln("Main", option);
+             Conversation.printWSln("Main", "Experiment with "+ this.pA.getParticipantID() + " and "+this.pB.getParticipantID() + " has gone through all stimuli in the list");
+             return true;
+         } 
           
-         while(vstimuli.size()==0){
+         /*while(vstimuli.size()==0){
                       CustomDialog.showDialog("Experiment finished!!");                     
                       //this.hasLoopedThroughAllFaces=true;
                       //vpairs=(Vector)vpairsFULL.clone();
                       System.err.println("HAS LOOPED THROUGH ALL OF THE STIMULI!");
                       Conversation.printWSln("Main", "Has looped through all the stimuli");
           }
+          */
+         return false;
      }
      
      
@@ -387,7 +397,16 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
       
      
      private void loadNextStimulusSetSet(String directoryname){
-                  checkIfHasLoopedThroughAll();   
+                  boolean hasLoopedThroughAll = checkIfHasLoopedThroughAll();   
+                  if(hasLoopedThroughAll){
+                      this.runExperiment=false;
+                      String message = "Experiment finished!";
+                      this.cC.c.telegram_sendInstructionToParticipant_MonospaceFont( (TelegramParticipant)pA, "Experiment finished!");
+                      this.cC.c.telegram_sendInstructionToParticipant_MonospaceFont( (TelegramParticipant)pB, "Experiment finished!");
+                      return;
+                  }
+                  
+                  
                   this.currentTrial = this.vstimuli.elementAt(0);
                   vstimuli.remove(currentTrial);
                   
@@ -425,7 +444,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
      long startOfCurrentGame = new Date().getTime();
     
      
-     
+     public boolean runExperiment = true;
      
      public synchronized void gameloop(){
           try{
@@ -439,7 +458,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
           
           long bonustimethisgame = 0;
           startOfCurrentGame = new Date().getTime();
-          while(2<5){
+          while(runExperiment){
               //
               try{
                   
@@ -522,7 +541,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
               }
                              
           }
-         
+         Conversation.printWSln("Main", "Experiment with "+ this.pA.getParticipantID() + " and "+this.pB.getParticipantID() + " has finished. No more stimuli are being sent.");
          
      }
      
@@ -585,7 +604,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
      
      
      public void doCountdowntoNextSet_Step2_LoadNextSet(){
-         loadNextStimulusSetSet(this.directoryname);     
+         loadNextStimulusSetSet(this.directoryname);   
+         if(!runExperiment)return;
          gamenumber++;
          
          if(!telegram){
@@ -823,8 +843,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
      
       public void doCountdowntoNextSet_Step4_ShowMessageAtStartOfTrial() throws Exception{
                  
-                  
-                            
+                             if(!runExperiment)return;
+                                       
                              int pAPercentageCorrect=0;
                              int pANumberCorrect = getScoreCORRECT(pA);
                              int pANumberINCorrect = getScoreINCORRECT(pA);

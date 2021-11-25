@@ -67,8 +67,8 @@ public class CustomizableReferentialTaskSettings  {
     
     public boolean isinphysicalfolder = true;
     
-    public Vector<String[]> vstimuli = new Vector();
-    public Vector<String[]> vstimuliFULL = new Vector();
+    private Vector<String[]> vstimuli = new Vector();
+    private Vector<String[]> vstimuliFULL = new Vector();
     
     public Hashtable htIMAGE = new Hashtable();
     
@@ -80,6 +80,8 @@ public class CustomizableReferentialTaskSettings  {
     public boolean showScoreOnEachGame = true;
     public boolean showIfSelectionWasCorrrectOrIncorrect  = true;
     public boolean advanceToNextManually = true;
+    
+    public boolean randomizeSequence = false;
    
     // option of looping around when done
     
@@ -113,13 +115,13 @@ public class CustomizableReferentialTaskSettings  {
          
         
          
-         
+           randomizeSequence = CustomDialog.getBoolean("Do you want to randomize the order of the stimuli?", "randomize", "keep order");
         
          
          
          
          
-          boolean randomizeSequence = CustomDialog.getBoolean("Do you want to randomize the order of the stimuli?", "randomize", "keep order");
+        
           if(randomizeSequence){
                Random r = new Random();
                
@@ -329,9 +331,59 @@ public class CustomizableReferentialTaskSettings  {
         e.printStackTrace();
     }
    }
+
+    public Vector<String[]>[] getVstimuli() {
+        // returns two vectors containing the stimuli
+        Vector<String[]> v1 = new Vector();
+        Vector<String[]> v2 = new Vector();
+        
+        if(this.randomizeSequence){
+               Vector<String[]> vrnd = randomizeSequence(vstimuli);
+               v1 = duplicateVectorOfStringArray(vrnd);
+               v2 = duplicateVectorOfStringArray(vrnd);
+               return new Vector[]{v1,v2};
+        }
+        else{
+             v1 = duplicateVectorOfStringArray(vstimuli);
+             v2 = duplicateVectorOfStringArray(vstimuli);
+             return new Vector[]{v1,v2};
+        }
+            
+       
+    }
+
     
     
     
+    public static Vector<String[]> randomizeSequence(Vector<String[]> v){
+        Random r = new Random();
+        Vector<String[]> vRandomized = new Vector();
+        for(int i=0;i<v.size();i++){
+             Object o = v.elementAt(i);
+             vRandomized.insertElementAt((String[])o, r.nextInt(vRandomized.size()+1));
+        }
+        Vector<String[]> v1 = vRandomized;
+        //Vector<String[]> v2 = (Vector<String[]>)v1.clone();
+        return v1;
+    }
+     
+    
+    
+    
+    
+    
+    static public Vector<String[]> duplicateVectorOfStringArray(Vector<String[]> vSA){
+        Vector<String[]> vSANEW = new Vector();
+        for(int i=0;i<vSA.size();i++){
+            String[] sA = vSA.elementAt(i);
+            String[] sACOPY = new String[sA.length];
+            for(int j=0;j<sA.length;j++){
+                sACOPY[j]=sA[j]+"";
+            }
+            vSANEW.add(sACOPY);
+        }
+        return vSANEW;
+    }
     
     
     
