@@ -2522,6 +2522,9 @@ public class Conversation extends Thread{
         if(em!=null){
             em.println(windowName, text);
         }
+        else{
+            System.err.println("PRINTWLN EM IS NULL"+windowName+" "+text);
+        }
         convIO.saveWindowTextToLog(windowName, text);
     }
 

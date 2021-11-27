@@ -11,6 +11,7 @@ import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.Participant;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettingsFactory;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -22,8 +23,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  */
 public class Telegram_Dyadic_Customizable_ReferentialTask extends TelegramController{
 
-    
-    CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, null, null );
+    CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this,true);
+    CustomizableReferentialTaskSettings crts=crtsf.getNextCustomizableReferentialTaskSettings();
     CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
    // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
    // Participant pDirector;
@@ -32,10 +33,15 @@ public class Telegram_Dyadic_Customizable_ReferentialTask extends TelegramContro
     
     public Telegram_Dyadic_Customizable_ReferentialTask(Conversation c) {
         super(c);
+        
+        
     }
 
     public Telegram_Dyadic_Customizable_ReferentialTask(Conversation c, long istypingtimeout) {
         super(c, istypingtimeout);
+        
+        
+
     }
 
     

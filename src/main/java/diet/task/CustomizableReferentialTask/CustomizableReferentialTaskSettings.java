@@ -60,15 +60,18 @@ public class CustomizableReferentialTaskSettings  {
     
    
     
-    public String directoryname =  "tangramset01";//"tangramset02directortraining";
+    public String directoryname =  "";
       
     public int stimuluswidth = -1;
     public int stimulusheight=-1;   
     
     public boolean isinphysicalfolder = true;
     
-    public Vector<String[]> vstimuli = new Vector();
-    public Vector<String[]> vstimuliFULL = new Vector();
+    
+    public Vector<String[]> vs= new Vector();
+    
+    //public Vector<String[]> vstimuli = new Vector();
+   // public Vector<String[]> vstimuliFULL = new Vector();
     
     public Hashtable htIMAGE = new Hashtable();
     
@@ -81,185 +84,30 @@ public class CustomizableReferentialTaskSettings  {
     public boolean showIfSelectionWasCorrrectOrIncorrect  = true;
     public boolean advanceToNextManually = true;
    
+    public String filename;
+    
     // option of looping around when done
     
     
-    public CustomizableReferentialTaskSettings(DefaultConversationController cC,  boolean telegram,  String stimulisubfolderCANBENULL, String sequencefilenameCANBENULL){
-         //this.durationOfStimulus=durationOfStimulus;    
-         //if(2<5)System.exit()
-         
+    public CustomizableReferentialTaskSettings(DefaultConversationController cC, Vector<String[]> vs , String foldername, String filename){
+
          this.cC=cC; 
-         
-         if(stimulisubfolderCANBENULL!=null  && sequencefilenameCANBENULL!=null){
-              String fn =    System.getProperty("user.dir") +   File.separator        +  "experimentresources"+File.separator+"stimuli" +  File.separator+stimulisubfolderCANBENULL + File.separator+ sequencefilenameCANBENULL;
-              File seqF = new File(fn);
-              if(seqF.exists()){
-                  loadFromFile(seqF);
-              }
-              else{
-                  CustomDialog.showDialog("Can't find the file:\n\n"
-                     + sequencefilenameCANBENULL+"\n\n"
-                     + "in the folder:\n\n"
-                     + stimulisubfolderCANBENULL +"\n\n"
-                     + "The system is looking in: \n\n"+fn+ "\n\n\n"
-                     +  "You might be able to find it manually:");
-             
-                  loadFromFile(null);
-               }
-         }
-         else{
-              loadFromFile(null);
-         }
-         
-        
-         
-         
-        
-         
-         
-         
-         
-          boolean randomizeSequence = CustomDialog.getBoolean("Do you want to randomize the order of the stimuli?", "randomize", "keep order");
-          if(randomizeSequence){
-               Random r = new Random();
-               
-               Vector<String[]> vRandomized = new Vector();
-               for(int i=0;i<this.vstimuli.size();i++){
-                   Object o = this.vstimuli.elementAt(i);
-                   vRandomized.insertElementAt((String[])o, r.nextInt(vRandomized.size()+1));
-               }
-               this.vstimuli=vRandomized;
-               this.vstimuliFULL=(Vector<String[]>)vRandomized.clone();
-               
-               
-          }
-          
-         
-         
-         
-          durationOfGame = CustomDialog.getLong("How long is a game?", 60000);
-          durationOfStimulus =  CustomDialog.getLong("How long should the stimuli be displayed for?", 600000);
-          showButtons = CustomDialog.getBoolean("Do you want to show buttons underneath the stimuli on the clients?", "Buttons", "No Buttons");
-     
-         
-         
-         
-         this.telegram=telegram;
-         
-         //loadStimuliList();
+         this.vs = vs;
+            
+         this.directoryname=foldername;
+         this.filename=filename;
+       
          Dimension d =  getImageHeights();
          if(d.width==-1||d.height==-1) {
-             CustomDialog.showDialog("The server can't find the images in the JAR file\nTry recompiling the project!");
+             CustomDialog.showDialog("The server can't find the images...\nTry recompiling the project!");
          }
          stimuluswidth=d.width;
          stimulusheight=d.height;
-         
-         final CustomizableReferentialTaskSettings crtthis = this;
-         
-         if(telegram) this.deleteStimulusAfterEachTrial = CustomDialog.getBoolean("Do you want to delete the stimuli from the telegram window after each trial?", "Delete", "Keep");
-         
-        
-         
-         
-        showScoreOnEachGame = CustomDialog.getBoolean("Do you want to show the score after each trial?", "Show", "Don`t show");
-        showIfSelectionWasCorrrectOrIncorrect = CustomDialog.getBoolean("Do you want to show if the previous trial was correct / incorrect?", "Show", "Don`t show");
-
-        advanceToNextManually =   !CustomDialog.getBoolean("Do you want participants to advance automatically\n or do participants have to type /NEXT to advance to next stimuli?", "Automatic advancement", "Manual advancement by typing /NEXT");
-        
-         
+             
          
     }
  
-    
-    
-   private void loadFromFile(File stimulisequence){
-       
-       if(stimulisequence==null || !stimulisequence.exists()){
-       String userdir = System.getProperty("user.dir");
-       String directory = (userdir+File.separator+"experimentresources"+ File.separator+ "stimuli");
-       
-       CustomDialog.showDialog("Important:\n\n(1) The stimuli must be in a subdirectory of /experimentresources/stimuli.\n"
-               + "(2) The file containing the stimuli sequence must be in the same subdirectory as the stimuli.\n"
-               + "\n(See usermanual for more details!)");
-       stimulisequence = CustomDialog.loadFileWithExtension(directory, "Choose the text file containing the sequences of stimuli. \nIt must be in the same directory as the stimuli", "txt", "Text file containing the list of stimuli and correct answers");
 
-       }
-       
-        String foldername = stimulisequence.getParentFile().getName();
-       this.directoryname=foldername;
-       System.err.println("Looking in "+directoryname);
-       if(stimulisequence==null)CustomDialog.showDialog("Couldn't find the file!");
-       Vector data = new Vector();
-        try{
-            
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(stimulisequence), "UTF-8"));
-            //BufferedReader br = new BufferedReader(new FileReader(stimulisequence)); 
-            String st;
-            String header = br.readLine();
-            while ((st = br.readLine()) != null){ 
-                 System.out.println(st);
-                 
-                 //st= st.replace(" ", "");
-                 String[] row =  st.split("¦");
-                 data.addElement(row);
-                 System.out.println("Split to:");
-                 for(int i =0;i<row.length;i++){
-                     System.out.print(row[i]+ "|");
-                     if(i<4) row[i]=row[i].replace(" ", "");
-                 }
-                 System.out.println("");
-                  
-                 
-                 
-            } 
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-      
-        this.vstimuli=(Vector<String[]>)data.clone();
-        this.vstimuliFULL=(Vector<String[]>)data.clone();
-        try{
-           this.checkStimuliFilesExist();
-        }catch(Exception e){
-            e.printStackTrace();
-            Conversation.saveErr(e);
-            CustomDialog.showDialog("Error loading the stimuli - it could be that there is empty space at the end of the script containing the stimuli names! Please check and restart!");
-        }
-   }
-  
-    
-   private void checkStimuliFilesExist(){
-       String userdir = System.getProperty("user.dir");
-       String dir = (userdir+File.separator+"experimentresources"+ File.separator+ "stimuli"+ File.separator+directoryname);
-       
-       
-       for(int i=0;i<this.vstimuliFULL.size();i++){
-           File f1 = new File(dir, (String)vstimuliFULL.elementAt(i)[0]);
-           if(!f1.exists()){
-               CustomDialog.showDialog("Can't find file:\n\n"+f1.getAbsolutePath()+"\n\nCheck and fix the stimuli sequence before running the experiment!" );
-           }
-           File f2 = new File(dir, (String)vstimuliFULL.elementAt(i)[1]);
-           if(!f2.exists()){
-               CustomDialog.showDialog("Can't find file:\n\n"+f2.getAbsolutePath()+"\n\nCheck and fix the stimuli sequence before running the experiment!" );
-           }
-           
-           try{
-                BufferedImage image1 = ImageIO.read(f1);
-                BufferedImage image2 = ImageIO.read(f2);
-                this.htIMAGE.put(vstimuliFULL.elementAt(i)[0],image1);
-                this.htIMAGE.put(vstimuliFULL.elementAt(i)[1],image2);
-      
-          } catch (Exception e){
-               e.printStackTrace();
-               Conversation.saveErr(e);
-               CustomDialog.showDialog("Error loading the file - it could be that there is empty space at the end of the script:");
-           }
-           
-           
-       }
-   }
-   
-      
    
     
     Dimension getImageHeights(){
@@ -269,7 +117,7 @@ public class CustomizableReferentialTaskSettings  {
     private Dimension getImageHeightsFILE(){   
          String userdir = System.getProperty("user.dir");
          String dir = (userdir+File.separator+"experimentresources"+ File.separator+ "stimuli"+ File.separator+directoryname);
-         String firstfilename = dir+"/"+vstimuliFULL.elementAt(0)[0];
+         String firstfilename = dir+File.separator+vs.elementAt(0)[0];
          System.err.println("Trying to get image heights for: "+firstfilename);
          BufferedImage bimg =null ;
          try{
@@ -287,8 +135,70 @@ public class CustomizableReferentialTaskSettings  {
     }
     
     
-    private Dimension getImageHeightsJAR(){   
-        String firstfilename = directoryname+"/"+vstimuliFULL.elementAt(0)[0];
+    
+    
+    
+  
+
+    public Vector<String[]> getVstimuli() {
+        // returns two vectors containing the stimuli
+        Vector<String[]> v1 = new Vector();
+        //Vector<String[]> v2 = new Vector();
+     
+         v1 = duplicateVectorOfStringArray(vs);
+         //v2 = duplicateVectorOfStringArray(vs);
+         //return new Vector[]{v1,v2};
+         return v1;
+            
+       
+    }
+
+    
+    
+    
+    public static Vector<String[]> randomizeSequence(Vector<String[]> v){
+        Random r = new Random();
+        Vector<String[]> vRandomized = new Vector();
+        for(int i=0;i<v.size();i++){
+             Object o = v.elementAt(i);
+             vRandomized.insertElementAt((String[])o, r.nextInt(vRandomized.size()+1));
+        }
+        Vector<String[]> v1 = vRandomized;
+        //Vector<String[]> v2 = (Vector<String[]>)v1.clone();
+        return v1;
+    }
+     
+    
+    
+    
+    
+    
+    static public Vector<String[]> duplicateVectorOfStringArray(Vector<String[]> vSA){
+        Vector<String[]> vSANEW = new Vector();
+        for(int i=0;i<vSA.size();i++){
+            String[] sA = vSA.elementAt(i);
+            String[] sACOPY = new String[sA.length];
+            for(int j=0;j<sA.length;j++){
+                sACOPY[j]=sA[j]+"";
+            }
+            vSANEW.add(sACOPY);
+        }
+        return vSANEW;
+    }
+    
+    
+    
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    private Dimension getImageHeightsJARDEPRECATED(){   
+        String firstfilename = directoryname+"/"+vs.elementAt(0)[0];
         System.err.println("Trying to get image heights for: "+firstfilename);
         BufferedImage bimg =null ;
         try {   
@@ -304,41 +214,6 @@ public class CustomizableReferentialTaskSettings  {
        } 
         return new Dimension(-1,-1); 
     }   
-    
-    
-    
-    private void loadReferentlist(String option){
-      
-       InputStream inp = this.getClass().getResourceAsStream("/"+option);  
-       try {    
-        BufferedReader br = new BufferedReader(new InputStreamReader(inp, "UTF-8"));
-        StringBuilder sb = new StringBuilder();
-        String line = br.readLine();
-        while (line != null) {
-            String[] splitline = line.split(" ");
-            this.vstimuli.addElement(splitline);
-             
-            sb.append(line);
-            sb.append("\n");
-            line = br.readLine();
-            
-        }
-        String everything = sb.toString();
-       }
-        catch (Exception e){
-        e.printStackTrace();
-    }
-   }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-     
      
      
      

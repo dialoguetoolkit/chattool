@@ -11,6 +11,7 @@ import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.Participant;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettingsFactory;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -23,7 +24,9 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class Telegram_Dyadic_DeepfakeBotOrNot extends TelegramController{
 
     
-    CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "facerealornot" ,"facefakeorreal.txt");
+    CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this, true, "facerealornot" ,"facefakeorreal.txt");
+    CustomizableReferentialTaskSettings crts = crtsf.getNextCustomizableReferentialTaskSettings();
+    //CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "facerealornot" ,"facefakeorreal.txt");
     CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
    // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
    // Participant pDirector;

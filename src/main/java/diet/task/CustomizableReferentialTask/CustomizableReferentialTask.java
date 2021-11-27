@@ -86,8 +86,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
     
     boolean isinphysicalfolder = true;        //ok
     
-    public Vector<String[]> vstimuli = new Vector();
-    public Vector<String[]> vstimuliFULL = new Vector();
+    private Vector<String[]> vstimuli = new Vector();
+    private Vector<String[]> vstimuliFULL = new Vector();
     Hashtable htIMAGE = new Hashtable();
     
     int timeouts=0;
@@ -114,6 +114,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
    boolean showScoreOnEachGame = false;
    boolean showIfSelectionWasCorrrectOrIncorrect = false;
    boolean advanceToNextManually = false;
+   
+   String filename ="";
     
     
     
@@ -126,6 +128,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.correctscoreinrement = crts.correctscoreinrement;
          this.deleteStimulusAfterEachTrial = crts.deleteStimulusAfterEachTrial;
          this.directoryname = crts.directoryname;
+         this.filename = crts.filename;
          this.durationOfGame = crts.durationOfGame;
          this.durationOfStimulus= crts.durationOfStimulus;
          this.htIMAGE= crts.htIMAGE;
@@ -135,8 +138,16 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.stimulusheight=crts.stimulusheight;
          this.stimuluswidth=crts.stimuluswidth;
          this.telegram=crts.telegram;
-         this.vstimuli=crts.vstimuli;
-         this.vstimuliFULL=crts.vstimuliFULL;
+         
+         if(!telegram)CustomDialog.showDialog("This code has been mainly tested with the Telegram interface.\nT"
+                 + "There might be some bugs that need ironing out if running this code with the java interface.\n"
+                 + "Please let the developers know if you encounter anything that needs to be fixed!"
+                 + "");
+         
+         //Vector[] vstimuli = crts.getVstimuli();
+         
+         this.vstimuli=crts.getVstimuli();
+         this.vstimuliFULL=CustomizableReferentialTaskSettings.duplicateVectorOfStringArray(vstimuli);
          
          
          this. showScoreOnEachGame = crts.showScoreOnEachGame;
@@ -368,16 +379,23 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
     
      
      
-      private void checkIfHasLoopedThroughAll(){
+      private boolean checkIfHasLoopedThroughAll(){
           
+         if(vstimuli.size()==0){
+             Conversation.printWSln("Main", option);
+             Conversation.printWSln("Main", "Experiment with "+ this.pA.getParticipantID() + " and "+this.pB.getParticipantID() + " has gone through all stimuli in the list");
+             return true;
+         } 
           
-         while(vstimuli.size()==0){
+         /*while(vstimuli.size()==0){
                       CustomDialog.showDialog("Experiment finished!!");                     
                       //this.hasLoopedThroughAllFaces=true;
                       //vpairs=(Vector)vpairsFULL.clone();
                       System.err.println("HAS LOOPED THROUGH ALL OF THE STIMULI!");
                       Conversation.printWSln("Main", "Has looped through all the stimuli");
           }
+          */
+         return false;
      }
      
      
@@ -387,7 +405,16 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
       
      
      private void loadNextStimulusSetSet(String directoryname){
-                  checkIfHasLoopedThroughAll();   
+                  boolean hasLoopedThroughAll = checkIfHasLoopedThroughAll();   
+                  if(hasLoopedThroughAll){
+                      this.runExperiment=false;
+                      String message = "Experiment finished!";
+                      this.cC.c.telegram_sendInstructionToParticipant_MonospaceFont( (TelegramParticipant)pA, "Experiment finished!");
+                      this.cC.c.telegram_sendInstructionToParticipant_MonospaceFont( (TelegramParticipant)pB, "Experiment finished!");
+                      return;
+                  }
+                  
+                  
                   this.currentTrial = this.vstimuli.elementAt(0);
                   vstimuli.remove(currentTrial);
                   
@@ -425,7 +452,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
      long startOfCurrentGame = new Date().getTime();
     
      
-     
+     public boolean runExperiment = true;
      
      public synchronized void gameloop(){
           try{
@@ -439,7 +466,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
           
           long bonustimethisgame = 0;
           startOfCurrentGame = new Date().getTime();
-          while(2<5){
+          while(runExperiment){
               //
               try{
                   
@@ -522,7 +549,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
               }
                              
           }
-         
+         Conversation.printWSln("Main", "Experiment with "+ this.pA.getParticipantID() + " and "+this.pB.getParticipantID() + " has finished. No more stimuli are being sent.");
          
      }
      
@@ -585,7 +612,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
      
      
      public void doCountdowntoNextSet_Step2_LoadNextSet(){
-         loadNextStimulusSetSet(this.directoryname);     
+         loadNextStimulusSetSet(this.directoryname);   
+         if(!runExperiment)return;
          gamenumber++;
          
          if(!telegram){
@@ -823,8 +851,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
      
       public void doCountdowntoNextSet_Step4_ShowMessageAtStartOfTrial() throws Exception{
                  
-                  
-                            
+                             if(!runExperiment)return;
+                                       
                              int pAPercentageCorrect=0;
                              int pANumberCorrect = getScoreCORRECT(pA);
                              int pANumberINCorrect = getScoreINCORRECT(pA);
@@ -1208,6 +1236,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          String stimulusself ="";
          String stimulusother ="";
          Vector avs = new Vector();
+         AttribVal av = new AttribVal("setname",""+this.filename);
          if(pA==p){
              stimulusself=directoryname+"/"+this.currentTrial[0];
              stimulusother=directoryname+"/"+this.currentTrial[1];
@@ -1224,6 +1253,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
              else {
                  av6 = new AttribVal("haslooped","NO");
              }
+             avs.addElement(av);
              avs.addElement(av0);avs.addElement(av1); avs.addElement(av2); avs.addElement(av3); avs.addElement(av4); avs.addElement(av5);avs.addElement(av6);
          }
          if(pB==p){
@@ -1241,6 +1271,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
              }else {
                  av6 = new AttribVal("haslooped","NO");
              }
+             avs.addElement(av);
              avs.addElement(av0);avs.addElement(av1); avs.addElement(av2); avs.addElement(av3); avs.addElement(av4);avs.addElement(av5);avs.addElement(av6);
          }
     
