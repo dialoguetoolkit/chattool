@@ -134,7 +134,8 @@ public class IntelligentIO {
     
     
     public  void saveWindowTextToLog(String windowName, String s){
-        this.writeToTextFileCreatingIfNecessary("window_"+windowName+".txt", s+"\n");
+        long t = new Date().getTime();
+        this.writeToTextFileCreatingIfNecessary("window_"+windowName+".txt", t+": "+    s+"\n");
         System.err.println("Saving window message:"+s);
     }
     

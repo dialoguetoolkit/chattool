@@ -114,6 +114,8 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
    boolean showScoreOnEachGame = false;
    boolean showIfSelectionWasCorrrectOrIncorrect = false;
    boolean advanceToNextManually = false;
+   
+   String filename ="";
     
     
     
@@ -126,6 +128,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.correctscoreinrement = crts.correctscoreinrement;
          this.deleteStimulusAfterEachTrial = crts.deleteStimulusAfterEachTrial;
          this.directoryname = crts.directoryname;
+         this.filename = crts.filename;
          this.durationOfGame = crts.durationOfGame;
          this.durationOfStimulus= crts.durationOfStimulus;
          this.htIMAGE= crts.htIMAGE;
@@ -136,10 +139,15 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          this.stimuluswidth=crts.stimuluswidth;
          this.telegram=crts.telegram;
          
-         Vector[] vstimuli = crts.getVstimuli();
+         if(!telegram)CustomDialog.showDialog("This code has been mainly tested with the Telegram interface.\nT"
+                 + "There might be some bugs that need ironing out if running this code with the java interface.\n"
+                 + "Please let the developers know if you encounter anything that needs to be fixed!"
+                 + "");
          
-         this.vstimuli=vstimuli[0];
-         this.vstimuliFULL=vstimuli[1];
+         //Vector[] vstimuli = crts.getVstimuli();
+         
+         this.vstimuli=crts.getVstimuli();
+         this.vstimuliFULL=CustomizableReferentialTaskSettings.duplicateVectorOfStringArray(vstimuli);
          
          
          this. showScoreOnEachGame = crts.showScoreOnEachGame;
@@ -1228,6 +1236,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
          String stimulusself ="";
          String stimulusother ="";
          Vector avs = new Vector();
+         AttribVal av = new AttribVal("setname",""+this.filename);
          if(pA==p){
              stimulusself=directoryname+"/"+this.currentTrial[0];
              stimulusother=directoryname+"/"+this.currentTrial[1];
@@ -1244,6 +1253,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
              else {
                  av6 = new AttribVal("haslooped","NO");
              }
+             avs.addElement(av);
              avs.addElement(av0);avs.addElement(av1); avs.addElement(av2); avs.addElement(av3); avs.addElement(av4); avs.addElement(av5);avs.addElement(av6);
          }
          if(pB==p){
@@ -1261,6 +1271,7 @@ public class CustomizableReferentialTask implements JTrialTimerActionRecipientIn
              }else {
                  av6 = new AttribVal("haslooped","NO");
              }
+             avs.addElement(av);
              avs.addElement(av0);avs.addElement(av1); avs.addElement(av2); avs.addElement(av3); avs.addElement(av4);avs.addElement(av5);avs.addElement(av6);
          }
     

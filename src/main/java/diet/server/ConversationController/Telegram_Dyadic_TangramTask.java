@@ -12,6 +12,7 @@ import diet.server.Participant;
 import diet.server.ParticipantGroups.ParticipantGroup;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettingsFactory;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import java.util.Hashtable;
@@ -26,7 +27,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class Telegram_Dyadic_TangramTask extends TelegramController{
 
     
-    CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "tangramset01", "tangramsequence.txt" );
+    
+    CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this, true, "tangramset01" ,"tangramsequence.txt");
+    CustomizableReferentialTaskSettings crts = crtsf.getNextCustomizableReferentialTaskSettings();
+   
+    
+    //CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "tangramset01", "tangramsequence.txt" );
    
     Hashtable ht_pg_crt = new Hashtable();
     Hashtable ht_p_crt = new Hashtable();

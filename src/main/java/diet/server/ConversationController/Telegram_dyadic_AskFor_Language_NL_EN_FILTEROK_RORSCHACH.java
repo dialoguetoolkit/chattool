@@ -18,6 +18,7 @@ import diet.server.ConversationController.ui.JInterfaceTwelveButtons;
 import diet.server.Participant;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettingsFactory;
 import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import java.util.Hashtable;
@@ -37,7 +38,11 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_FILTEROK_RORSCHACH extends Te
    // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
     
     
-    CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true, "rorschachset01", "rorschachlongersequence.txt" );
+     CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this, true, "rorschachset01", "rorschachlongersequence.txt");
+    CustomizableReferentialTaskSettings crts = crtsf.getNextCustomizableReferentialTaskSettings();
+   
+    
+   // CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this,true,  );
    
    // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
    // Participant pDirector;

@@ -12,6 +12,7 @@ import diet.server.ConversationController.ui.CustomDialog;
 import diet.server.Participant;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTask;
 import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings;
+import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettingsFactory;
 
 /**
  *
@@ -20,8 +21,13 @@ import diet.task.CustomizableReferentialTask.CustomizableReferentialTaskSettings
 public class TurnByTurn_Dyadic_Customizable_ReferentialTask extends TurnByTurn_Dyadic{
     
     
-    CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this, false, null, null );
+    CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this,false);
+    CustomizableReferentialTaskSettings crts;// = new CustomizableReferentialTaskSettings(this,true, null, null );
     CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+    
+    
+    //CustomizableReferentialTaskSettings crts = new CustomizableReferentialTaskSettings(this, false, null, null );
+    //CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
    // Participant pDirector;
    // Participant pMatcher;
     
