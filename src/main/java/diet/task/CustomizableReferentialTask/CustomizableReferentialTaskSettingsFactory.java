@@ -268,7 +268,7 @@ public class CustomizableReferentialTaskSettingsFactory {
         }
 
         CustomizableReferentialTaskSettings crts = this.vcrts.elementAt(indexOfNextFree);
-        Conversation.printWSln("Main", "Returning stimuli set "+crts.filename);
+        Conversation.printWSln("Main", "Using stimuli set "+crts.filename);
         indexOfNextFree++;
         return crts;
     }

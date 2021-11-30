@@ -1,4 +1,5 @@
 P1 IMAGE¦P2 IMAGE¦MATCHER, 1=P1, 2=P2, B=BOTH ¦BUTTONS DISPLAYED ¦CORRECT ANSWER
 r04.png    ¦r04.png    ¦B¦S,D¦S
-r15.png    ¦r15.png    ¦B¦S,D¦S
-r21.png    ¦r21.png    ¦B¦S,D¦S
+r11.png    ¦r12.png    ¦B¦S,D¦D
+r24.png    ¦r24.png    ¦B¦S,D¦S
+r22.png    ¦r23.png    ¦B¦S,D¦D
