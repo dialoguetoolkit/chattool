@@ -1,5 +1,4 @@
-rorschachlongersequence.txt
-rorschachlongersequence.txt
-rorschachlongersequence.txt
-rorschachlongersequence.txt
-rorschachshortsequence.txt
+testsequence1.txt
+testsequence2.txt
+testsequence3.txt
+testsequence4.txt

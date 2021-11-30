@@ -25,7 +25,7 @@ public class Telegram_Dyadic_Customizable_ReferentialTask_Automatic_Start extend
     
     
     CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this, true);
-    CustomizableReferentialTaskSettings crts = crtsf.getNextCustomizableReferentialTaskSettings();
+    //CustomizableReferentialTaskSettings crts = crtsf.getNextCustomizableReferentialTaskSettings();
     //CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
    // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
    // Participant pDirector;
@@ -52,7 +52,7 @@ public class Telegram_Dyadic_Customizable_ReferentialTask_Automatic_Start extend
  
      public void startParticipants(TelegramParticipant tp1, TelegramParticipant tp2){
          pp.createNewSubdialogue(tp1,tp2);
-         CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crts);
+         CustomizableReferentialTask crt = new CustomizableReferentialTask(this, crtsf.getNextCustomizableReferentialTaskSettings());
          c.telegram_sendInstructionToParticipant_MonospaceFont(tp1, "Please start!");
          c.telegram_sendInstructionToParticipant_MonospaceFont(tp2, "Please start!");
          crt.startTask(tp1, tp2);
