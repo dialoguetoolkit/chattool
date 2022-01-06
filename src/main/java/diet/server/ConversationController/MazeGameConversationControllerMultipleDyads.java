@@ -51,11 +51,13 @@ public class MazeGameConversationControllerMultipleDyads extends DefaultConversa
         sett.client_numberOfWindows = 1;
     }
    
+     @Override
+     public boolean requestParticipantJoinConversation(String participantID) {  
+         return true;
+     }
     
-    
-    
-    @Override
-    public boolean requestParticipantJoinConversation(String participantID) {    
+    //@Override
+    public boolean requestParticipantJoinConversationDEPRECATED(String participantID) {    
         
         //This section is only for autologin (i.e. when programming / testing the setup)
          if(DefaultConversationController.sett.login_autologin){
@@ -128,8 +130,64 @@ public class MazeGameConversationControllerMultipleDyads extends DefaultConversa
     }
     
     
-    @Override
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     @Override
     public synchronized void participantJoinedConversation(final Participant p) {
+        super.participantJoinedConversation(p);
+        c.changeClientInterface_disableScrolling(p);
+        if(p.getParticipantID().startsWith("LLLL")){
+            this.participantsQueuedLLLL.addElement(p);
+        }
+        else if (p.getParticipantID().startsWith("RRRR")){
+            this.participantsQueuedRRRRR.addElement(p);
+        }
+        else if (c.getParticipants().getAllParticipants().size() % 2 == 0){
+             this.participantsQueuedLLLL.addElement(p);
+        }
+        else{
+             this.participantsQueuedRRRRR.addElement(p);
+        }
+        
+        
+        
+        
+        Conversation.printWSln("Main", "No. of participants in set 1:"+this.participantsQueuedLLLL.size()+"   No. of participants in set 2:"+ this.participantsQueuedRRRRR.size());
+        if(this.participantsQueuedLLLL.size()!=this.participantsQueuedRRRRR.size()){
+            Conversation.printWSln("Main","UNEQUAL SET SIZES - DO NOT START THE EXPERIMENT");
+        }
+        else{
+            Conversation.printWSln("Main","EQUAL SET SIZES: OK TO START");
+        }
+        
+        
+        if(c.getParticipants().getAllParticipants().size()==2) {
+             
+             //this.startmazegame();
+        }
+        
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+    public synchronized void participantJoinedConversationDEPRECATED(final Participant p) {
         super.participantJoinedConversation(p);
         c.changeClientInterface_disableScrolling(p);
         if(p.getParticipantID().startsWith("LLLL")){
@@ -159,7 +217,7 @@ public class MazeGameConversationControllerMultipleDyads extends DefaultConversa
     
     public void startexperiment(boolean shuffle){
         if(this.participantsQueuedLLLL.size()!=this.participantsQueuedRRRRR.size()){
-            Conversation.printWSln("Main", "CANNOT START - THERE IS AN UNEQUAL NUMBER OF GROUPS");
+            Conversation.printWSln("Main", "CANNOT START - THERE IS AN UNEQUAL NUMBER OF PARTICIPANTS");
             return;
         }
         
@@ -190,8 +248,8 @@ public class MazeGameConversationControllerMultipleDyads extends DefaultConversa
     
       public void startexperimentChooseSet(){
           if(this.participantsQueuedLLLL.size()!=this.participantsQueuedRRRRR.size()){
-            Conversation.printWSln("Main", "CANNOT START - THERE IS AN UNEQUAL NUMBER OF GROUPS");
-            CustomDialog.showDialog("CANNOT START - THERE IS AN UNEQUAL NUMBER OF GROUPS");
+            Conversation.printWSln("Main", "CANNOT START - THERE IS AN UNEQUAL NUMBER OF PARTICIPANTS");
+            CustomDialog.showDialog("CANNOT START - THERE IS AN UNEQUAL NUMBER OF PARTICIPANTS");
             return;
         }
         

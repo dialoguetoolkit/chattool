@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lx</groupId>
     <artifactId>chattoolTG</artifactId>
-    <version>5.3.5</version>
+    <version>5.3.7</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
