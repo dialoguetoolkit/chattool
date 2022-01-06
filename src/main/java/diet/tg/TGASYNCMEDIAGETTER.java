@@ -199,11 +199,14 @@ public class TGASYNCMEDIAGETTER extends Thread{
     
  private String getFilePath(PhotoSize photo) {
     Objects.requireNonNull(photo);
-
-    if (photo.hasFilePath()) { // If the file_path is already present, we are done!
-        System.err.println("PHOT:IT HAS A FILE PATH: "+photo.getFilePath().toString());
+   
+    try{
         return photo.getFilePath();
-    } else { // If not, let find it
+    }catch (Exception e){
+        e.printStackTrace();
+    }
+    
+    //If not, let find it
         // We create a GetFile method and set the file_id from the photo
         System.err.println("PHOT:IT DOESN'T HAVE A FILE PATH: ");
         GetFile getFileMethod = new GetFile();
@@ -225,7 +228,7 @@ public class TGASYNCMEDIAGETTER extends Thread{
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
+    
     
     return null; // Just in case
 }

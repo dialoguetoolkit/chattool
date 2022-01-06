@@ -70,9 +70,14 @@ public class TGUTILS {
  private String getFilePath(PhotoSize photo) {
     Objects.requireNonNull(photo);
 
-    if (photo.hasFilePath()) { // If the file_path is already present, we are done!
+    //if (photo.hasFilePath()) { // If the file_path is already present, we are done!
+       try{
         return photo.getFilePath();
-    } else { // If not, let find it
+       } catch (Exception e){
+           e.printStackTrace();
+       }
+        
+   // } else { // If not, let find it
         // We create a GetFile method and set the file_id from the photo
         GetFile getFileMethod = new GetFile();
         getFileMethod.setFileId(photo.getFileId());
@@ -86,7 +91,7 @@ public class TGUTILS {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
+   // }
     
     return null; // Just in case
 }

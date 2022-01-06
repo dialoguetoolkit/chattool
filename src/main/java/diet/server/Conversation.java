@@ -33,7 +33,6 @@ import diet.tg.TelegramMessageFromClient;
 import diet.tg.TelegramParticipant;
 import diet.tg.tgSTARTER;
 import java.awt.Color;
-import static java.awt.SystemColor.text;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -50,6 +49,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.PhotoSize;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -2669,9 +2669,9 @@ public class Conversation extends Thread{
               TelegramParticipant recipient = (TelegramParticipant)recipients.elementAt(i);
               long recipientID = recipient.getConnection().telegramID;
               
-              SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(recipientID)
-                .setText(text);
+              SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                message.setChatId(""+recipientID);
+                message.setText(text);
                 recipient.sendMessage(message);
                  System.err.println("HEREINCOMING102");
                  
@@ -2714,9 +2714,9 @@ public class Conversation extends Thread{
               
               long recipientID = recipient.getConnection().telegramID;
               
-              SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID);
-              message = message.disableNotification();
+              SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+              message.setChatId(""+recipientID);
+              message.disableNotification();
               message.enableHtml(true);
               message.setText("<b>"+sender.getUsername()+": </b>"+text);
               
@@ -2779,10 +2779,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
              try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText(markdown);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                message.setChatId(""+recipientID);
+                message.setText(markdown);
+                message.disableNotification();
                  message.enableMarkdown(true);
                  
                  message.setText(markdown);  
@@ -2834,10 +2834,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
              try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText(html);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                       message.setChatId(""+recipientID);
+                       message.setText(html);
+                       message.disableNotification();
                  message.enableHtml(true);
                  
                  message.setText(html);  
@@ -2887,10 +2887,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
              try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText(text);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                       message.setChatId(""+recipientID);
+                       message.setText(text);
+                       message.disableNotification();
                  message.enableHtml(true);
                  
                  message.setText("<code>"+text+"</code>");  
@@ -2941,10 +2941,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
              try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText(markdownv2);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                       message.setChatId(""+recipientID);
+                       message.setText(markdownv2);
+                       message.disableNotification();
                  message.enableMarkdownV2(conversationIsActive);
                  message.setText("<code>"+markdownv2+"</code>");  
                  org.telegram.telegrambots.meta.api.objects.Message m = recipient.sendMessage(message);
@@ -3029,9 +3029,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
         try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID).setText(messageText);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                       message.setChatId(""+recipientID);
+                       message.setText(messageText);
+                       message.disableNotification();
                  message.enableHtml(false);
                  //message.setText("<code>"+text+"</code>");  
                  
@@ -3097,10 +3098,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
         try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText(text);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                 message.setChatId(""+recipientID);
+                 message.setText(text);
+                 message.disableNotification();
                  message.enableHtml(true);
                  message.setText("<code>"+text+"</code>");  
                  
@@ -3167,10 +3168,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
              try{
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID)
-                       .setText(text);
-                 message = message.disableNotification();
+                SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                 message.setChatId(""+recipientID);
+                 message.setText(text);
+                 message.disableNotification();
                  message.enableHtml(true);
                  message.setText("<a href=\""+text+"\">"+text+ "</a>");  
                 recipient.sendMessage(message);
@@ -3240,9 +3241,9 @@ public class Conversation extends Thread{
              
               long recipientID = recipient.getConnection().telegramID;
               
-              SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID);
-              message = message.disableNotification();
+              SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+              message.setChatId(""+recipientID);
+              message.disableNotification();
               message.enableHtml(true);
               message.setText("<b>"+apparentSenderString+": </b>"+text);
               recipient.sendMessage(message);
@@ -3342,9 +3343,9 @@ public class Conversation extends Thread{
              
               long recipientID = recipient.getConnection().telegramID;
               
-              SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                       .setChatId(recipientID);
-              message = message.disableNotification();
+              SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+              message.setChatId(""+recipientID);
+              message.disableNotification();
               message.enableHtml(true);
               message.setText("<b>"+apparentSender.getUsername()+": </b>"+text);
               recipient.sendMessage(message);
@@ -3401,10 +3402,10 @@ public class Conversation extends Thread{
         long recipientID = recipient.getConnection().telegramID;
             
              try{
-                SendPhoto msg = new SendPhoto()
-                    .setChatId(recipientID)
-                    .setPhoto(file_id);
-                 msg = msg.disableNotification();
+                SendPhoto msg = new SendPhoto();
+                msg.setChatId(""+recipientID);
+                msg.setPhoto(new InputFile(file_id));
+                msg.disableNotification();
                   
                  try{
                      String group =cC.pp.getSubdialogueID(recipient);
@@ -3467,10 +3468,10 @@ public class Conversation extends Thread{
                  TelegramParticipant recipient = (TelegramParticipant)recipients.elementAt(i);
                  vRecipientsUsernames.add(recipient.getUsername());
                  long recipientID = recipient.getConnection().telegramID;
-                 SendPhoto msg = new SendPhoto()
-                    .setChatId(recipientID)
-                    .setPhoto(file_id);
-                 msg = msg.disableNotification();
+                 SendPhoto msg = new SendPhoto();
+                  msg.setChatId(""+recipientID);
+                  msg.setPhoto(new InputFile(file_id));
+                  msg.disableNotification();
                  
                  
                  
@@ -3562,7 +3563,9 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
                  msg = msg.disableNotification();
                  */
                  
-                 SendVoice msg = new SendVoice().setChatId(recipientID).setVoice(fileid);
+                 SendVoice msg = new SendVoice();
+                 msg.setChatId(""+recipientID);
+                 msg.setVoice(new InputFile(fileid));
                  
                  
                 recipient.sendVoice(msg);
@@ -3655,10 +3658,11 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
             
              try{
   
-                SendPhoto msg = new SendPhoto()
-                    .setChatId(recipientID)
-                    .setCaption("").setPhoto(f);
-                 msg = msg.disableNotification();
+                SendPhoto msg = new SendPhoto();
+                msg.setChatId(""+recipientID);
+                msg.setCaption("");
+                msg.setPhoto(new InputFile(f));
+                msg.disableNotification();
                 
                 
                 
@@ -3684,7 +3688,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
                   
                 InlineKeyboardMarkup im = new InlineKeyboardMarkup(); 
                 im.setKeyboard(keybb);
-                msg = msg.setReplyMarkup(im);
+                msg.setReplyMarkup(im);
                  
                 }
                 
@@ -3734,7 +3738,9 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
          
          
           try{
-              DeleteMessage dm = new DeleteMessage().setChatId(recipientID).setMessageId(message_id);
+              DeleteMessage dm = new DeleteMessage();
+              dm.setChatId(""+recipientID);
+              dm.setMessageId(message_id);
               System.err.println("CREATING DELETEMESSAGE: "+recipientID+" "+message_id);
               
                String group =cC.pp.getSubdialogueID(recipient);
@@ -3804,7 +3810,7 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
            
                 emt.enableHtml(true);
                 emt.setText("<code>"+replacementText+"</code>");
-                emt.setChatId(messagechatid);
+                emt.setChatId(""+messagechatid);
                 emt.setMessageId(messageID);  
                               
                 recipient.sendEditMessage(mOriginalMessage, emt);
@@ -3857,8 +3863,8 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
              try{
                  
                 PinChatMessage pcm = new PinChatMessage() ;
-                pcm = pcm.setMessageId(messageToBePinned.getMessageId());
-                pcm = pcm.setChatId(messageToBePinned.getChatId());
+                pcm.setMessageId(messageToBePinned.getMessageId());
+                pcm.setChatId(""+messageToBePinned.getChatId());
                 
                 String group =cC.pp.getSubdialogueID(recipient);
                 
@@ -3935,8 +3941,8 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
          try{
 
             EditMessageReplyMarkup emrm = new EditMessageReplyMarkup();
-            if(inlineMessageID!=null)emrm = emrm.setInlineMessageId(inlineMessageID);
-            if(messagechatid!=null)emrm = emrm.setChatId(messagechatid);
+            if(inlineMessageID!=null) emrm.setInlineMessageId(inlineMessageID);
+            if(messagechatid!=null)emrm.setChatId(""+messagechatid);
             emrm.setMessageId(messageID);
                  
              
@@ -3963,12 +3969,12 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
                   
                 InlineKeyboardMarkup im = new InlineKeyboardMarkup(); 
                 im.setKeyboard(keybb);
-                emrm = emrm.setReplyMarkup(im);
+                emrm.setReplyMarkup(im);
                  
                 }
              else{
                InlineKeyboardMarkup im = new InlineKeyboardMarkup(); 
-                emrm = emrm.setReplyMarkup(im);
+               emrm.setReplyMarkup(im);
              }
              
              
@@ -4032,16 +4038,17 @@ public void telegram_relayMessageVoiceToOtherParticipants_By_File_ID(TelegramPar
             
              try{
                 SendPoll sp = new SendPoll();
-                sp = sp.setQuestion(question);
-                sp = sp.setOptions( Arrays.asList(options));
-                sp = sp.setExplanation(explanation);
-                sp = sp.setAnonymous(true);
-                sp =sp.setAllowMultipleAnswers(allowMultipleSelections);
+                sp.setQuestion(question);
+                sp.setOptions( Arrays.asList(options));
+                sp.setExplanation(explanation);
+                
+                sp.setIsAnonymous(true);
+                sp.setAllowMultipleAnswers(allowMultipleSelections);
                 
                 
                
-                sp=sp.setChatId(recipientID);
-                sp=sp.disableNotification();
+                sp.setChatId(""+recipientID);
+                sp.disableNotification();
                 
                            
                 try{
