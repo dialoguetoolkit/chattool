@@ -201,7 +201,7 @@ public class IDCheck {
     public boolean processTelegramCallback(Update update){
         TelegramParticipantConnection telegramparticipconnection= null;
         
-        int id = update.getCallbackQuery().getFrom().getId();
+        long id = update.getCallbackQuery().getFrom().getId();
    
         telegramparticipconnection= this.idcIO.getLogFile(id);
         if(telegramparticipconnection ==null){
@@ -276,7 +276,7 @@ public class IDCheck {
     public boolean processTelegramPollAnswer(Update update){
         TelegramParticipantConnection telegramparticipconnection= null;
         
-        int id = update.getCallbackQuery().getFrom().getId();
+        long id = update.getCallbackQuery().getFrom().getId();
    
         telegramparticipconnection= this.idcIO.getLogFile(id);
         if(telegramparticipconnection ==null){
@@ -353,9 +353,9 @@ public class IDCheck {
     
     public void sendMessageAndSaveToLog(long telegramID, String msg){
        try{ 
-        SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(telegramID)
-                .setText(msg);
+        SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+               message .setChatId(""+telegramID);
+               message.setText(msg);
              this.cttgbot.sendMessage(message);
             
         TelegramParticipantConnection telegramIDRecord= this.idcIO.getLogFile(telegramID);

@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lx</groupId>
     <artifactId>chattoolTG</artifactId>
-    <version>5.3.2</version>
+    <version>5.3.5</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>org.telegram</groupId>
             <artifactId>telegrambots</artifactId>
-            <version>4.8.1</version>
+            <version>5.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>

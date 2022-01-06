@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
 import java.util.Vector;
-import org.telegram.telegrambots.ApiContextInitializer;
+//import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.ActionType;
@@ -29,10 +29,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
-import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
  *
@@ -165,10 +165,11 @@ public class TGBOT  extends TelegramLongPollingBot{
     
     
     public void startBOT(){
-       ApiContextInitializer.init();
-       TelegramBotsApi botsApi = new TelegramBotsApi();
+      // ApiContextInitializer.init();
     
         try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+
             botsApi.registerBot(this);
             System.err.println("STARTING THE BOT");
         } catch (TelegramApiException e) {
@@ -285,7 +286,10 @@ public void onUpdateReceived(Update update) {
     
     //Testing for blocked
     if(!update.hasMessage() && !update.hasCallbackQuery()&&!update.hasPollAnswer()){
-         this.sendMessage(update.getMessage().getChatId(), "Message format not supported!");
+        
+       
+        
+         //this.sendMessage(update.getMessage().getChatId(), "Message format not supported!");
          Conversation.printWSln("Main", "Message was received that had no message and no callback. This is not serious, it just means that a participant tried to use some functionality on the Telegram client that isn't supported by the server" );
          return;
     }
@@ -408,9 +412,13 @@ public void onUpdateReceived(Update update) {
             
             System.err.println("Logins by new participant not allowed");
             
-             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(update.getMessage().getChatId())
-                .setText("It is not possible to login. Experiment is currently closed to new logins. Please contact the experimenter");
+             SendMessage message = new SendMessage();
+             
+          // Create a SendMessage object with mandatory fields
+          
+           
+                message.setChatId(""+update.getMessage().getChatId());
+                message.setText("It is not possible to login. Experiment is currently closed to new logins. Please contact the experimenter");
             sendMessage(message);
             Conversation.printWSln("Main", "Prevented a new login from telegram id: "+userid);
             return;
@@ -431,9 +439,9 @@ public void onUpdateReceived(Update update) {
                
         
         if(!telegramidisok){
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(update.getMessage().getChatId())
-                .setText("What is your login code?");
+            SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                message.setChatId(""+update.getMessage().getChatId());
+                message.setText("What is your login code?");
             sendMessage(message);
         }
       }  
@@ -449,9 +457,9 @@ public void onUpdateReceived(Update update) {
               e.printStackTrace();
           }
           if(!telegramidisok){
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(update.getMessage().getChatId())
-                .setText("What is your login code?");
+            SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+            message.setChatId(""+update.getMessage().getChatId());
+            message.setText("What is your login code?");
             sendMessage(message);
         }
     }
@@ -467,9 +475,10 @@ public void onUpdateReceived(Update update) {
               e.printStackTrace();
           }
           if(!telegramidisok){
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(update.getMessage().getChatId())
-                .setText("What is your login code?");
+            SendMessage message = new SendMessage();
+            // Create a SendMessage object with mandatory fields
+            message.setChatId(""+update.getMessage().getChatId());
+            message.setText("What is your login code?");
             sendMessage(message);
         }
     }
@@ -508,9 +517,9 @@ public void onUpdateReceived(Update update) {
    }
   
     private synchronized void sendAdminMessage(long telegramID, String text){
-       SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(telegramID)
-                .setText(text);
+       SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+            message.setChatId(""+telegramID);
+            message.setText(text);
             sendMessage(message);
             
             this.tbl.saveTo(message.toString());
@@ -518,9 +527,9 @@ public void onUpdateReceived(Update update) {
 
     
    public synchronized void sendMessage(long telegramID, String text){
-       SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                .setChatId(telegramID)
-                .setText(text);
+       SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
+                message.setChatId(""+telegramID);
+                message.setText(text);
             sendMessage(message);
             this.tbl.saveTo(message.toString());
    } 
@@ -630,7 +639,7 @@ public void onUpdateReceived(Update update) {
       public synchronized void sendTypingNotification(Long telegramID){
          SendChatAction sca = new SendChatAction();
             ActionType at = ActionType.TYPING;
-            sca.setChatId(telegramID);
+            sca.setChatId(""+telegramID);
             sca.setAction(at);
             try{
                  this.execute(sca);

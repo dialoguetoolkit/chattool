@@ -10,9 +10,10 @@ import diet.server.ConversationController.ui.CustomDialog;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import org.telegram.telegrambots.ApiContextInitializer;
+/////import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
  *
@@ -57,15 +58,18 @@ public class tgSTARTER {
             return null;
         }
       
-       ApiContextInitializer.init();
-       TelegramBotsApi botsApi = new TelegramBotsApi();
-       TGBOT cTGBOT = new TGBOT(c,mybotusername,mybottoken);
+       /////ApiContextInitializer.init();
+      
        
-       cTGBOT.loadAdminIDsFromFileAndStart();
+       TGBOT cTGBOT = new TGBOT(c,mybotusername,mybottoken);
+
        
        
        
         try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+       
+            cTGBOT.loadAdminIDsFromFileAndStart();
             botsApi.registerBot(cTGBOT);
         } catch (TelegramApiException e) {
             e.printStackTrace();
