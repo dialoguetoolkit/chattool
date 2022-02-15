@@ -123,9 +123,9 @@ If you have any questions, requests, or would like to contribute - please email 
 
 <p>Mills, G. J. and Healey, P. G. T. (submitted) <a href = "dialoguetoolkitsubmitted.pdf"><B>A dialogue experimentation toolkit.</B></A>
  
- <p>Mills, G. and Redeker, G. (submitted) <a href = "https://psyarxiv.com/ncf4b/">Self-repair increases interaction of referring expressions</a> 
+<p>Mills, G. and Redeker, G. (submitted) <a href = "https://github.com/gjmills/gjmills.github.io/raw/master/files/self_repair_submission.pdf"><B>Self-repair increases abstraction of referring expressions</B></a>    <a href = "https://psyarxiv.com/ncf4b/"><B>PsyArxiv</B></a>
 
-<p>Mills, G.,  Gregoromichelaki, E., Howes, C., Maraev, V. (2022) <a href = "https://psyarxiv.com/ysf7v/">Influencing laughter with AI-mediated communication </a> <I>Interaction Studies</I></p>
+<p>Mills, G.,  Gregoromichelaki, E., Howes, C., Maraev, V. (2022) <a href = "https://github.com/gjmills/gjmills.github.io/raw/master/files/manipulatinglaughter_accepted_interaction_studies.pdf"><B>Influencing laughter with AI-mediated communication</B> </a> <I>Interaction Studies  </I><b><a href = "https://psyarxiv.com/ysf7v/">PsyArXiv </a></b></p>
  
  <p> Maraev, V., Mazzocconi, C., Mills, G. Howes, G. (2020)  <a href = "https://biecoll.ub.uni-bielefeld.de/index.php/lw2020/article/view/928">“LOL what?”: Empirical study of laughter in chat based dialogues</a>. Laughter and Other Non-Verbal Vocalisations Workshop 2020, Bielefeld.
  
