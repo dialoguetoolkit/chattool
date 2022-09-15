@@ -116,7 +116,9 @@ The source code of the project is hosted at  <a href = "https://github.com/dialo
 
 # Contact
 
-If you have any questions, requests, or would like to contribute - please email g.j.mills@rug.nl
+If you have any questions, requests, or would like to contribute - please email g.j.mills@rug.nl / g.mills@kingston.ac.uk
+   
+See also: https://gjmills.github.io/
 
 
 # Publications
