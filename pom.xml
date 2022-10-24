@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>lx</groupId>
     <artifactId>chattoolTG</artifactId>
-    <version>5.3.5</version>
+    <version>5.3.9</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -69,7 +69,7 @@
                     <goal>copy-dependencies</goal>
                 </goals>
                 <configuration>
-                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                    <outputDirectory>${project.build.directory}${file.separator}lib</outputDirectory>
                 </configuration>
             </execution>
         </executions>
@@ -118,7 +118,7 @@
     <resources>
         <resource>
         <targetPath>mazegame</targetPath>
-            <directory>experimentresources/mazegame</directory>
+            <directory>experimentresources${file.separator}mazegame</directory>
             <includes>
               <include>**/*.*</include>
               <include>**/*.*</include>
@@ -126,34 +126,34 @@
         </resource>
         <resource>
         <targetPath></targetPath>
-            <directory>experimentresources/mazegame</directory>
+            <directory>experimentresources${file.separator}mazegame</directory>
             <includes>
               <include>**/*.*</include>
               <include>**/*.*</include>
            </includes>
         </resource>
         <resource>
-            <targetPath>facetask/lists</targetPath>
-            <directory>experimentresources/facetask/lists</directory>
+            <targetPath>facetask${file.separator}lists</targetPath>
+            <directory>experimentresources${file.separator}facetask${file.separator}lists</directory>
             <includes>
-              <include>**/*.*</include>
-              <include>**/*.*</include>
+              <include>**${file.separator}*.*</include>
+              <include>**${file.separator}*.*</include>
            </includes>
         </resource>
         <resource>
-            <targetPath>facetask/stimuli</targetPath>
-            <directory>experimentresources/facetask/stimuli</directory>
+            <targetPath>facetask${file.separator}stimuli</targetPath>
+            <directory>experimentresources${file.separator}facetask${file.separator}stimuli</directory>
             <includes>
-              <include>**/*.*</include>
-              <include>**/*.*</include>
+              <include>**${file.separator}*.*</include>
+              <include>**${file.separator}*.*</include>
            </includes>
         </resource>
         <resource>
             <targetPath>tangramtask</targetPath>
-            <directory>experimentresources/tangramtask</directory>
+            <directory>experimentresources${file.separator}tangramtask</directory>
             <includes>
-              <include>**/*.*</include>
-              <include>**/*.*</include>
+              <include>**${file.separator}*.*</include>
+              <include>**${file.separator}*.*</include>
            </includes>
         </resource>
         

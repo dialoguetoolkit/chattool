@@ -36,7 +36,7 @@ public class IntelligentTextFileWriter extends Thread{
             //encoder.onMalformedInput(CodingErrorAction.REPORT);
             //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
 
-            byte[] bytesReplacementForMalformedInput =Configuration.outputfile_unsupported_character.getBytes();         
+            byte[] bytesReplacementForMalformedInput =Configuration.outputfile_unsupported_character.getBytes("UTF-8");         
             this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
             
            
@@ -107,7 +107,7 @@ public class IntelligentTextFileWriter extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                byte[] bytesReplacementForMalformedInput = Configuration.outputfile_unsupported_character.getBytes();//("█").getBytes();           
+                byte[] bytesReplacementForMalformedInput = Configuration.outputfile_unsupported_character.getBytes("UTF-8");//("█").getBytes();           
                 this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
             
                 if(f.canWrite()) wasSuccessfulReestablishing = true;

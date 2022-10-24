@@ -21,7 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
  *
  * @author LX1C
  */
-public class Telegram_Dyadic_Rorschach extends TelegramController{
+public class Telegram_Dyadic_Faces extends TelegramController{
 
     
     
@@ -36,11 +36,11 @@ public class Telegram_Dyadic_Rorschach extends TelegramController{
    // Participant pMatcher;
     
     
-    public Telegram_Dyadic_Rorschach(Conversation c) {
+    public Telegram_Dyadic_Faces(Conversation c) {
         super(c);
     }
 
-    public Telegram_Dyadic_Rorschach(Conversation c, long istypingtimeout) {
+    public Telegram_Dyadic_Faces(Conversation c, long istypingtimeout) {
         super(c, istypingtimeout);
     }
 
@@ -52,7 +52,6 @@ public class Telegram_Dyadic_Rorschach extends TelegramController{
         if(c.getParticipants().getAllParticipants().size()==2) {
             
              pp.createNewSubdialogue(c.getParticipants().getAllParticipants());
-             //this.itnt.addGroupWhoAreMutuallyInformedOfTyping(c.getParticipants().getAllParticipants());
               
              CustomDialog.showDialog("PRESS OK TO START!");
              this.experimentHasStarted=true;
@@ -65,9 +64,6 @@ public class Telegram_Dyadic_Rorschach extends TelegramController{
     @Override
     public void telegram_participantReJoinedConversation(TelegramParticipant p) {
         
-      // c.telegram_sendPoll(p, "This is a questionnaire","What is it?", new String[]{"option1", "option2", "option3", "option4"});
-        
-       // c.telegram_sendInstructionToParticipantWithForcedKeyboardButtons(p, "This is a question",  new String[]{"option1", "option2", "option3", "option4", "option5", "option6", "option7"},3);
         
        if(c.getParticipants().getAllParticipants().size()==2) {
             

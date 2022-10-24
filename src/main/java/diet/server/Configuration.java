@@ -169,10 +169,10 @@ public class Configuration implements Cloneable{
     //static final public String outputfile_newline_replacement_character =    "↲";
     //static final public String outputfile_unsupported_character = "█"; 
     
-    static final public String outputfile_newline_replacement_character =  ""+  '\u21b2';       //"↲";
-    static final public String outputfile_unsupported_character = ""+ '\u2588';      //"█"; 
+    static final public String outputfile_newline_replacement_character = "↲";   // ""+  '\u21b2';       //"↲";
+    static final public String outputfile_unsupported_character =         ""+ '\u2588';      //"█"; 
     
-    static final public String a = ""+ '\u9608';
+    //static final public String a = ""+ '\u9608';
     
     //end of paramater settings.
     
