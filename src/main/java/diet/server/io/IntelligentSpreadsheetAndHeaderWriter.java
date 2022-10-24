@@ -24,10 +24,10 @@ import java.util.Vector;
  * @author gj
  */
 public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
- 
+     
+
     Vector attribvalsToSave = new Vector();
     public boolean doSaving = true;
-    
     File fSPREADSHEET;
     BufferedWriter textOut;
     
@@ -46,13 +46,23 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
             //encoder.onUnmappableCharacter(CodingErrorAction.REPORT);
             //textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.fSPREADSHEET),encoder));   
             
-            byte[] bytesReplacementForMalformedInput =  Configuration.outputfile_unsupported_character.getBytes();     //("█").getBytes();           
+            byte[] bytesReplacementForMalformedInput =  Configuration.outputfile_unsupported_character.getBytes("UTF-8");     //("█").getBytes();           
             this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
             
             
             
             
           }catch (Exception e){
+              
+              try{
+                  
+              }catch(Exception ee){
+                  
+              }
+              
+              
+              
+              
               e.printStackTrace();
               Conversation.saveErr(e);
 
@@ -135,7 +145,7 @@ public class IntelligentSpreadsheetAndHeaderWriter extends Thread{
         while(!wasSuccessfulReestablishing){
              
              try{
-                 byte[] bytesReplacementForMalformedInput = Configuration.outputfile_unsupported_character.getBytes();        
+                 byte[] bytesReplacementForMalformedInput = Configuration.outputfile_unsupported_character.getBytes("UTF-8");        
                  this.textOut = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fSPREADSHEET,true),Charset.forName("UTF-8").newEncoder().onMalformedInput(CodingErrorAction.REPLACE).replaceWith(bytesReplacementForMalformedInput).onUnmappableCharacter(CodingErrorAction.REPLACE)));
            
                 if(fSPREADSHEET.canWrite()) wasSuccessfulReestablishing = true;

@@ -281,7 +281,7 @@ public class CustomizableReferentialTaskSettingsFactory {
     
     public void askBooleanQuestions(){
           durationOfGame = CustomDialog.getLong("How long is a game? (seconds)\n\nNote: To prevent games from timing out ", 600000);
-          if(this.isSingleSet)this.randomizeSequence = CustomDialog.getBoolean("Do you want the sequence of stimuli to be in original order or ranomized?", "original order", "randomized");
+          if(this.isSingleSet)this.randomizeSequence = CustomDialog.getBoolean("Do you want the sequence of stimuli to be in randomized or original order?", "randomized", "original order");
           durationOfStimulus =  CustomDialog.getLong("How long should the stimuli be displayed for?", 6000000);
           showButtons = CustomDialog.getBoolean("Do you want to show buttons underneath the stimuli on the clients?", "Buttons", "No Buttons");
           if(telegram) this.deleteStimulusAfterEachTrial = CustomDialog.getBoolean("Do you want to delete the stimuli from the telegram window after each trial?", "Delete", "Keep");
