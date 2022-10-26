@@ -120,16 +120,16 @@
         <targetPath>mazegame</targetPath>
             <directory>experimentresources${file.separator}mazegame</directory>
             <includes>
-              <include>**/*.*</include>
-              <include>**/*.*</include>
+              <include>**${file.separator}*.*</include>
+              <include>**${file.separator}*.*</include>
            </includes>
         </resource>
         <resource>
         <targetPath></targetPath>
             <directory>experimentresources${file.separator}mazegame</directory>
             <includes>
-              <include>**/*.*</include>
-              <include>**/*.*</include>
+              <include>**${file.separator}*.*</include>
+              <include>**${file.separator}*.*</include>
            </includes>
         </resource>
         <resource>
