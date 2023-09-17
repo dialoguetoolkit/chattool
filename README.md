@@ -17,7 +17,7 @@ The webpage of the chattool is at: https://dialoguetoolkit.github.io/chattool/
 
 The programming documentation is at:   https://dialoguetoolkit.github.io/docs/
 
-If you have any questions, please email g.j.mills@rug.nl 
+If you have any questions, please email millsgjm@gmail.com or g.mills@kingston.ac.uk
 
 See also https://gjmills.github.io/
 
