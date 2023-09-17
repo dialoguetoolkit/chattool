@@ -11,7 +11,7 @@ The toolkit provides an extensive API for scripting these manipulations, as well
 
 # Features
 
-## New version (May 2022)
+## New version
 
 Some of the new features are:
 
