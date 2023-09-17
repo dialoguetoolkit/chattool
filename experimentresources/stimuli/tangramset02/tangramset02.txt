@@ -1,7 +1,7 @@
 P1 IMAGE            ¦P2 IMAGE              ¦MATCHER, 1=P1, 2=P2, B=BOTH ¦BUTTONS DISPLAYED ¦CORRECT ANSWER
-A01.png                 ¦A02.png                  ¦B                                                      ¦S,D                                    ¦D
-A03.png                 ¦A04.png                  ¦B                                                      ¦S,D                                    ¦D
+A01.png                 ¦A01.png                  ¦B                                                      ¦S,D                                    ¦S
+A02.png                 ¦A02.png                  ¦B                                                      ¦S,D                                    ¦S
+A03.png                 ¦A03.png                  ¦B                                                      ¦S,D                                    ¦S
+A04.png                 ¦A04.png                  ¦B                                                      ¦S,D                                    ¦S
 A05.png                 ¦A05.png                  ¦B                                                      ¦S,D                                    ¦S
 A06.png                 ¦A06.png                  ¦B                                                      ¦S,D                                    ¦S
-A07.png                 ¦A07.png                  ¦B                                                      ¦S,D                                    ¦S
-A08.png                 ¦A08.png                  ¦B                                                      ¦S,D                                    ¦D
