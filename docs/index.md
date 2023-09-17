@@ -80,14 +80,11 @@ The real strength of this toolkit is in manipulating the interaction. Since all 
 
 # Running the toolkit
 
-## Downloading
-
-The latest version of the toolkit is available to download <a href = "https://github.com/dialoguetoolkit/chattool/releases/download/v5.4.0/chattool.zip"> <b>here</b> </a> 
 
 ## To run the software:
 
 - On windows:
-  1. Download the <a href = ""> <b>latest version</b></a>  of the chattool 
+  1. Download the <a href = "a href = "https://github.com/dialoguetoolkit/chattool/releases/download/v5.4.0/chattool.zip"> <b>latest version</b></a>  of the chattool 
   2. Unzip it
   3. Run **runme.bat**
   
