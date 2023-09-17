@@ -126,7 +126,7 @@ See also: https://gjmills.github.io/
 
 
 
-<p> Mills, G., & Redeker, G. (2023).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>a>. Cognitive Science, 47(8), e13329.</p>p>
+<p> Mills, G., & Redeker, G. (2023).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>a>. Cognitive Science, 47(8), e13329.</p>
 
 <p>Mills, G. J. and Healey, P. G. T. (submitted) <a href = "dialoguetoolkitsubmitted.pdf"><B>A dialogue experimentation toolkit.</B></A>
  
