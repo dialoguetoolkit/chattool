@@ -116,17 +116,20 @@ The source code of the project is hosted at  <a href = "https://github.com/dialo
 
 # Contact
 
-If you have any questions, requests, or would like to contribute - please email g.j.mills@rug.nl / g.mills@kingston.ac.uk
+If you have any questions, requests, or would like to contribute - please email  g.mills@kingston.ac.uk
    
 See also: https://gjmills.github.io/
 
 
 # Publications
 
+
+
+
+<p> Mills, G., & Redeker, G. (2023).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>a>. Cognitive Science, 47(8), e13329.</p>p>
+
 <p>Mills, G. J. and Healey, P. G. T. (submitted) <a href = "dialoguetoolkitsubmitted.pdf"><B>A dialogue experimentation toolkit.</B></A>
  
-<p>Mills, G. and Redeker, G. (submitted) <a href = "https://github.com/gjmills/gjmills.github.io/raw/master/files/self_repair_submission.pdf"><B>Self-repair increases abstraction of referring expressions</B></a>    <a href = "https://psyarxiv.com/ncf4b/"><B>PsyArxiv</B></a>
-
 <p>Mills, G.,  Gregoromichelaki, E., Howes, C., Maraev, V. (2022) <a href = "https://github.com/gjmills/gjmills.github.io/raw/master/files/manipulatinglaughter_accepted_interaction_studies.pdf"><B>Influencing laughter with AI-mediated communication</B> </a> <I>Interaction Studies  </I><b><a href = "https://psyarxiv.com/ysf7v/">PsyArXiv </a></b></p>
  
  <p> Maraev, V., Mazzocconi, C., Mills, G. Howes, G. (2020)  <a href = "https://biecoll.ub.uni-bielefeld.de/index.php/lw2020/article/view/928">“LOL what?”: Empirical study of laughter in chat based dialogues</a>. Laughter and Other Non-Verbal Vocalisations Workshop 2020, Bielefeld.
