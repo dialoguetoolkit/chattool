@@ -224,7 +224,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_SIMPLE extends Telegr
    // Vector<TelegramParticipant> recipientOfNaturalHahaAndSenderOfFakeHaha = new Vector();
    // Hashtable htTimeOfReceiptOfNaturalHahaBySenderOfFakeHaha =  new  Hashtable();
     
-    Vector fakeSendersOfHaha  = new Vector();
+    //Vector fakeSendersOfHaha  = new Vector();
     
     
    /// Change to remove haha
@@ -259,7 +259,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_ADDHAHA_SIMPLE extends Telegr
               String newMessage = this.transformTurnAddHaha(textFromSender);   
               c.telegram_sendArtificialTurnFromApparentOriginToPermittedParticipants(sender, newMessage);
               Conversation.printWSln("Main", "Doing the manipulation! Sending from "+sender.getUsername());
-              this.fakeSendersOfHaha.add(sender);
+              //this.fakeSendersOfHaha.add(sender);
          }
          else{
               Vector  tps=  this.pp.getRecipients(sender);

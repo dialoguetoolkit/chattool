@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.Vector;
 //import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -275,10 +276,29 @@ public class TGBOT  extends TelegramLongPollingBot{
     }
     
     
+    
+    HashMap hmMessages = new HashMap();
+    
+    
     @Override
 public void onUpdateReceived(Update update) {
  try{    
+    //We check for duplicates! Sometimes the same message can be received twice from the server.
+         Integer updateID = update.getUpdateId();
+         System.err.println("Received message with ID "+updateID);
+         Update u = (Update)this.hmMessages.get(updateID);
+         if(this.hmMessages.containsKey(updateID)){
+             System.err.println("Have already processed the messsage with code: "+updateID);
+             System.err.println("EXITING");
+             //System.exit(-10);
+             return;
+         }
+         this.hmMessages.put(updateID, update);
+
+         
+         
     // We check if the update has a message and the message has text
+    
     
     this.tbl.saveFrom(update.toString());
     System.err.println(update.toString());

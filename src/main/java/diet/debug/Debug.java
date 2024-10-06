@@ -15,6 +15,8 @@ public class Debug {
       public static boolean debugmazegamereconnect = false;  
       public static boolean debugIO = false;
       
+      public static boolean debugDuplicate = true;
+      
       static JDebugFrame jdf;
       
       public static void showDebug2(String s){

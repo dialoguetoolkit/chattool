@@ -620,7 +620,10 @@ public class Conversation extends Thread{
               
                    }
                    
-                   if(!hasBeenModifiedByAutoIntervention)cC.telegram_processTelegramMessageFromClient(tcp,tmfc);
+                   if(!hasBeenModifiedByAutoIntervention){
+                       if(diet.debug.Debug.debugDuplicate) System.err.println("DDP03: "+tmfc.u.getMessage().getText());
+                       cC.telegram_processTelegramMessageFromClient(tcp,tmfc);
+                   }
                    
                    if(tmfc.u.hasPollAnswer()){
                        cC.telegram_processPollAnswerFromClient(tcp,tmfc);
