@@ -136,12 +136,6 @@ public class Telegram_Dyadic_Customizable_ReferentialTask_Automatic_Start extend
             
             crt.telegram_processButtonPress(sender, tmfc.u);
             
-            //c.telegram_respondToCallback(sender, tmfc.u, "THIS IS THE RESPONSE");
-            
-            
-           // String[][] nb = new String[][]{  {"a","b"}, {"c","d","e"}     };
-            
-            //c.telegram_sendEditMessageReplyMarkup(sender, tmfc.u,nb);
             
         }
         

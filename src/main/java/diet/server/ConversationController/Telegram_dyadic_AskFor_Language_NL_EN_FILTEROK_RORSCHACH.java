@@ -38,7 +38,7 @@ public class Telegram_dyadic_AskFor_Language_NL_EN_FILTEROK_RORSCHACH extends Te
    // CustomizableReferentialTask crt = new CustomizableReferentialTask(this, 5000,true);
     
     
-     CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this, true, "rorschachset01", "rorschachlongersequence.txt");
+    CustomizableReferentialTaskSettingsFactory crtsf = new CustomizableReferentialTaskSettingsFactory(this, true, "rorschachset01", "rorschachlongersequence.txt");
     CustomizableReferentialTaskSettings crts = crtsf.getNextCustomizableReferentialTaskSettings();
    
     

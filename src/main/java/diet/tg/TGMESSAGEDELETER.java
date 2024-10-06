@@ -31,15 +31,15 @@ public class TGMESSAGEDELETER extends Thread{
             for(int i=0;i<v.size();i++){
                idtimes idt = (idtimes)v.elementAt(i);
                
-               System.err.println("IDT2");
+               //System.err.println("IDT2");
                if(idt.time<=new Date().getTime()){
-                   System.err.println("IDT2B");
+                   //System.err.println("IDT2B");
                    thoseToDelete.add(idt);
                }
                else{
-                   System.err.println("IDT3");
+                   //System.err.println("IDT3");
                    long gap = (long)idt.time- new Date().getTime();
-                   System.err.println("GAP IS: "+gap);
+                   //System.err.println("GAP IS: "+gap);
                    if(gap<0)gap=0;
                    if(gap<mingap) mingap = gap;
                }
@@ -48,6 +48,7 @@ public class TGMESSAGEDELETER extends Thread{
             for(int i=0;i<thoseToDelete.size();i++){
                 c.telegram_DeleteMessage_DoNotCallThisMethodDirectlyFromController(thoseToDelete.elementAt(i).tp, thoseToDelete.elementAt(i).message_id, thoseToDelete.elementAt(i).time);
                 v.remove(thoseToDelete.elementAt(i));
+                System.err.println("DELETING MESSAGES");
             }
         
             try{  
@@ -55,7 +56,7 @@ public class TGMESSAGEDELETER extends Thread{
                     wait();
                 }
                 else{
-                    System.err.println("Waiting for "+mingap);
+                    //System.err.println("Waiting for "+mingap);
                     wait(mingap+1);    
                 }
                 

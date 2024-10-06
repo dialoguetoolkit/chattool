@@ -511,8 +511,9 @@ public abstract class DefaultConversationController  {
     
     public boolean processAutoIntervention(Participant sender, TelegramMessageFromClient tmfc){
         String text = tmfc.u.getMessage().getText();
-        boolean hasBeenModified = ai.processText(sender, text);
-        return hasBeenModified;
+        //boolean hasBeenModified = ai.processText(sender, text);
+        //return hasBeenModified;
+        return false;
     }
     
     
