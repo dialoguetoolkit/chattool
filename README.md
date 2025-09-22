@@ -1,6 +1,6 @@
 # About
 
-This is the Sep. 2024 version of the chattool.
+This is the June. 2025 version of the chattool.
 
 Some of the new features are:
 
