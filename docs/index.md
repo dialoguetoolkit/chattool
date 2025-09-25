@@ -84,7 +84,7 @@ The real strength of this toolkit is in manipulating the interaction. Since all 
 ## To run the software:
 
 - On windows:
-  1. Download the <a href = "a href = "https://github.com/dialoguetoolkit/chattool/releases/download/v5.4.0/chattool.zip"> <b>latest version</b></a>  of the chattool 
+  1. Download the <a href = "https://github.com/dialoguetoolkit/chattool/releases/download/v5.4.0/chattool.zip"> <b>latest version</b></a>  of the chattool 
   2. Unzip it
   3. Run **runme.bat**
   
@@ -123,7 +123,7 @@ See also: https://gjmills.github.io/
 
 <p> Amido, S., Maraev, V., & Howes, C. (2024). “No, you listen!” A pilot experiment into escalation devices in confrontational conversation. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
-<p> Mills, G., & Redeker, G. (2024).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>a>. Cognitive Science, 47(8), e13329.</p>
+<p> Mills, G., & Redeker, G. (2024).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>. Cognitive Science, 47(8), e13329.</p>
 
 <p>Vanzan, V., Qiu, A. H., Khan, F. A., Soupiona, C., & Howes, C. (2024, September). Emoji-Text Mismatches: Stirring the Pot of Online Conversations. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
