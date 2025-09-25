@@ -121,23 +121,23 @@ See also: https://gjmills.github.io/
 # Publications
 
 
-<p> Amido, S., Maraev, V., & Howes, C. (2024). “No, you listen!” A pilot experiment into escalation devices in confrontational conversation. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
+<p> Amido, S., Maraev, V., & Howes, C. (2024). <a href ="https://www.semdial.org/anthology/Z24-Amido_semdial_0026.pdf" >“No, you listen!” A pilot experiment into escalation devices in confrontational conversation</a>. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
 <p> Mills, G., & Redeker, G. (2024).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>. Cognitive Science, 47(8), e13329.</p>
 
-<p>Vanzan, V., Qiu, A. H., Khan, F. A., Soupiona, C., & Howes, C. (2024, September). Emoji-Text Mismatches: Stirring the Pot of Online Conversations. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
+<p>Vanzan, V., Qiu, A. H., Khan, F. A., Soupiona, C., & Howes, C. (2024). <a href="http://semdial.org/anthology/Z24-Vanzan_semdial_0038.pdf">Emoji-Text Mismatches: Stirring the Pot of Online Conversations<A>. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
 <p>Giannitzi, E. (2024). When eyes meet laughter: exploring non-verbal cues in human-robot interaction with Furhat.</p>
 
-<p>Decker, A., Amblard, M., & Breitholtz, E. (2023, November). Analysing topic shifts in task-oriented dialogues. In Journées scientifiques du GDR Lift-LIFT 2023.</p>
+<p>Decker, A., Amblard, M., & Breitholtz, E. (2023). Analysing topic shifts in task-oriented dialogues. In Journées scientifiques du GDR Lift-LIFT 2023.</p>
 
 <p>Mills, G. J. and Healey, P. G. T. (submitted) <a href = "dialoguetoolkitsubmitted.pdf"><B>A dialogue experimentation toolkit.</B></A>
  
 <p>Mills, G.,  Gregoromichelaki, E., Howes, C., Maraev, V. (2022) <a href = "https://github.com/gjmills/gjmills.github.io/raw/master/files/manipulatinglaughter_accepted_interaction_studies.pdf"><B>Influencing laughter with AI-mediated communication</B> </a> <I>Interaction Studies  </I><b><a href = "https://psyarxiv.com/ysf7v/">PsyArXiv </a></b></p>
 
-<p>Nord, E. A., Maraev, V., Breitholtz, E., & Howes, C. (2021, September). What do you mean? Eliciting enthymemes in text-based dialogue. In Proceedings of the 25th Workshop on the Semantics and Pragmatics of Dialogue.</p>P>
+<p>Nord, E. A., Maraev, V., Breitholtz, E., & Howes, C. (2021). What do you mean? Eliciting enthymemes in text-based dialogue. In Proceedings of the 25th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
-<p>Goodkind, A. (2021). Using keystrokes to predict social dynamics in dialogue (Doctoral dissertation, PhD Dissertation, Northwestern University, 2023, https://adamgoodkind. com/files/Goodkind_Dissertation. pdf).</p>
+<p>Goodkind, A. (2021). Using keystrokes to predict social dynamics in dialogue (PhD Dissertation, Northwestern University, 2023, https://adamgoodkind. com/files/Goodkind_Dissertation.pdf).</p>
  
  <p> Maraev, V., Mazzocconi, C., Mills, G. Howes, G. (2020)  <a href = "https://biecoll.ub.uni-bielefeld.de/index.php/lw2020/article/view/928">“LOL what?”: Empirical study of laughter in chat based dialogues</a>. Laughter and Other Non-Verbal Vocalisations Workshop 2020, Bielefeld.
  
