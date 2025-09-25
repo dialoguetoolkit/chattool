@@ -231,6 +231,8 @@ See also: https://gjmills.github.io/
   
 # Related toolkits 
 
+NOTE: CHECK THESE ARE STILL UP-TO-DATE
+
 * https://arxiv.org/pdf/1812.03415.pdf
 
 * https://link.springer.com/article/10.3758/s13428-017-0873-y
