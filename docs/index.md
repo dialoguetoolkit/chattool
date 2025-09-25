@@ -113,7 +113,7 @@ The source code of the project is hosted at  <a href = "https://github.com/dialo
 
 # Contact
 
-If you have any questions, requests, or would like to contribute - please email  g.mills@kingston.ac.uk
+If you have any questions, requests, or would like to contribute - please email  g.mills@gold.ac.uk
    
 See also: https://gjmills.github.io/
 
