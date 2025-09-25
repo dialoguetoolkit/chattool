@@ -120,13 +120,14 @@ See also: https://gjmills.github.io/
 
 # Publications
 
-<p> Amido, S., Maraev, V., & Howes, C. (2024). “No, you listen!” A pilot experiment into escalation devices in confrontational conversation. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>p>
+
+<p> Amido, S., Maraev, V., & Howes, C. (2024). “No, you listen!” A pilot experiment into escalation devices in confrontational conversation. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
+
+<p> Mills, G., & Redeker, G. (2024).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>a>. Cognitive Science, 47(8), e13329.</p>
 
 <p>Vanzan, V., Qiu, A. H., Khan, F. A., Soupiona, C., & Howes, C. (2024, September). Emoji-Text Mismatches: Stirring the Pot of Online Conversations. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
 <p>Giannitzi, E. (2024). When eyes meet laughter: exploring non-verbal cues in human-robot interaction with Furhat.</p>
-
-<p> Mills, G., & Redeker, G. (2023).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>a>. Cognitive Science, 47(8), e13329.</p>
 
 <p>Decker, A., Amblard, M., & Breitholtz, E. (2023, November). Analysing topic shifts in task-oriented dialogues. In Journées scientifiques du GDR Lift-LIFT 2023.</p>
 
