@@ -231,15 +231,13 @@ See also: https://gjmills.github.io/
   
 # Related toolkits 
 
-NOTE: CHECK THESE ARE STILL UP-TO-DATE
 
-* https://arxiv.org/pdf/1812.03415.pdf
+* <B>Speech:</B> https://arxiv.org/pdf/1812.03415.pdf
 
-* https://link.springer.com/article/10.3758/s13428-017-0873-y
+* <B>Speech:</B> https://link.springer.com/article/10.3758/s13428-017-0873-y
 
-* https://dsg-bielefeld.github.io/slurk
+* <B>Video:</B> https://pablo-arias.github.io/ducksoup.html 
 
-* https://f.hypotheses.org/wp-content/blogs.dir/4280/files/2018/11/paper_14.pdf
 
 
 
