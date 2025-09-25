@@ -125,7 +125,7 @@ See also: https://gjmills.github.io/
 
 <p> Mills, G., & Redeker, G. (2024).  <a href = "https://onlinelibrary.wiley.com/doi/full/10.1111/cogs.13329" > Self‐Repair Increases Referential Coordination </a>. Cognitive Science, 47(8), e13329.</p>
 
-<p>Vanzan, V., Qiu, A. H., Khan, F. A., Soupiona, C., & Howes, C. (2024). <a href="http://semdial.org/anthology/Z24-Vanzan_semdial_0038.pdf">Emoji-Text Mismatches: Stirring the Pot of Online Conversations</a>A>. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
+<p>Vanzan, V., Qiu, A. H., Khan, F. A., Soupiona, C., & Howes, C. (2024). <a href="http://semdial.org/anthology/Z24-Vanzan_semdial_0038.pdf">Emoji-Text Mismatches: Stirring the Pot of Online Conversations</a>. In Proceedings of the 28th Workshop on the Semantics and Pragmatics of Dialogue.</p>
 
 <p>Giannitzi, E. (2024). When eyes meet laughter: exploring non-verbal cues in human-robot interaction with Furhat.</p>
 
