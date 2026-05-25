@@ -226,7 +226,7 @@ See also: https://gjmills.github.io/
 <p>Healey, P.G.T., Purver, M., King, J., Ginzburg, J. and Mills, G. J. (2003) <B> Experimenting with Clarification in Dialogue</B>. in Alterman, R. and Kirsh, D. (eds) Proceedings of the 25th Annual Conference of the Cognitive Science Society. Mahwah, N. J.: LEA pp. 539-544.</p>
 
 
-<p>Purver, M., Healey, P. G. T., King, J. Ginzburg, J. and Mills, G. (2003) <B>Answering Clarification Questions.</B> In Proceedings of the 4th SIGdial Workshop on Discourse and Dialogue, pp 23-33, Association for Computational Linguistics, Sapporo, Japan, July 2003.</P>
+<p>Purver, M., Healey, P. G. T., King, J. Ginzburg, J. and Mills, G. (2003) <B>Answering Clarification Questions.</B> In Proceedings of the 4th SIGdial Workshop on Discourse and Dialogue, pp 23-33, Association for Computational Linguistics, Sapporo, Japan, July 2003.</p>
 
 
   
