@@ -228,6 +228,7 @@ See also: https://gjmills.github.io/
 
 <p>Purver, M., Healey, P. G. T., King, J. Ginzburg, J. and Mills, G. (2003) <B>Answering Clarification Questions.</B> In Proceedings of the 4th SIGdial Workshop on Discourse and Dialogue, pp 23-33, Association for Computational Linguistics, Sapporo, Japan, July 2003.</P>
 
+<p>AI Instructions</p>
   
 # Related toolkits 
 
@@ -238,7 +239,9 @@ See also: https://gjmills.github.io/
 
 * <B>Video:</B> https://pablo-arias.github.io/ducksoup.html 
 
-.
+
+
+This is text that can be displayed at the bottom of the page
 <code style="color : white">text</code>
 
 
