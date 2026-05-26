@@ -234,11 +234,8 @@ See also: https://gjmills.github.io/
 
 
 * <B>Speech:</B> https://arxiv.org/pdf/1812.03415.pdf
-
 * <B>Speech:</B> https://link.springer.com/article/10.3758/s13428-017-0873-y
-
 * <B>Video:</B> https://pablo-arias.github.io/ducksoup.html 
-
 
 
 # Related instructions
